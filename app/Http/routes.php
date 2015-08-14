@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::model('projects', 'Project');
+Route::model('tracks', 'Track');
 
 Route::resource('projects', 'ProjectsController');
 Route::resource('projects.tracks', 'TracksController');

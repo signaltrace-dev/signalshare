@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     //
+    public function tracks()
+    {
+      return $this->hasMany('App\Track');
+    }
 }

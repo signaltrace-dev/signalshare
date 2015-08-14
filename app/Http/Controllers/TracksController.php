@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Track;
 
 class TracksController extends Controller
 {
@@ -14,9 +15,9 @@ class TracksController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Project $project)
     {
-        //
+        return view('tracks.index', compact('project'));
     }
 
     /**
@@ -24,9 +25,9 @@ class TracksController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(Project $project)
     {
-        //
+        return view('tracks.create', compact('project'));
     }
 
     /**
@@ -35,7 +36,7 @@ class TracksController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Project $project, Request $request)
     {
         //
     }
@@ -46,9 +47,9 @@ class TracksController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(Project $project, Track $track)
     {
-        //
+        return view('tracks.show', compact('project', 'track'));
     }
 
     /**
@@ -57,9 +58,9 @@ class TracksController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(Project $project, Track $track)
     {
-        //
+        return view('tracks.edit', compact('project', 'track'));
     }
 
     /**
@@ -69,7 +70,7 @@ class TracksController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Project $project, Track $track)
     {
         //
     }
@@ -80,7 +81,7 @@ class TracksController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Project $project, Track $track)
     {
         //
     }
