@@ -16,6 +16,7 @@ Route::model('tracks', 'Track');
 
 Route::resource('projects', 'ProjectsController');
 Route::resource('projects.tracks', 'TracksController');
+Route::resource('files', 'FilesController');
 
 Route::bind('tracks', function($value, $route) {
 	return App\Track::whereSlug($value)->first();
