@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Project;
 use Input;
 use Redirect;
+use App\Http\helpers;
 
 class ProjectsController extends Controller
 {
@@ -57,8 +58,11 @@ class ProjectsController extends Controller
 
     public function store()
     {
-    	$input = Input::all();
-    	Project::create( $input );
+      $project = new Project;
+      $project->name = Input::get('name');
+      $project->slug = Helpers::getSlug($project->name, $project);
+      $project->owner_id = 1;
+    	$project->save();
 
     	return Redirect::route('projects.index')->with('message', 'Project created');
     }
