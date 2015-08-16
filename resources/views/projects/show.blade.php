@@ -9,7 +9,7 @@
         <ul>
           @foreach( $project->tracks as $track )
               <li>
-                  {!! Form::open(array('class' => 'form-inline', 'method' => 'DELETE', 'route' => array('projects.tasks.destroy', $project->slug, $track->slug))) !!}
+                  {!! Form::open(array('class' => 'form-inline', 'method' => 'DELETE', 'route' => array('projects.tracks.destroy', $project->slug, $track->slug))) !!}
                       <a href="{{ route('projects.tracks.show', [$project->slug, $track->slug]) }}">{{ $track->name }}</a>
                       (
                           {!! link_to_route('projects.tracks.edit', 'Edit', array($project->slug, $track->slug), array('class' => 'btn btn-info')) !!},

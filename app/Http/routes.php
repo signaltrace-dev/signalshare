@@ -13,6 +13,7 @@
 
 Route::model('projects', 'Project');
 Route::model('tracks', 'Track');
+Route::model('files', 'File');
 
 Route::resource('projects', 'ProjectsController');
 Route::resource('projects.tracks', 'TracksController');

@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Project;
+use App\Track;
+use Input;
+use Redirect;
+use Response;
 
 class FilesController extends Controller
 {
@@ -26,7 +31,6 @@ class FilesController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -35,9 +39,16 @@ class FilesController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Project $project, Track $track)
     {
-        //
+        $file = Input::file('file');
+        $file->getClientOriginalName();
+        $file->getClientOriginalExtension();
+        $file->getSize();
+
+        var_dump($file);
+        return Response::json();
+
     }
 
     /**
