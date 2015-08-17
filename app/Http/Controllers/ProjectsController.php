@@ -77,6 +77,10 @@ class ProjectsController extends Controller
 
     public function destroy(Project $project)
     {
+      foreach($project->tracks as $track){
+        $track->file->delete();
+        $track->delete();
+      }
     	$project->delete();
 
     	return Redirect::route('projects.index')->with('message', 'Project deleted.');
