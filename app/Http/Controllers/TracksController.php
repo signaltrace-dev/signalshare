@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Project;
 use App\Track;
-use App\File;
+use App\AudioFile;
 use Input;
 use Redirect;
 use Validator;
@@ -71,21 +71,20 @@ class TracksController extends Controller
         $track->project_id = $project->id;
         $track->name = Input::get('name');
         $track->owner_id = 1;
-
         $track->slug = Helpers::getSlug($track->name, $track);
+        $track->save();
 
         $file = Input::file('audio');
+        $temp_file = $file->getRealPath();
+        $hash = hash_file('md5', $temp_file);
 
-        $filename = $project->id . '_' . $track->slug . '.' . $file->getClientOriginalExtension();
-        $file_location = base_path() . '/public/' . $filename;
+        $filename = $project->id . '_' . $hash . '.' . $file->getClientOriginalExtension();
         if($file->move(base_path() . '/public/', $filename)){
-          $file_obj = new File;
+          $file_obj = new AudioFile;
           $file_obj->filename = $filename;
-          $file_obj->hash = hash_file('md5', $filename);
+          $file_obj->hash = $hash;
+          $file_obj->track_id = $track->id;
           $file_obj->save();
-
-          $track->file_id = $file_obj->id;
-          $track->save();
         }
 
       	return Redirect::route('projects.show', $project->slug)->with('message', 'Track created.');
@@ -102,6 +101,7 @@ class TracksController extends Controller
 
     public function destroy(Project $project, Track $track)
     {
+      $track->file->delete();
     	$track->delete();
 
     	return Redirect::route('projects.show', $project->slug)->with('message', 'Track deleted.');

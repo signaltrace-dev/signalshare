@@ -12,7 +12,7 @@ use Input;
 use Redirect;
 use Response;
 
-class FilesController extends Controller
+class AudioFilesController extends Controller
 {
     /**
      * Display a listing of the resource.
