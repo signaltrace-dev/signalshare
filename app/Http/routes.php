@@ -15,13 +15,18 @@ Route::model('projects', 'Project');
 Route::model('tracks', 'Track');
 Route::model('files', 'File');
 
-Route::resource('projects', 'ProjectsController');
-Route::resource('projects.tracks', 'TracksController');
-Route::resource('files', 'FilesController');
-
 Route::bind('tracks', function($value, $route) {
 	return App\Track::whereSlug($value)->first();
 });
 Route::bind('projects', function($value, $route) {
 	return App\Project::whereSlug($value)->first();
 });
+/*
+Route::get('projects/{project}/tracks/create/{modal?}', function(App\Project $project, $modal = FALSE)
+{
+    return $modal;
+});*/
+
+Route::resource('projects', 'ProjectsController');
+Route::resource('projects.tracks', 'TracksController');
+Route::resource('files', 'FilesController');

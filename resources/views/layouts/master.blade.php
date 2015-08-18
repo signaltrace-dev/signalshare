@@ -6,15 +6,20 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
       <link rel="stylesheet" href="{{ URL::asset('css/signalshare.css') }}">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+      <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,700' rel='stylesheet' type='text/css'>
 
 
-      <meta name="csrf-token" content="{{ csrf_token() }}" />
       <script type='text/javascript'>
-      $.ajaxSetup({
-              headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              }
-          });
+      $.ajaxPrefilter(function(options, originalOptions, xhr) {
+    var token = $('meta[name="csrf_token"]').attr('content');
+
+    if (token) {
+          return xhr.setRequestHeader('X-XSRF-TOKEN', token);
+    }
+});
       </script>
         <title>signal.share() - @yield('title')</title>
     </head>
