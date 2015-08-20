@@ -2,13 +2,7 @@
 
 @section('content')
 
-<div class="modal fade" id="modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+@include('partials/_modal', ['modal_title' => 'Add Track', 'modal_id' => 'modal-create-track'])
 
 <script type="text/javascript" src="{{ URL::asset('js/wavesurfer.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/signalshare.js') }}"></script>
@@ -35,7 +29,7 @@
     @endif
     <div class="controls">
       <span class="btn btn-info btn-play-all"><span>Play All</span>&nbsp;<i class="fa fa-play"></i></span>
-      <a class='btn btn-warning' data-toggle="modal" href="{{ route('projects.tracks.create', [$project->slug]) }}" data-target="#modal">Add a Track</a>
+      <a class='btn btn-warning' data-toggle="modal" data-href="{{ route('create_track_ajax', [$project->slug, 'ajax']) }}" data-target="#modal-create-track">Add a Track</a>
 
 
     </div>

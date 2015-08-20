@@ -13,20 +13,18 @@
 
 Route::model('projects', 'Project');
 Route::model('tracks', 'Track');
-Route::model('files', 'File');
+Route::model('files', 'AudioFile');
 
 Route::bind('tracks', function($value, $route) {
 	return App\Track::whereSlug($value)->first();
 });
+
 Route::bind('projects', function($value, $route) {
 	return App\Project::whereSlug($value)->first();
 });
-/*
-Route::get('projects/{project}/tracks/create/{modal?}', function(App\Project $project, $modal = FALSE)
-{
-    return $modal;
-});*/
+
+Route::get('projects/{projects}/tracks/create/{ajax}', ['as' => 'create_track_ajax', 'uses' => 'TracksController@create']);
 
 Route::resource('projects', 'ProjectsController');
 Route::resource('projects.tracks', 'TracksController');
-Route::resource('files', 'FilesController');
+Route::resource('files', 'AudioFilesController');

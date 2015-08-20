@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Project;
@@ -32,9 +31,13 @@ class TracksController extends Controller
      *
      * @return Response
      */
-    public function create(Project $project)
+    public function create(Project $project, $ajax = NULL)
     {
-        return view('tracks.create', compact('project'));
+      if($ajax === 'ajax')
+      {
+          return view('tracks.create_modal', compact('project'));
+      }
+      else return view('tracks.create', compact('project'));
     }
 
     /**
@@ -61,6 +64,7 @@ class TracksController extends Controller
 
     public function store(Project $project, Request $request)
     {
+
       $rules = array(
         'name'  => 'required',
         'audio' => ['required', 'mimes:wma,wav,mp3,ogg'],

@@ -55,3 +55,14 @@ h1, h2, h3, h4, h5, .btn, a, body, p, span, div{
   display:block;
   margin: 0 0 5px 0;
 }
+
+.modal-header{
+  background: #475F75;
+  color: #fff;
+  padding: 10px 15px;
+}
+
+.modal-header .close{
+  opacity: 1;
+  color:#fff;
+}
