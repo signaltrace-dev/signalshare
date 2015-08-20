@@ -12,6 +12,9 @@ use Input;
 use Redirect;
 use Validator;
 use App\Http\helpers;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 
 
 class TracksController extends Controller
@@ -67,8 +70,9 @@ class TracksController extends Controller
 
       $rules = array(
         'name'  => 'required',
-        'audio' => ['required', 'mimes:wma,wav,mp3,ogg'],
       );
+
+
 
       $this->validate($request, $rules);
         $track = new Track;
@@ -78,7 +82,10 @@ class TracksController extends Controller
         $track->slug = Helpers::getSlug($track->name, $track);
         $track->save();
 
-        $file = Input::file('audio');
+        //$file = Input::file('audio');
+        $filename = Input::get('audiofile');
+        $file = Storage::disk('local')->get($filename);
+
         $temp_file = $file->getRealPath();
         $hash = hash_file('md5', $temp_file);
 

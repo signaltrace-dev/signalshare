@@ -5,5 +5,5 @@
 </div>
 
 {!! Form::model(new App\Track, ['route' => ['projects.tracks.store', $project->slug], 'class'=> 'ajax', 'files'=>true]) !!}
-    @include('tracks/partials/_form', ['submit_text' => 'Create Track'])
+    @include('tracks/partials/_form', ['submit_text' => 'Create Track', 'project' => $project])
 {!! Form::close() !!}

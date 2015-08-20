@@ -8,9 +8,13 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Project;
 use App\Track;
+use App\AudioFile;
 use Input;
 use Redirect;
 use Response;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AudioFilesController extends Controller
 {
@@ -34,21 +38,33 @@ class AudioFilesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store an audio file temporarily
      *
      * @param  Request  $request
      * @return Response
      */
-    public function store(Project $project, Track $track)
+    public function storeTemp(Request $request)
     {
-        $file = Input::file('file');
-        $file->getClientOriginalName();
-        $file->getClientOriginalExtension();
-        $file->getSize();
+      $date = Carbon::now();
+      $timestamp = $date->getTimestamp();
 
-        var_dump($file);
-        return Response::json();
+      $file = Input::file('audio');
 
+      $temp_file = $file->getRealPath();
+      $hash = hash_file('md5', $temp_file);
+
+      $filename = $timestamp . '_' . $hash . '.' . $file->getClientOriginalExtension();
+      Storage::disk('local')->put($filename,  File::get($file));
+      //$file->move(base_path() . '/public/audio/temp/', $filename);
+
+      return Response::json(array(
+
+          'files' => array(
+            '0' => array(
+              'name' => $filename,
+            ),
+          ),
+      ));
     }
 
     /**

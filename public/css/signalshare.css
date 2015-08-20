@@ -66,3 +66,35 @@ h1, h2, h3, h4, h5, .btn, a, body, p, span, div{
   opacity: 1;
   color:#fff;
 }
+
+input[type=text], textarea{
+  padding:10px;
+  border-radius: 6px;
+  border: 1px solid #dadada;
+}
+
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px;
+  direction: ltr;
+  cursor: pointer;
+}
+
+/* Fixes for IE < 8 */
+@media screen\9 {
+  .fileinput-button input {
+    filter: alpha(opacity=0);
+    font-size: 100%;
+    height: 100%;
+  }
+}

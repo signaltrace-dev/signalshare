@@ -5,7 +5,6 @@
 @include('partials/_modal', ['modal_title' => 'Add Track', 'modal_id' => 'modal-create-track'])
 
 <script type="text/javascript" src="{{ URL::asset('js/wavesurfer.min.js') }}"></script>
-<script type="text/javascript" src="{{ URL::asset('js/signalshare.js') }}"></script>
 <div id="pnl-project-tracks">
     <h2>{{ $project->name }}</h2>
 

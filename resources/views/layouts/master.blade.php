@@ -11,6 +11,7 @@
       <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
       <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
       <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,700' rel='stylesheet' type='text/css'>
+      <script type="text/javascript" src="{{ URL::asset('js/signalshare.js') }}"></script>
 
         <title>signal.share() - @yield('title')</title>
     </head>
