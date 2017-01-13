@@ -25,6 +25,8 @@ Route::bind('projects', function($value, $route) {
 
 Route::get('projects/{projects}/tracks/create/{ajax}', ['as' => 'create_track_ajax', 'uses' => 'TracksController@create']);
 Route::post('projects/{projects}/tracks/files/add', ['as' => 'create_file', 'uses' => 'AudioFilesController@storeTemp']);
+Route::post('projects/{projects}/tracks/files/delete', ['as' => 'delete_file', 'uses' => 'AudioFilesController@deleteTemp']);
+
 
 
 Route::resource('projects', 'ProjectsController');

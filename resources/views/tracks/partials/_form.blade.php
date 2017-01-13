@@ -5,17 +5,36 @@
 <script type="text/javascript">
   $(document).ready(function(){
     var url = "{{ route('create_file', $project) }}";
+    var audioFile;
     $('#fileupload').fileupload({
         url: url,
         dataType: 'json',
         done: function (e, data) {
+          if(data.result.files && data.result.files.length > 0){
+            $('.progress').addClass('hidden');
+            var fileList = $('<ul/>', {class: 'filelist'}).appendTo('#files');
+
             $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo('#files');
-                $('#audio-file').val(file.name);
+              var fileItem = $('<li/>');
+
+              $('<span/>', {text:file.name, class: 'filename'}).appendTo(fileItem);
+              var btnCancel = $('<i/>', {class: 'fa fa-times btn-icon btn-cancel'}).appendTo(fileItem);
+
+              btnCancel.on('click', function(){
+                deleteFile();
+              });
+
+              $(fileItem).appendTo(fileList);
+              $('#audio-file').val(file.name);
+              audioFile = file;
             });
+
+            $(fileList).appendTo('#files');
+          }
         },
         progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('.progress').removeClass('hidden');
             $('#progress .progress-bar').css(
                 'width',
                 progress + '%'
@@ -23,6 +42,17 @@
         }
     }).prop('disabled', !$.support.fileInput)
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+    var deleteFile = function(){
+      $('.filelist').remove();
+      var url = "{{ route('delete_file', $project) }}";
+      $.ajax({
+          url:url,
+          type:'POST',
+          data: {'filename':audioFile.name, '_token': $('input[name=_token]').val()},
+        });
+      audioFile = '';
+    };
   });
 </script>
 
@@ -42,7 +72,7 @@
         {!! Form::hidden('audiofile', null, ['id' => 'audio-file'] ) !!}
 
     </span>
-    <div id="progress" class="progress">
+    <div id="progress" class="progress hidden">
         <div class="progress-bar progress-bar-success"></div>
     </div>
     <div id="files" class="files"></div>
