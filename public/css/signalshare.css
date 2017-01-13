@@ -90,6 +90,26 @@ input[type=text], textarea{
   cursor: pointer;
 }
 
+.progress, .files{
+  margin: 20px 0;
+}
+
+.filelist li{
+  list-style-type: none;
+}
+
+.filelist .filename{
+  margin-right:20px;
+}
+
+.btn-icon{
+  cursor:pointer;
+}
+
+.btn-cancel{
+  color:Red;
+}
+
 /* Fixes for IE < 8 */
 @media screen\9 {
   .fileinput-button input {
