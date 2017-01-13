@@ -12,4 +12,8 @@ class Project extends Model
     {
       return $this->hasMany('App\Track');
     }
+
+    public function tracksApproved(){
+      return $this->hasMany('App\Track')->where('approved', '=', '1');
+    }
 }
