@@ -68,9 +68,9 @@ $(document).ready(function(){
           url:url,
           type:'POST',
           data: {'name':$('input[name=name]').val(), '_token': $('input[name=_token]').val()},
-          success: function()
+          success: function(res)
           {
-
+            console.dir(res);
           },
           error: function(res){
             errors = res.responseJSON;
