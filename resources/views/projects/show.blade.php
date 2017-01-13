@@ -8,11 +8,11 @@
 <div id="pnl-project-tracks">
     <h2>{{ $project->name }}</h2>
 
-    @if ( !$project->tracks->count() )
+    @if ( !$project->tracksApproved->count() )
         <div class='alert alert-info'>Woah woah woah...looks like your project doesn't have any tracks yet. Get cracking!</div>
     @else
         <ul class='track-list'>
-          @foreach( $project->tracks as $track )
+          @foreach( $project->tracksApproved as $track )
               <li class='track-item'>
                 {!! Form::open(array('class' => 'form-inline', 'method' => 'DELETE', 'route' => array('projects.tracks.destroy', $project->slug, $track->slug))) !!}
                   <span class='controls-inline'>
