@@ -67,6 +67,12 @@ class AudioFilesController extends Controller
       ));
     }
 
+    public function deleteTemp(Request $request){
+      $filename = $request->input('filename');
+      Storage::disk('local')->delete($filename);
+
+    }
+
     /**
      * Display the specified resource.
      *
