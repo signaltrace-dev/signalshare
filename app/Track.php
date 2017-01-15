@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Track extends Model
 {
+    public function getRouteKeyName(){
+        return 'slug';
+    }
     protected $guarded = [];
     //
 
