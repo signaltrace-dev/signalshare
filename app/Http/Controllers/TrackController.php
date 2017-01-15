@@ -23,7 +23,7 @@ class TrackController extends Controller
      */
     public function index(Project $project)
     {
-        return view('tracks.index', compact('project'));
+        return view('dashboards.tracks.index', compact('project'));
     }
 
     /**
