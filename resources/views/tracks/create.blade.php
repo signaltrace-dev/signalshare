@@ -1,8 +1,8 @@
-@extends('layouts/master')
+@extends('layouts/app')
 
+@section('title')
+    {{ $project->name }} :: Add Tracks
+@endsection
 @section('content')
-    <h2>Create Track for Project "{{ $project->name }}"</h2>
-    {!! Form::model(new App\Track, ['route' => ['projects.tracks.store', $project->slug], 'files'=>true]) !!}
-        @include('tracks/partials/_form', ['submit_text' => 'Create Track', 'project' => $project])
-    {!! Form::close() !!}
+    @include('tracks/forms/add_tracks', ['submit_text' => 'Create Track', 'project' => $project, 'action' => route("projects.tracks.store", $project->slug)])
 @endsection
