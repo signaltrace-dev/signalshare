@@ -19,4 +19,9 @@ class Project extends Model
     public function tracksApproved(){
       return $this->hasMany('App\Track')->where('approved', '=', '1');
     }
+
+    public function tracksNotApproved(){
+      return $this->hasMany('App\Track')->where('approved', '=', '0');
+    }
+
 }
