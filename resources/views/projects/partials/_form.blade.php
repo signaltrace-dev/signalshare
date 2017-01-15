@@ -1,11 +1,8 @@
 <div class="form-group">
-    {!! Form::label('name', 'Name:') !!}
-    {!! Form::text('name') !!}
+    <label for="name">Name:</label>
+    <input type="text" name="name"  placeholder="Name" value="{{ $project->name }}" />
 </div>
 <div class="form-group">
-    {!! Form::label('slug', 'Slug:') !!}
-    {!! Form::text('slug') !!}
+    <button type="submit" class="btn btn-primary">{{ $submit_text }}</button>
 </div>
-<div class="form-group">
-    {!! Form::submit($submit_text, ['class'=>'btn btn-primary']) !!}
-</div>
+{{ csrf_field() }}
