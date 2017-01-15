@@ -1,0 +1,12 @@
+.track-item{
+    transition: all 1.5s ease;
+    padding: 10px;
+    &.added{
+        background-color: $bg-success;
+
+    }
+    &.processed{
+
+        background-color: inherit;
+    }
+}

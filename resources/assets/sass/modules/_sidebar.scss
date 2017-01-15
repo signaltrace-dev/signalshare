@@ -1,0 +1,32 @@
+.sidebar{
+    height:100vh;
+    background: $bg-dark;
+    color: #fff;
+
+    .pnl-badge{
+        max-width: 100px;
+        margin: 20px auto;
+    }
+
+    .list-group{
+        .list-group-item{
+            padding: 0;
+        }
+
+        a{
+            width: 100%;
+            display: block;
+            padding: 10px 15px;
+
+            &:hover{
+                background: #dedede;
+                text-decoration: none;
+            }
+
+            &.active{
+                background: $bg-light;
+                font-weight: 800;
+            }
+        }
+    }
+}
