@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 use App\AudioFile;
 use App\Project;
 use App\Track;
@@ -18,9 +17,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
       $faker = Faker::create();
-        Model::unguard();
+      DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         AudioFile::truncate();
         Project::truncate();
         Track::truncate();
@@ -29,7 +27,7 @@ class DatabaseSeeder extends Seeder
 
         factory(Project::class, 10)->create();
 
-        $projects = Project::all()->lists('id')->toArray();
+        $projects = Project::all()->pluck('id')->toArray();
         foreach(range(1,50) as $index){
             $track = Track::create([
               'name' => $faker->catchPhrase,
@@ -48,6 +46,5 @@ class DatabaseSeeder extends Seeder
         }
         // $this->call(UserTableSeeder::class);
 
-        Model::reguard();
     }
 }
