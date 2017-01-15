@@ -1,9 +1,9 @@
-@extends('layouts/master')
+@extends('layouts/app')
 
 @section('content')
     <h2>Create Project</h2>
 
-    {!! Form::model(new App\Project, ['route' => ['projects.store']]) !!}
+    <form action='{{ route("projects.store") }}' method="POST">
         @include('projects/partials/_form', ['submit_text' => 'Create Project'])
-    {!! Form::close() !!}
+    </form>
 @endsection
