@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
   <h2>Projects</h2>
@@ -8,22 +8,24 @@
       There aren't any projects...yet.
     </div>
   @else
-  <ul>
+  <ul class="list-group">
       @foreach( $projects as $project )
-          <li>
-              {!! Form::open(array('class' => 'form-inline', 'method' => 'DELETE', 'route' => array('projects.destroy', $project->slug))) !!}
+          <li class="list-group-item">
+              <form class='form-inline' method='POST', action="{{ route('projects.destroy', $project->slug) }}">
+                {{ method_field('DELETE') }}
+                {{ csrf_field() }}
                   <a href="{{ route('projects.show', $project->slug) }}">{{ $project->name }}</a>
-                  (
-                      {!! link_to_route('projects.edit', 'Edit', array($project->slug), array('class' => 'btn btn-info')) !!},
-                      {!! Form::submit('Delete', array('class' => 'btn btn-danger')) !!}
-                  )
-              {!! Form::close() !!}
+                  <div class="btn-group pull-right">
+                      <a class="btn btn-info" href="{{ route('projects.edit', $project->slug) }}">Edit</a>
+                      <button type="submit" class="btn btn-danger">Delete</button>
+                  </div>
+              </form>
           </li>
       @endforeach
   </ul>
   @endif
 
   <p>
-    {!! link_to_route('projects.create', 'Create Project') !!}
+    <a class="btn btn-info" href="{{ route('projects.create') }}">Create Project</a>
   </p>
 @endsection
