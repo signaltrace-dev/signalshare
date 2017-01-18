@@ -95,10 +95,22 @@ class TrackController extends Controller
             $request->file->move($file_path, $new_filename);
 
             $track = new Track;
-            $track->project_id = $project->id;
             $track->name = $file_name_short;
             $track->owner_id = $request->user()->id;
-            $track->slug = str_slug($track->name, '-');
+
+            $slug = str_slug($track->name, '-');
+            $new_slug = $slug;
+
+            $exists = Track::where(['slug' => $slug])->count();
+            $append = 1;
+            while($exists){
+                $new_slug = $slug . '-' . $append;
+                $append++;
+                $exists = Track::where(['slug' => $new_slug])->count();
+            }
+
+            $track->slug = $new_slug;
+
             $track->save();
 
             $file_obj = new AudioFile;
@@ -106,6 +118,12 @@ class TrackController extends Controller
             $file_obj->hash = $hash;
             $file_obj->track_id = $track->id;
             $file_obj->save();
+
+            $project->tracks()->attach($track->id,[
+                'name' => $file_name_short,
+                'owner_id' => $request->user()->id,
+                'approved' => 0
+            ]);
 
             $response['status'] = 1;
             $response['track'] = $track;
@@ -130,11 +148,18 @@ class TrackController extends Controller
 
     public function removeFromProject(Project $project, Track $track)
     {
-      //$track->file->delete();
-    	//$track->delete();
-        //$project->tracks()->remove($track);
+        $project->tracks()->detach($track->id);
 
-    	return Redirect::route('projects.show', $project->slug)->with('message', 'Track removed.');
+        // Remove track / file entirely if it's not being used in any other projects
+        $other_projects = $track->projects()->count();
+        if($other_projects == 0){
+            $filename = $track->file->filename;
+            Storage::delete('public/' . $filename);
+            $track->file->delete();
+            $track->delete();
+        }
+
+    	return Redirect::route('projects.show', $project->slug)->with('message', 'Removed "' . $track->name . '" from project.');
     }
 
     public function destroy(Track $track)
