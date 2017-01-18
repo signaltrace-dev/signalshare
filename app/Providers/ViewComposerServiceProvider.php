@@ -18,11 +18,11 @@ class ViewComposerServiceProvider extends ServiceProvider
         view()->composer('layouts.app', function($view){
             $path = Route::currentRouteName();
             $path_arr = explode('.', $path);
-            $path_class = str_slug($path_arr[0], '-');
-            $path_subclass = count($path_arr > 1) ? $path_class . '-' . str_slug($path_arr[1], '-') : '';
+            $path_class = count($path_arr) > 0 && !empty($path_arr[0]) ? str_slug($path_arr[0], '-') : 'home';
+            $path_subclass = count($path_arr) > 1 ? $path_class . '-' . str_slug($path_arr[1], '-') : '';
 
             $classes = "$path_class $path_subclass";
-            $view->with('classes', $classes);
+            $view->with('classes', trim($classes));
         });
     }
 
