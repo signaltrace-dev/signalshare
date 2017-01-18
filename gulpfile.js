@@ -15,5 +15,11 @@ require('laravel-elixir-vue-2');
 
 elixir((mix) => {
     mix.sass('app.scss')
-       .webpack('app.js');
+       .webpack('app.js')
+       .scripts([
+           'vendor/dropzone.js',
+           'vendor/wavesurfer.min.js',
+           'tracks/player.js',
+           'tracks/uploader.js'
+       ], 'public/js/tracks.js');
 });
