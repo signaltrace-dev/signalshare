@@ -10,13 +10,11 @@
         <div class='alert alert-warning'>Hey, it looks like this project doesn't have any tracks yet. Get cracking!</div>
     @endif
     @include('tracks/forms/add_tracks', ['submit_text' => 'Create Track', 'project' => $project, 'action' => route("projects.tracks.store", $project->slug)])
-    <ul class='track-list' id="track-list">
-      @foreach( $project->tracks as $track)
-          <li class='track-item'>
+    <div class='track-list' id="track-list">
+        @foreach( $project->tracks as $track)
               @include('tracks/show', ['track' => $track, 'project' => $project])
-          </li>
-      @endforeach
-    </ul>
+        @endforeach
+    </div>
     <div class="controls {{ count($project->tracks) == 0 ? 'hidden' : '' }}">
         <span class="btn btn-success btn-play-all"><span>Play All</span>&nbsp;<i class="fa fa-play"></i></span>
     </div>
