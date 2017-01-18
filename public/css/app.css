@@ -7688,6 +7688,12 @@ button.close {
   }
 }
 
+.title--page {
+  border-bottom: 1px solid #d3e0e9;
+  padding: 0 0 10px 20px;
+  margin-bottom: 20px;
+}
+
 h1, h2, h3, h4, h5, .btn, a, body, p, span, div {
   font-family: 'Lato', sans-serif;
 }
