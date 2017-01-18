@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
+@section('title')
+    {{ $project->name }}
+@endsection
+
 @section('content')
 
 <script type="text/javascript" src="{{ URL::asset('js/tracks.js') }}"></script>
 <div id="pnl-project-tracks">
-    <h2>{{ $project->name }}</h2>
-
     @if ( count($project->tracks) == 0 )
         <div class='alert alert-warning'>Hey, it looks like this project doesn't have any tracks yet. Get cracking!</div>
     @endif

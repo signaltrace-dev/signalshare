@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
-@section('content')
-  <h2>Projects</h2>
+@section('title')
+    Projects
+@endsection
 
+@section('content')
   @if ( !$projects->count() )
     <div class='alert alert-info'>
       There aren't any projects...yet.
