@@ -12,6 +12,12 @@ class Track extends Model
     protected $guarded = [];
     //
 
+    public function projects(){
+        return $this->belongsToMany('App\Project')
+            ->withPivot('name', 'owner_id', 'approved')
+            ->withTimestamps();
+    }
+
     protected function file(){
       return $this->hasOne('App\AudioFile');
     }
