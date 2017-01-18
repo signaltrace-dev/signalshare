@@ -3,7 +3,8 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
       <meta name="csrf-token" content="{{ csrf_token() }}">
       <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
-      <script type="text/javascript" src="{{ URL::asset('js/signalshare.js') }}"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <script type="text/javascript" src="{{ URL::asset('js/app.js') }}"></script>
       <title>signal.share() - @yield('title')</title>
     </head>
     <body>
