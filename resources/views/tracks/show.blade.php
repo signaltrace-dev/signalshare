@@ -1,5 +1,5 @@
 <span class='controls-inline'>
-  <button class='btn btn-warning btn-mute'>Mute <i class='fa fa-volume-off'></i></button>
+  <button class='btn btn-info btn-mute'>Mute <i class='fa fa-volume-off'></i></button>
   <form action='{{ route("projects.tracks.destroy", [$project->slug, $track->slug] ) }}' method="POST">
       {{ method_field('DELETE') }}
       {{ csrf_field() }}
