@@ -35,14 +35,11 @@ class CreateBaseTables extends Migration
 
         Schema::create('tracks', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('project_id')->unsigned()->default(0);
-            $table->foreign('project_id')->references('id')->on('projects');
             $table->timestamps();
             $table->string('name')->default('');
             $table->string('slug')->default('');
             $table->integer('owner_id')->unsigned()->default(0);
             $table->foreign('owner_id')->references('id')->on('users');
-            $table->boolean('approved')->default(false);
         });
 
         Schema::create('audio_files', function (Blueprint $table) {
@@ -52,6 +49,19 @@ class CreateBaseTables extends Migration
             $table->string('hash')->default('');
             $table->integer('track_id')->unsigned()->default(0);
             $table->foreign('track_id')->references('id')->on('tracks');
+        });
+
+        Schema::create('project_track', function(Blueprint $table){
+            $table->increments('id');
+            $table->timestamps();
+            $table->integer('project_id')->unsigned()->default(0);
+            $table->foreign('project_id')->references('id')->on('projects');
+            $table->integer('track_id')->unsigned()->default(0);
+            $table->foreign('track_id')->references('id')->on('tracks');
+            $table->string('name')->default('');
+            $table->integer('owner_id')->unsigned()->default(0);
+            $table->foreign('owner_id')->references('id')->on('users');
+            $table->boolean('approved')->default(false);
         });
     }
 
@@ -67,6 +77,7 @@ class CreateBaseTables extends Migration
         Schema::drop('audio_files');
         Schema::drop('tracks');
         Schema::drop('projects');
+        Schema::drop('project_track');
         Schema::drop('user_profiles');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
