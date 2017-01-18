@@ -5,9 +5,9 @@
       <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
       <script type="text/javascript" src="{{ URL::asset('js/app.js') }}"></script>
-      <title>signal.share() - @yield('title')</title>
+      <title>signal.share() @hasSection('title') - @yield('title')@endif</title>
     </head>
-    <body>
+    <body class="{{$classes}}">
         <div class="container-fluid">
             <div class="row">
                 @include('layouts/sidebar')
