@@ -7735,17 +7735,6 @@ h1, h2, h3, h4, h5, .btn, a, body, p, span, div {
   margin: 0 auto;
 }
 
-.controls-inline {
-  float: left;
-  width: 5%;
-}
-
-.controls-inline .btn {
-  font-size: .9em;
-  display: block;
-  margin: 0 0 5px 0;
-}
-
 .modal-header {
   background: #475F75;
   color: #fff;
@@ -7855,12 +7844,19 @@ input[type=text], textarea {
   background-color: inherit;
 }
 
+.track-item .controls-inline .btn {
+  display: block;
+  width: 100%;
+  font-size: .85em;
+  margin: 0 0 5px 0;
+}
+
 .project-track.muted {
   background: #dedede;
 }
 
 .btn.muted {
-  background: #bf5329;
+  background: #3d6983;
 }
 
 /*

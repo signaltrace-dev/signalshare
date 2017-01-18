@@ -1782,28 +1782,16 @@ $(document).ready(function() {
         }
     });
 
-    var togglePlayButton = function(playing) {
-        $('.btn-play-all').toggleClass('btn-info').toggleClass('btn-danger');
-        $('.btn-play-all i').toggleClass('fa-play').toggleClass('fa-pause');
-
-        if (!playing) {
-            $('.btn-play-all span').text('Stop');
-        } else {
-            $('.btn-play-all span').text('Play All');
-        }
-    };
-
-    $('.project-track').each(function() {
-        var trackElem = this;
-        var src = $(this).data('src');
+    signalsharePlayer.addTrack = function(trackElem, isNew = false) {
+        var src = $(trackElem).data('src');
         $.ajax({
             url: src,
             type: 'HEAD',
             success: function() {
                 var wavesurfer = Object.create(WaveSurfer);
-
+                var projectTrack = $(trackElem).find('.project-track').first()[0];
                 wavesurfer.init({
-                    container: trackElem,
+                    container: projectTrack,
                     waveColor: '#A6C4FF',
                     progressColor: '#89B0FF',
                 });
@@ -1811,16 +1799,45 @@ $(document).ready(function() {
                 wavesurfer.on('play', function() {});
 
                 wavesurfer.load(src);
-                $(trackElem).addClass('loaded');
-                $(trackElem).parent().find('.btn-play').first().removeClass('hidden');
+                $(projectTrack).addClass('loaded');
 
                 signalsharePlayer.tracks.push(wavesurfer);
 
-                $(trackElem).parent().find('.btn-mute').data('track', signalsharePlayer.tracks.length - 1);
-                $(trackElem).data('track', signalsharePlayer.tracks.length - 1);
+                $(trackElem).find('.btn-mute').data('track', signalsharePlayer.tracks.length - 1);
+                $(projectTrack).data('track', signalsharePlayer.tracks.length - 1);
+
+                if (isNew) {
+                    $(trackElem).addClass('added');
+                    $(trackElem).prependTo('#track-list');
+                    setTimeout(function() {
+                        $(trackElem).addClass('processed');
+                    }, 500);
+
+                    $('.alert-warning').fadeOut();
+                    $('.controls').removeClass('hidden');
+                }
+
+                signalsharePlayer.setButtonHandlers(trackElem);
             }
         });
-    });
+    };
+
+    signalsharePlayer.setButtonHandlers = function(trackElem) {
+        $(trackElem).find('.btn-mute').on('click', function() {
+            var trackNum = $(this).data('track');
+            var track = trackNum in signalsharePlayer.tracks && signalsharePlayer.tracks[trackNum];
+            if (track) {
+                track.toggleMute();
+
+                $(this).toggleClass('muted');
+                var muted = $(this).hasClass('muted');
+                $(this).html(muted ? 'Unmute <i class="fa fa-volume-up"></i>' : 'Mute <i class="fa fa-volume-off"></i>');
+
+                $(trackElem).find('.project-track').toggleClass('muted');
+            }
+        });
+    };
+
     $('.btn-play-all').on('click', function() {
         var playing = signalsharePlayer.tracks[0].isPlaying();
 
@@ -1837,19 +1854,21 @@ $(document).ready(function() {
         });
     });
 
-    $('.btn-mute').on('click', function() {
-        var trackNum = $(this).data('track');
-        var track = trackNum in signalsharePlayer.tracks && signalsharePlayer.tracks[trackNum];
-        if (track) {
-            track.toggleMute();
+    var togglePlayButton = function(playing) {
+        $('.btn-play-all').toggleClass('btn-info').toggleClass('btn-danger');
+        $('.btn-play-all i').toggleClass('fa-play').toggleClass('fa-pause');
 
-            $(this).toggleClass('muted');
-            var muted = $(this).hasClass('muted');
-            $(this).html(muted ? 'Unmute <i class="fa fa-volume-up"></i>' : 'Mute <i class="fa fa-volume-off"></i>');
-
-            $(this).parent().parent().find('.project-track').toggleClass('muted');
+        if (!playing) {
+            $('.btn-play-all span').text('Stop');
+        } else {
+            $('.btn-play-all span').text('Play');
         }
+    };
+
+    $('.track-item').each(function() {
+        signalsharePlayer.addTrack(this);
     });
+
 });
 
 Dropzone.options.fileupload = {
@@ -1858,64 +1877,30 @@ Dropzone.options.fileupload = {
         $('.dz-message').hide();
         formData.append("_token", $('[name=_token').val());
     },
-    queuecomplete: function(event){
-        $('.dz-complete').fadeOut(function(){
+    queuecomplete: function(event) {
+        $('.dz-complete').fadeOut(function() {
             $('.dz-message').fadeIn();
         });
     },
-    success: function(event, response){
-        if(response.status && response.status == 1){
+    success: function(event, response) {
+        if (response.status && response.status == 1) {
             var project_slug = response.project.slug;
             var track_slug = response.track.slug;
             var file_url = response.file.filename;
 
+            // Get track content and add to track list
             $.ajax({
                 url: '/projects/' + project_slug + '/tracks/' + track_slug,
-                type:'GET',
-                success: function(data){
-                    var fileItem = $('<li/>', {'class' : 'track-item added'});
-
-                    $(data).appendTo(fileItem);
-                    var src = '/files/' + file_url;
-                    $.ajax({
-                        url:src,
-                        type:'HEAD',
-                        success: function()
-                        {
-                            var trackElem = $(fileItem).find('.project-track').first()[0];
-
-                          var wavesurfer = Object.create(WaveSurfer);
-
-                          wavesurfer.init({
-                              container: trackElem,
-                              waveColor: '#A6C4FF',
-                              progressColor: '#89B0FF',
-                          });
-
-                          wavesurfer.on('play', function(){
-                          });
-
-                          wavesurfer.load(src);
-                          $(trackElem).addClass('loaded');
-                          $(trackElem).parent().find('.btn-play').first().removeClass('hidden');
-                        }
-                    });
-
-                    $(fileItem).prependTo('#track-list');
-                    setTimeout(function(){
-                        $(fileItem).addClass('processed');
-                    }, 500);
-
-                    $('.alert-warning').fadeOut();
-                    $('.controls').removeClass('hidden');
+                type: 'GET',
+                success: function(data) {
+                    var fileItem = $('<div/>').html(data).contents();
+                    var trackElem = fileItem.first('.track-item');
+                    $(trackElem).data('src', '/files/' + file_url);
+                    signalsharePlayer.addTrack(trackElem, true);
                 }
-              });
+            });
         }
     },
 };
-
-$(document).ready(function(){
-    $('#btn-submit').hide();
-});
 
 //# sourceMappingURL=tracks.js.map
