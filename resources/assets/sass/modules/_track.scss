@@ -10,3 +10,15 @@
         background-color: inherit;
     }
 }
+
+.project-track{
+    &.muted{
+        background: #dedede;
+    }
+}
+
+.btn{
+    &.muted{
+        background: $brand-danger;
+    }
+}
