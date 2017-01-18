@@ -18,7 +18,7 @@
       @endforeach
     </ul>
     <div class="controls {{ count($project->tracks) == 0 ? 'hidden' : '' }}">
-        <span class="btn btn-info btn-play-all"><span>Play All</span>&nbsp;<i class="fa fa-play"></i></span>
+        <span class="btn btn-success btn-play-all"><span>Play All</span>&nbsp;<i class="fa fa-play"></i></span>
     </div>
 </div>
 @endsection
