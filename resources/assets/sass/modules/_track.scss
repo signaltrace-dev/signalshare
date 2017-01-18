@@ -9,6 +9,16 @@
 
         background-color: inherit;
     }
+
+    .controls-inline{
+        .btn{
+            display: block;
+            width: 100%;
+            font-size: .85em;
+            margin: 0 0 5px 0;
+
+        }
+    }
 }
 
 .project-track{
@@ -19,6 +29,6 @@
 
 .btn{
     &.muted{
-        background: $brand-danger;
+        background: darken($bg-brand-info, 30%);
     }
 }
