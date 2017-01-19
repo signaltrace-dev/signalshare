@@ -7688,6 +7688,18 @@ button.close {
   }
 }
 
+.link-delete {
+  margin-left: 10px;
+  color: #bf5329;
+  border: none;
+  background: inherit;
+}
+
+.btn form {
+  margin: 0;
+  display: inline;
+}
+
 .title--page {
   border-bottom: 1px solid #d3e0e9;
   padding: 0 0 10px 20px;
