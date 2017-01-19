@@ -1,7 +1,7 @@
 @extends('layouts/app')
 
 @section('title')
-    Project Settings
+    Project Settings for <em>{{ $project->name }}</em>
 @endsection
 
 @section('content')
