@@ -2,7 +2,7 @@
 
 @section('title')
     {{ $project->name }}
-    <a href='{{ route("projects.settings.edit", $project->slug) }}'><i class='fa fa-gear'></i></a>
+    <a class="btn btn-default" href='{{ route("projects.settings.edit", $project->slug) }}'><i class='fa fa-gear'></i>&nbsp;Settings</a>
 @endsection
 
 @section('content')
