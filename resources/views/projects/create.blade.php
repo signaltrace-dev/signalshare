@@ -2,8 +2,5 @@
 
 @section('content')
     <h2>Create Project</h2>
-
-    <form action='{{ route("projects.store") }}' method="POST">
-        @include('projects/partials/_form', ['submit_text' => 'Create Project'])
-    </form>
+    @include('projects/forms/create_edit', ['submit_text' => 'Create Project', 'form_action' => route("projects.store"), 'form_method' => 'POST'])
 @endsection
