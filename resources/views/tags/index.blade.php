@@ -5,13 +5,13 @@
 @endsection
 
 @section('content')
-    <div class="panel panel-default">
+    <div class="panel panel-brand">
       <div class="panel-heading">
         <h3 class="panel-title">All Tags</h3>
       </div>
       <div class="panel-body">
           @if ( !$tags->count() )
-            <div class='alert alert-info'>
+            <div class='alert alert-warning'>
               There aren't any tags...yet.
             </div>
           @else
