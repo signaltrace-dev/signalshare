@@ -3,9 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Storage;
 
 class Track extends Model
 {
+    public static function boot(){
+        parent::boot();
+
+        static::deleting(function($track){
+            $filename = $track->file->filename;
+            Storage::delete('public/' . $filename);
+            $track->file->delete();
+            return true;
+        });
+    }
+
     public function getRouteKeyName(){
         return 'slug';
     }

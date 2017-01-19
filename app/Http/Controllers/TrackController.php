@@ -153,9 +153,6 @@ class TrackController extends Controller
         // Remove track / file entirely if it's not being used in any other projects
         $other_projects = $track->projects()->count();
         if($other_projects == 0){
-            $filename = $track->file->filename;
-            Storage::delete('public/' . $filename);
-            $track->file->delete();
             $track->delete();
         }
 
@@ -164,7 +161,6 @@ class TrackController extends Controller
 
     public function destroy(Track $track)
     {
-      $track->file->delete();
     	$track->delete();
 
     	return Redirect::route('projects.show', $project->slug)->with('message', 'Track deleted.');
