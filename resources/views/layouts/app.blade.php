@@ -19,7 +19,7 @@
                         </h1>
                     </div>
                     @if (Session::has('message'))
-                        <div class="flash alert alert-info">
+                        <div class="flash alert alert-success">
                           <p>{{ Session::get('message') }}</p>
                         </div>
                     @endif
