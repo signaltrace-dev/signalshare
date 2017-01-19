@@ -31,6 +31,14 @@ class TagController extends Controller
         $tag->save();
 
         return Redirect::route('tags.index')->with('message', 'Created new tag ' . $tag->name . '!');
+    }
 
+    public function destroy(Request $request, Tag $tag){
+        // TODO: Role-based access
+        if($request->user()->id == 1){
+            $tag->delete();
+
+            return Redirect::route('tags.index')->with('message', 'Deleted tag ' . $tag->name . '.');
+        }
     }
 }
