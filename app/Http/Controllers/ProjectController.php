@@ -50,6 +50,9 @@ class ProjectController extends Controller
 
   public function store(Request $request)
   {
+      $this->validate($request, [
+          'name' => 'required|unique:projects|max:255',
+      ]);
 
     $project = new Project;
     $project->name = $request->input('name');
@@ -81,8 +84,12 @@ class ProjectController extends Controller
     return Redirect::route('projects.show', $project->slug)->with('message', 'Project updated.');
   }
 
-  public function destroy(Project $project)
+  public function destroy(Request $request, Project $project)
   {
+      $this->validate($request, [
+          'project-name-confirm' => 'required|in:' . $project->fullPath(),
+      ]);
+
     $project->delete();
 
     return Redirect::route('projects.index')->with('message', 'Project deleted.');
