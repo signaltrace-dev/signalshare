@@ -23,7 +23,7 @@
                           <p>{{ Session::get('message') }}</p>
                         </div>
                     @endif
-                    <div class='flash alert-danger {{ $errors->any() ? '' : 'hidden' }}'>
+                    <div class='flash alert alert-danger {{ $errors->any() ? '' : 'hidden' }}'>
                         @foreach ( $errors->all() as $error )
                             <p>{{ $error }}</p>
                         @endforeach
