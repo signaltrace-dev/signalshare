@@ -7700,10 +7700,36 @@ button.close {
   display: inline;
 }
 
+.badge-success {
+  background: #2ab27b;
+}
+
+.badge-danger {
+  background: #bf5329;
+}
+
 .title--page {
   border-bottom: 1px solid #d3e0e9;
   padding: 0 0 10px 20px;
   margin-bottom: 20px;
+}
+
+.title--page a {
+  color: #51B180;
+}
+
+.title--page .btn {
+  margin-left: 20px;
+}
+
+.panel-brand {
+  border-color: #d3e0e9;
+}
+
+.panel-brand > .panel-heading {
+  background-color: #51B180;
+  border-color: #d3e0e9;
+  color: #fff;
 }
 
 .project-list {
