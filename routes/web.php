@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('tags', ['as' => 'tags.index', 'uses' => 'TagController@index']);
 	Route::get('tags/new', ['as' => 'tags.create', 'uses' => 'TagController@create']);
 	Route::post('tags', ['as' => 'tags.store', 'uses' => 'TagController@store']);
-	Route::delete('tags/{track}', ['as' => 'tags.destroy', 'uses' => 'TagController@destroy']);
+	Route::delete('tags/{tag}', ['as' => 'tags.destroy', 'uses' => 'TagController@destroy']);
 
 });
 
