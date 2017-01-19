@@ -20,6 +20,9 @@ Route::group(['middleware' => 'auth'], function(){
 
 	// Projects
 	Route::resource('projects', 'ProjectController');
+	Route::get('projects/{project}/settings', ['as' => 'projects.settings.edit', 'uses' => 'ProjectSettingsController@edit']);
+	Route::put('projects/{project}/settings', ['as' => 'projects.settings.update', 'uses' => 'ProjectSettingsController@update']);
+
 
 	// Tracks
 	Route::resource('projects.tracks', 'TrackController');

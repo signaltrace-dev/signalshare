@@ -2,6 +2,7 @@
 
 @section('title')
     {{ $project->name }}
+    <a href='{{ route("projects.settings.edit", $project->slug) }}'><i class='fa fa-gear'></i></a>
 @endsection
 
 @section('content')
