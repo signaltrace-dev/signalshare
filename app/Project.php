@@ -34,4 +34,8 @@ class Project extends Model
         ->withTimestamps()
         ->where('approved', '=', '0');
     }
+
+    public function totalTracks(){
+        return $this->tracks()->count();
+    }
 }
