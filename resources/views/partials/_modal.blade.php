@@ -6,6 +6,7 @@
         <h4 class="modal-title">{{ $modal_title }}</h4>
       </div>
       <div class="modal-body">
+          {{ $modal_body }}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
