@@ -7694,6 +7694,10 @@ button.close {
   margin-bottom: 20px;
 }
 
+.project-list {
+  width: 50%;
+}
+
 h1, h2, h3, h4, h5, .btn, a, body, p, span, div {
   font-family: 'Lato', sans-serif;
 }

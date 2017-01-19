@@ -9,6 +9,8 @@
             @if (Auth::check())
                 <li class="list-group-item"><a href="{{ route('projects.index') }}" class="{{ strpos(Route::currentRouteName(), 'projects') === 0 ? 'active' : '' }}">Projects</a></li>
                 <li class="list-group-item"><a href="{{ route('tracks.index') }}" class="{{ strpos(Route::currentRouteName(), 'tracks') === 0 ? 'active' : '' }}">Tracks</a></li>
+                <li class="list-group-item"><a href="{{ route('tags.index') }}" class="{{ strpos(Route::currentRouteName(), 'tags') === 0 ? 'active' : '' }}">Tags</a></li>
+
                 <li class="list-group-item">@include('partials/_logout')</li>
 
 

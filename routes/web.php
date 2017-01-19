@@ -13,6 +13,7 @@
 
 Route::model('projects', 'Project');
 Route::model('tracks', 'Track');
+Route::model('tags', 'Tag');
 
 Route::group(['middleware' => 'auth'], function(){
 	// Dashboards
@@ -27,6 +28,11 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('tracks', ['as' => 'tracks.index', 'uses' => 'TrackController@index']);
 	Route::delete('tracks/{track}', ['as' => 'tracks.destroy', 'uses' => 'TrackController@destroy']);
 	Route::delete('projects/{project}/tracks/{track}', ['as' => 'projects.tracks.destroy', 'uses' => 'TrackController@removeFromProject']);
+
+	// Tags
+	Route::get('tags', ['as' => 'tags.index', 'uses' => 'TagController@index']);
+	Route::get('tags/new', ['as' => 'tags.create', 'uses' => 'TagController@create']);
+	Route::post('tags', ['as' => 'tags.store', 'uses' => 'TagController@store']);
 });
 
 Auth::routes();

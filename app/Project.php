@@ -38,4 +38,10 @@ class Project extends Model
     public function totalTracks(){
         return $this->tracks()->count();
     }
+
+    public function tags(){
+        return $this->belongsToMany('App\Tag')
+          ->withPivot('user_id')
+          ->withTimestamps();
+    }
 }
