@@ -2,4 +2,12 @@
     border-bottom: 1px solid $panel-default-border;
     padding: 0 0 10px 20px;
     margin-bottom: 20px;
+
+    a{
+        color: $brand-secondary;
+    }
+
+    .btn{
+        margin-left: 20px;
+    }
 }

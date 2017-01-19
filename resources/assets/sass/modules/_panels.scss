@@ -1,0 +1,8 @@
+.panel-brand{
+    border-color: $laravel-border-color;
+    >.panel-heading{
+        background-color: $bg-brand;
+        border-color: $laravel-border-color;
+        color: #fff;
+    }
+}
