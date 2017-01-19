@@ -90,7 +90,7 @@ class TrackController extends Controller
             $file_name_short = !empty($file_name_arr[0]) ? $file_name_arr[0] : $file_name;
 
             $hash = hash_file('MD5', $file->getRealPath());
-            $new_filename = $hash . '.' . $file_ext;
+            $new_filename = $timestamp . '_' . $hash . '.' . $file_ext;
 
             $request->file->move($file_path, $new_filename);
 
