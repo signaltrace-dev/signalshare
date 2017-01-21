@@ -20,6 +20,12 @@ elixir((mix) => {
            'vendor/dropzone.js',
            'vendor/wavesurfer.min.js',
            'tracks/player.js',
-           'tracks/uploader.js'
-       ], 'public/js/tracks.js');
+           'tracks/uploader.js',
+           'tracks/recorder.js',
+           'tracks/metronome.js',
+       ], 'public/js/tracks.js')
+       .scripts([
+           'tracks/metronomeworker.js',
+       ], 'public/js/workers/metronomeworker.js');
+
 });
