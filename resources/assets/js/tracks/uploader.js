@@ -11,21 +11,7 @@ Dropzone.options.fileupload = {
     },
     success: function(event, response) {
         if (response.status && response.status == 1) {
-            var project_slug = response.project.slug;
-            var track_slug = response.track.slug;
-            var file_url = response.file.filename;
-
-            // Get track content and add to track list
-            $.ajax({
-                url: '/projects/' + project_slug + '/tracks/' + track_slug,
-                type: 'GET',
-                success: function(data) {
-                    var fileItem = $('<div/>').html(data).contents();
-                    var trackElem = fileItem.first('.track-item');
-                    $(trackElem).data('src', '/files/' + file_url);
-                    signalsharePlayer.addTrack(trackElem, true);
-                }
-            });
+            signalsharePlayer.processUpload(response);
         }
     },
 };

@@ -1,6 +1,7 @@
 .track-item{
     transition: all 1.5s ease;
     padding: 10px;
+    overflow: auto;
     &.added{
         background-color: $bg-success;
 
@@ -19,16 +20,36 @@
 
         }
     }
+
+    wave{
+        background: #fff;
+
+    }
+
+    .col-track{
+        margin:0;
+        padding: 0;
+    }
 }
 
 .project-track{
     &.muted{
         background: #dedede;
     }
+
+    &.loaded {
+      background: $body-bg;
+    }
 }
 
 .btn{
     &.muted{
         background: darken($bg-brand-info, 30%);
+    }
+}
+
+.recording{
+    img{
+        margin-left: 20px;
     }
 }

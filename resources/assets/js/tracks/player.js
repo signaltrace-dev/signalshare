@@ -1,13 +1,65 @@
 signalsharePlayer = {
-    tracks: []
+    tracks: [],
+    trackLengths: [],
+    project: '',
+    metronomeOn: false,
+    controls: [],
+    recorder: null,
 }
 
 $(document).ready(function() {
+    signalsharePlayer.context = new AudioContext();
+
+    signalsharePlayer.data = new Vue({
+        el: '#player',
+        data: {
+            recording: false,
+            tracks: [],
+            trackLengths: [],
+            tracksPlaying: 0,
+            metronomeOn: false,
+            time: 0,
+        },
+        computed: {
+            playing: function(){
+                return this.tracksPlaying > 0;
+            },
+            longestTrack: function(){
+                var maxIndex = signalsharePlayer.data.trackLengths.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
+                return maxIndex;
+            },
+            timeDisplay: function(){
+                var minutes = 0;
+                var seconds = Math.round(this.time);
+
+                while(seconds > 60){
+                    minutes++;
+                    seconds = seconds - 60;
+                }
+
+                if(minutes < 10){
+                    minutes = "0" + minutes;
+                }
+                if(seconds < 10){
+                    seconds = "0" + seconds;
+                }
+
+                return minutes + ":" + seconds;
+            }
+        }
+    });
+
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    signalsharePlayer.controls.record = document.getElementById('btn-record');
+    signalsharePlayer.controls.stop = document.getElementById('btn-record-stop');
+    signalsharePlayer.controls.alertRecording = document.getElementById('alert-recording');
+    signalsharePlayer.controls.playAll = document.getElementById('btn-play-all');
 
     signalsharePlayer.addTrack = function(trackElem, isNew = false) {
         var src = $(trackElem).data('src');
@@ -15,27 +67,63 @@ $(document).ready(function() {
             url: src,
             type: 'HEAD',
             success: function() {
+                $('#btn-play-all').removeClass('hidden');
                 var wavesurfer = Object.create(WaveSurfer);
                 var projectTrack = $(trackElem).find('.project-track').first()[0];
                 wavesurfer.init({
                     container: projectTrack,
                     waveColor: '#A6C4FF',
                     progressColor: '#89B0FF',
+                    fillParent: false,
+                    minPxPerSec: 3,
                 });
 
-                wavesurfer.on('play', function() {});
+                wavesurfer.on('play', function() {
+                    signalsharePlayer.data.tracksPlaying++;
+                });
 
                 wavesurfer.load(src);
-                $(projectTrack).addClass('loaded');
 
-                signalsharePlayer.tracks.push(wavesurfer);
+                wavesurfer.on('ready', function(){
+                    $(wavesurfer.container).addClass('loaded');
+                    $(wavesurfer.container).addClass(src);
 
-                $(trackElem).find('.btn-mute').data('track', signalsharePlayer.tracks.length - 1);
-                $(projectTrack).data('track', signalsharePlayer.tracks.length - 1);
+                    signalsharePlayer.data.tracks.push(wavesurfer);
+
+                    var trackIndex = signalsharePlayer.data.tracks.length - 1;
+                    $(trackElem).find('.btn-mute').data('track', trackIndex);
+                    $(projectTrack).data('track', trackIndex);
+                    signalsharePlayer.data.trackLengths[trackIndex] = wavesurfer.backend.buffer.duration;
+
+                    signalsharePlayer.setButtonHandlers(trackElem);
+
+                    if(trackIndex === signalsharePlayer.data.longestTrack){
+
+                    }
+                    wavesurfer.on('audioprocess', function(){
+                        if(!signalsharePlayer.data.recording){
+                            signalsharePlayer.data.time = wavesurfer.getCurrentTime();
+                        }
+                    });
+
+                    wavesurfer.on('finish', function() {
+                        if(signalsharePlayer.data.tracksPlaying > 0){
+                            signalsharePlayer.data.tracksPlaying--;
+                        }
+                    });
+
+                    wavesurfer.on('pause', function() {
+                        if(signalsharePlayer.data.tracksPlaying > 0){
+                            signalsharePlayer.data.tracksPlaying--;
+                        }
+                    });
+                });
+
+
 
                 if (isNew) {
                     $(trackElem).addClass('added');
-                    $(trackElem).prependTo('#track-list');
+                    $(trackElem).appendTo('#track-list');
                     setTimeout(function() {
                         $(trackElem).addClass('processed');
                     }, 500);
@@ -43,8 +131,28 @@ $(document).ready(function() {
                     $('.alert-warning').fadeOut();
                     $('.controls').removeClass('hidden');
                 }
+            }
+        });
+    };
 
-                signalsharePlayer.setButtonHandlers(trackElem);
+    // Process an AJAX response from a file upload and extract track information
+    signalsharePlayer.processUpload = function(response){
+        var project_slug = response.project.slug;
+        var track_slug = response.track.slug;
+        var file_url = response.file.filename;
+
+        // Get track content and add to track list
+        $.ajax({
+            url: '/projects/' + project_slug + '/tracks/' + track_slug,
+            type: 'GET',
+            success: function(data) {
+                var fileItem = $('<div/>').html(data).contents();
+                var trackElem = fileItem.first('.track-item');
+                $(trackElem).data('src', '/files/' + file_url);
+                signalsharePlayer.addTrack(trackElem, true);
+
+                signalsharePlayer.controls.playAll.classList.remove('hidden');
+
             }
         });
     };
@@ -52,7 +160,7 @@ $(document).ready(function() {
     signalsharePlayer.setButtonHandlers = function(trackElem) {
         $(trackElem).find('.btn-mute').on('click', function() {
             var trackNum = $(this).data('track');
-            var track = trackNum in signalsharePlayer.tracks && signalsharePlayer.tracks[trackNum];
+            var track = trackNum in signalsharePlayer.data.tracks && signalsharePlayer.data.tracks[trackNum];
             if (track) {
                 track.toggleMute();
 
@@ -65,30 +173,84 @@ $(document).ready(function() {
         });
     };
 
-    $('.btn-play-all').on('click', function() {
-        var playing = signalsharePlayer.tracks[0].isPlaying();
+    signalsharePlayer.stopAll = function(){
+        if(signalsharePlayer.data.tracks.length > 0){
 
-        signalsharePlayer.tracks[0].on('finish', function() {
-            togglePlayButton(true);
-        });
+            $(signalsharePlayer.data.tracks).each(function() {
+                if(this.isPlaying()){
+                    this.stop();
+                }
+                this.seekTo(0);
+            });
 
-        togglePlayButton(playing);
+        }
+    }
 
-        $(signalsharePlayer.tracks).each(function() {
-            if (this.backend.source) {
-                this.playPause();
-            }
-        });
+    signalsharePlayer.playAll = function() {
+        if(signalsharePlayer.data.tracks.length > 0){
+
+            $(signalsharePlayer.data.tracks).each(function() {
+                if (this.backend.source) {
+                    this.playPause();
+                }
+            });
+        }
+    };
+
+    signalsharePlayer.pauseAll = function() {
+        if(signalsharePlayer.data.tracks.length > 0){
+
+            $(signalsharePlayer.data.tracks).each(function() {
+                if (this.backend.source && this.isPlaying()) {
+                    this.playPause();
+                }
+            });
+        }
+    };
+
+    signalsharePlayer.recording = function(isRec){
+        signalsharePlayer.data.recording = isRec;
+        signalsharePlayer.data.time = 0;
+
+        if(isRec){
+            signalsharePlayer.timer = setInterval(function(){
+                signalsharePlayer.data.time++;
+            }, 1000);
+        }
+        else{
+            clearInterval(signalsharePlayer.timer);
+        }
+    };
+
+    $('#btn-play-all').on('click', function(){
+        signalsharePlayer.playAll();
     });
 
-    var togglePlayButton = function(playing) {
-        $('.btn-play-all').toggleClass('btn-info').toggleClass('btn-danger');
-        $('.btn-play-all i').toggleClass('fa-play').toggleClass('fa-pause');
+    $('#btn-pause-all').on('click', function(){
+        signalsharePlayer.pauseAll();
+    });
 
-        if (!playing) {
-            $('.btn-play-all span').text('Stop');
+    $('#btn-stop-all').on('click', function(){
+        signalsharePlayer.stopAll();
+    });
+
+    $('#btn-metronome').on('click', function(){
+        $(this).toggleClass('btn-success');
+        $('.metronome').toggleClass('hidden');
+        signalsharePlayer.metronomeOn = !signalsharePlayer.metronomeOn;
+    });
+
+    signalsharePlayer.togglePlayButton = function(isPlaying) {
+        if (!isPlaying) {
+            $('.btn-play-all').addClass('btn-success').removeClass('btn-danger');
+            $('.btn-play-all i').addClass('fa-play').removeClass('fa-pause');
+            $('.btn-play-all span').text('Play All');
+
         } else {
-            $('.btn-play-all span').text('Play');
+            $('.btn-play-all').removeClass('btn-success').addClass('btn-danger');
+            $('.btn-play-all i').removeClass('fa-play').addClass('fa-pause');
+            $('.btn-play-all span').text('Stop');
+
         }
     };
 

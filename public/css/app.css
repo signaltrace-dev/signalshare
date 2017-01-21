@@ -7732,6 +7732,24 @@ button.close {
   color: #fff;
 }
 
+.player .metronome {
+  background: aliceblue;
+  padding: 20px;
+  border-radius: 0 0 4px 4px;
+  display: inline-block;
+}
+
+.player .pnl-time {
+  background: black;
+  padding: 5px;
+  color: #6df96d;
+  text-align: center;
+}
+
+[v-cloak] {
+  display: none;
+}
+
 .project-list {
   width: 50%;
 }
@@ -7746,15 +7764,6 @@ h1, h2, h3, h4, h5, .btn, a, body, p, span, div {
 
 .hidden {
   display: none;
-}
-
-.project-track.loaded {
-  background: #fff;
-  border: 1px solid #E8E8E8;
-  border-radius: 8px;
-  float: left;
-  width: 90%;
-  margin-left: 3%;
 }
 
 .track-list {
@@ -7882,6 +7891,7 @@ input[type=text], textarea {
   -webkit-transition: all 1.5s ease;
   transition: all 1.5s ease;
   padding: 10px;
+  overflow: auto;
 }
 
 .track-item.added {
@@ -7899,12 +7909,34 @@ input[type=text], textarea {
   margin: 0 0 5px 0;
 }
 
+.track-item wave {
+  background: #fff;
+}
+
+.track-item .col-track {
+  margin: 0;
+  padding: 0;
+}
+
 .project-track.muted {
   background: #dedede;
 }
 
+.project-track.loaded {
+  background: #f5f8fa;
+  /*border: 1px solid #E8E8E8;
+      border-radius: 8px;
+      /*float:left;
+      width: 90%;
+      margin-left: 3%;*/
+}
+
 .btn.muted {
   background: #3d6983;
+}
+
+.recording img {
+  margin-left: 20px;
 }
 
 /*
