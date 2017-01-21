@@ -1,6 +1,7 @@
 <script type="text/javascript">
     Dropzone.options.fileupload.url = "{{ route("projects.tracks.store", $project->slug) }}";
 </script>
+
 <form action='{{ route("projects.tracks.store", $project->slug) }}' method="POST" enctype="multipart/form-data">
 
     {{ csrf_field() }}
@@ -19,6 +20,4 @@
     </div>
 
     <input type="hidden" name="ajaxfile" id="ajaxfile"/>
-
-
 </form>
