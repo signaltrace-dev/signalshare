@@ -29,6 +29,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('projects.tracks', 'TrackController');
 	Route::get('projects/{project}/tracks/create/{ajax?}', ['as' => 'create_track_ajax', 'uses' => 'TrackController@create']);
 	Route::get('tracks', ['as' => 'tracks.index', 'uses' => 'TrackController@index']);
+	Route::post('projects/{project}/tracks/upload', ['as' => 'tracks.upload', 'uses' => 'TrackController@upload']);
+
 	Route::delete('tracks/{track}', ['as' => 'tracks.destroy', 'uses' => 'TrackController@destroy']);
 	Route::delete('projects/{project}/tracks/{track}', ['as' => 'projects.tracks.destroy', 'uses' => 'TrackController@removeFromProject']);
 
