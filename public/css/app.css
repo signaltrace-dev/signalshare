@@ -7744,6 +7744,7 @@ button.close {
   padding: 5px;
   color: #6df96d;
   text-align: center;
+  font-family: 'Aldrich', sans-serif;
 }
 
 [v-cloak] {
@@ -7924,11 +7925,6 @@ input[type=text], textarea {
 
 .project-track.loaded {
   background: #f5f8fa;
-  /*border: 1px solid #E8E8E8;
-      border-radius: 8px;
-      /*float:left;
-      width: 90%;
-      margin-left: 3%;*/
 }
 
 .btn.muted {
