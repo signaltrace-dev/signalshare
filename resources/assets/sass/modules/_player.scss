@@ -1,0 +1,19 @@
+.player{
+    .metronome{
+        background: aliceblue;
+        padding: 20px;
+        border-radius: 0 0 4px 4px;
+        display: inline-block;
+    }
+
+    .pnl-time {
+        background: black;
+        padding: 5px;
+        color: #6df96d;
+        text-align: center;
+    }
+}
+
+[v-cloak] {
+  display: none;
+}
