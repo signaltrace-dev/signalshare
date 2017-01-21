@@ -7,7 +7,7 @@
       <script type="text/javascript" src="{{ URL::asset('js/app.js') }}"></script>
       <title>signal.share() @hasSection('title') - @yield('title')@endif</title>
     </head>
-    <body class="{{$classes}}">
+    <body class="{{$classes}}" id="app">
         <div class="container-fluid">
             <div class="row">
                 @include('layouts/sidebar')
@@ -33,4 +33,7 @@
             </div>
         </div>
     </body>
+    <footer>
+        @yield('footer')
+    </footer>
 </html>
