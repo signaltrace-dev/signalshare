@@ -1772,15 +1772,67 @@
 "use strict";var WaveSurfer={defaultParams:{height:128,waveColor:"#999",progressColor:"#555",cursorColor:"#333",cursorWidth:1,skipLength:2,minPxPerSec:20,pixelRatio:window.devicePixelRatio,fillParent:!0,scrollParent:!1,hideScrollbar:!1,normalize:!1,audioContext:null,container:null,dragSelection:!0,loopSelection:!0,audioRate:1,interact:!0,splitChannels:!1,renderer:"Canvas",backend:"WebAudio",mediaType:"audio"},init:function(a){if(this.params=WaveSurfer.util.extend({},this.defaultParams,a),this.container="string"==typeof a.container?document.querySelector(this.params.container):this.params.container,!this.container)throw new Error("Container element not found");if(this.mediaContainer="undefined"==typeof this.params.mediaContainer?this.container:"string"==typeof this.params.mediaContainer?document.querySelector(this.params.mediaContainer):this.params.mediaContainer,!this.mediaContainer)throw new Error("Media Container element not found");this.savedVolume=0,this.isMuted=!1,this.tmpEvents=[],this.createDrawer(),this.createBackend()},createDrawer:function(){var a=this;this.drawer=Object.create(WaveSurfer.Drawer[this.params.renderer]),this.drawer.init(this.container,this.params),this.drawer.on("redraw",function(){a.drawBuffer(),a.drawer.progress(a.backend.getPlayedPercents())}),this.drawer.on("click",function(b,c){setTimeout(function(){a.seekTo(c)},0)}),this.drawer.on("scroll",function(b){a.fireEvent("scroll",b)})},createBackend:function(){var a=this;this.backend&&this.backend.destroy(),"AudioElement"==this.params.backend&&(this.params.backend="MediaElement"),"WebAudio"!=this.params.backend||WaveSurfer.WebAudio.supportsWebAudio()||(this.params.backend="MediaElement"),this.backend=Object.create(WaveSurfer[this.params.backend]),this.backend.init(this.params),this.backend.on("finish",function(){a.fireEvent("finish")}),this.backend.on("audioprocess",function(b){a.drawer.progress(a.backend.getPlayedPercents()),a.fireEvent("audioprocess",b)})},getDuration:function(){return this.backend.getDuration()},getCurrentTime:function(){return this.backend.getCurrentTime()},play:function(a,b){this.backend.play(a,b),this.fireEvent("play")},pause:function(){this.backend.pause(),this.fireEvent("pause")},playPause:function(){this.backend.isPaused()?this.play():this.pause()},isPlaying:function(){return!this.backend.isPaused()},skipBackward:function(a){this.skip(-a||-this.params.skipLength)},skipForward:function(a){this.skip(a||this.params.skipLength)},skip:function(a){var b=this.getCurrentTime()||0,c=this.getDuration()||1;b=Math.max(0,Math.min(c,b+(a||0))),this.seekAndCenter(b/c)},seekAndCenter:function(a){this.seekTo(a),this.drawer.recenter(a)},seekTo:function(a){var b=this.backend.isPaused(),c=this.params.scrollParent;b&&(this.params.scrollParent=!1),this.backend.seekTo(a*this.getDuration()),this.drawer.progress(this.backend.getPlayedPercents()),b||(this.backend.pause(),this.backend.play()),this.params.scrollParent=c,this.fireEvent("seek",a)},stop:function(){this.pause(),this.seekTo(0),this.drawer.progress(0)},setVolume:function(a){this.backend.setVolume(a)},setPlaybackRate:function(a){this.backend.setPlaybackRate(a)},toggleMute:function(){this.isMuted?(this.backend.setVolume(this.savedVolume),this.isMuted=!1):(this.savedVolume=this.backend.getVolume(),this.backend.setVolume(0),this.isMuted=!0)},toggleScroll:function(){this.params.scrollParent=!this.params.scrollParent,this.drawBuffer()},toggleInteraction:function(){this.params.interact=!this.params.interact},drawBuffer:function(){var a=Math.round(this.getDuration()*this.params.minPxPerSec*this.params.pixelRatio),b=this.drawer.getWidth(),c=a;this.params.fillParent&&(!this.params.scrollParent||b>a)&&(c=b);var d=this.backend.getPeaks(c);this.drawer.drawPeaks(d,c),this.fireEvent("redraw",d,c)},zoom:function(a){this.params.minPxPerSec=a,this.params.scrollParent=!0,this.drawBuffer(),this.seekAndCenter(this.getCurrentTime()/this.getDuration())},loadArrayBuffer:function(a){this.decodeArrayBuffer(a,function(a){this.loadDecodedBuffer(a)}.bind(this))},loadDecodedBuffer:function(a){this.backend.load(a),this.drawBuffer(),this.fireEvent("ready")},loadBlob:function(a){var b=this,c=new FileReader;c.addEventListener("progress",function(a){b.onProgress(a)}),c.addEventListener("load",function(a){b.loadArrayBuffer(a.target.result)}),c.addEventListener("error",function(){b.fireEvent("error","Error reading file")}),c.readAsArrayBuffer(a),this.empty()},load:function(a,b){switch(this.params.backend){case"WebAudio":return this.loadBuffer(a);case"MediaElement":return this.loadMediaElement(a,b)}},loadBuffer:function(a){return this.empty(),this.getArrayBuffer(a,this.loadArrayBuffer.bind(this))},loadMediaElement:function(a,b){this.empty(),this.backend.load(a,this.mediaContainer,b),this.tmpEvents.push(this.backend.once("canplay",function(){this.drawBuffer(),this.fireEvent("ready")}.bind(this)),this.backend.once("error",function(a){this.fireEvent("error",a)}.bind(this))),!b&&this.backend.supportsWebAudio()&&this.getArrayBuffer(a,function(a){this.decodeArrayBuffer(a,function(a){this.backend.buffer=a,this.drawBuffer()}.bind(this))}.bind(this))},decodeArrayBuffer:function(a,b){this.backend.decodeArrayBuffer(a,this.fireEvent.bind(this,"decoded"),this.fireEvent.bind(this,"error","Error decoding audiobuffer")),this.tmpEvents.push(this.once("decoded",b))},getArrayBuffer:function(a,b){var c=this,d=WaveSurfer.util.ajax({url:a,responseType:"arraybuffer"});return this.tmpEvents.push(d.on("progress",function(a){c.onProgress(a)}),d.on("success",b),d.on("error",function(a){c.fireEvent("error","XHR error: "+a.target.statusText)})),d},onProgress:function(a){if(a.lengthComputable)var b=a.loaded/a.total;else b=a.loaded/(a.loaded+1e6);this.fireEvent("loading",Math.round(100*b),a.target)},exportPCM:function(a,b,c){a=a||1024,b=b||1e4,c=c||!1;var d=this.backend.getPeaks(a,b),e=[].map.call(d,function(a){return Math.round(a*b)/b}),f=JSON.stringify(e);return c||window.open("data:application/json;charset=utf-8,"+encodeURIComponent(f)),f},clearTmpEvents:function(){this.tmpEvents.forEach(function(a){a.un()})},empty:function(){this.backend.isPaused()||(this.stop(),this.backend.disconnectSource()),this.clearTmpEvents(),this.drawer.progress(0),this.drawer.setWidth(0),this.drawer.drawPeaks({length:this.drawer.getWidth()},0)},destroy:function(){this.fireEvent("destroy"),this.clearTmpEvents(),this.unAll(),this.backend.destroy(),this.drawer.destroy()}};WaveSurfer.create=function(a){var b=Object.create(WaveSurfer);return b.init(a),b},WaveSurfer.util={extend:function(a){var b=Array.prototype.slice.call(arguments,1);return b.forEach(function(b){Object.keys(b).forEach(function(c){a[c]=b[c]})}),a},getId:function(){return"wavesurfer_"+Math.random().toString(32).substring(2)},ajax:function(a){var b=Object.create(WaveSurfer.Observer),c=new XMLHttpRequest,d=!1;return c.open(a.method||"GET",a.url,!0),c.responseType=a.responseType||"json",c.addEventListener("progress",function(a){b.fireEvent("progress",a),a.lengthComputable&&a.loaded==a.total&&(d=!0)}),c.addEventListener("load",function(a){d||b.fireEvent("progress",a),b.fireEvent("load",a),200==c.status||206==c.status?b.fireEvent("success",c.response,a):b.fireEvent("error",a)}),c.addEventListener("error",function(a){b.fireEvent("error",a)}),c.send(),b.xhr=c,b}},WaveSurfer.Observer={on:function(a,b){this.handlers||(this.handlers={});var c=this.handlers[a];return c||(c=this.handlers[a]=[]),c.push(b),{name:a,callback:b,un:this.un.bind(this,a,b)}},un:function(a,b){if(this.handlers){var c=this.handlers[a];if(c)if(b)for(var d=c.length-1;d>=0;d--)c[d]==b&&c.splice(d,1);else c.length=0}},unAll:function(){this.handlers=null},once:function(a,b){var c=this,d=function(){b.apply(this,arguments),setTimeout(function(){c.un(a,d)},0)};return this.on(a,d)},fireEvent:function(a){if(this.handlers){var b=this.handlers[a],c=Array.prototype.slice.call(arguments,1);b&&b.forEach(function(a){a.apply(null,c)})}}},WaveSurfer.util.extend(WaveSurfer,WaveSurfer.Observer),WaveSurfer.WebAudio={scriptBufferSize:256,PLAYING_STATE:0,PAUSED_STATE:1,FINISHED_STATE:2,supportsWebAudio:function(){return!(!window.AudioContext&&!window.webkitAudioContext)},getAudioContext:function(){return WaveSurfer.WebAudio.audioContext||(WaveSurfer.WebAudio.audioContext=new(window.AudioContext||window.webkitAudioContext)),WaveSurfer.WebAudio.audioContext},getOfflineAudioContext:function(a){return WaveSurfer.WebAudio.offlineAudioContext||(WaveSurfer.WebAudio.offlineAudioContext=new(window.OfflineAudioContext||window.webkitOfflineAudioContext)(1,2,a)),WaveSurfer.WebAudio.offlineAudioContext},init:function(a){this.params=a,this.ac=a.audioContext||this.getAudioContext(),this.lastPlay=this.ac.currentTime,this.startPosition=0,this.scheduledPause=null,this.states=[Object.create(WaveSurfer.WebAudio.state.playing),Object.create(WaveSurfer.WebAudio.state.paused),Object.create(WaveSurfer.WebAudio.state.finished)],this.createVolumeNode(),this.createScriptNode(),this.createAnalyserNode(),this.setState(this.PAUSED_STATE),this.setPlaybackRate(this.params.audioRate)},disconnectFilters:function(){this.filters&&(this.filters.forEach(function(a){a&&a.disconnect()}),this.filters=null,this.analyser.connect(this.gainNode))},setState:function(a){this.state!==this.states[a]&&(this.state=this.states[a],this.state.init.call(this))},setFilter:function(){this.setFilters([].slice.call(arguments))},setFilters:function(a){this.disconnectFilters(),a&&a.length&&(this.filters=a,this.analyser.disconnect(),a.reduce(function(a,b){return a.connect(b),b},this.analyser).connect(this.gainNode))},createScriptNode:function(){this.scriptNode=this.ac.createScriptProcessor?this.ac.createScriptProcessor(this.scriptBufferSize):this.ac.createJavaScriptNode(this.scriptBufferSize),this.scriptNode.connect(this.ac.destination)},addOnAudioProcess:function(){var a=this;this.scriptNode.onaudioprocess=function(){var b=a.getCurrentTime();b>=a.getDuration()?a.setState(a.FINISHED_STATE):b>=a.scheduledPause?a.setState(a.PAUSED_STATE):a.state===a.states[a.PLAYING_STATE]&&a.fireEvent("audioprocess",b)}},removeOnAudioProcess:function(){this.scriptNode.onaudioprocess=null},createAnalyserNode:function(){this.analyser=this.ac.createAnalyser(),this.analyser.connect(this.gainNode)},createVolumeNode:function(){this.gainNode=this.ac.createGain?this.ac.createGain():this.ac.createGainNode(),this.gainNode.connect(this.ac.destination)},setVolume:function(a){this.gainNode.gain.value=a},getVolume:function(){return this.gainNode.gain.value},decodeArrayBuffer:function(a,b,c){this.offlineAc||(this.offlineAc=this.getOfflineAudioContext(this.ac?this.ac.sampleRate:44100)),this.offlineAc.decodeAudioData(a,function(a){b(a)}.bind(this),c)},getPeaks:function(a){for(var b=this.buffer.length/a,c=~~(b/10)||1,d=this.buffer.numberOfChannels,e=[],f=[],g=0;d>g;g++)for(var h=e[g]=[],i=this.buffer.getChannelData(g),j=0;a>j;j++){for(var k=~~(j*b),l=~~(k+b),m=i[0],n=i[0],o=k;l>o;o+=c){var p=i[o];p>n&&(n=p),m>p&&(m=p)}h[2*j]=n,h[2*j+1]=m,(0==g||n>f[2*j])&&(f[2*j]=n),(0==g||m<f[2*j+1])&&(f[2*j+1]=m)}return this.params.splitChannels?e:f},getPlayedPercents:function(){return this.state.getPlayedPercents.call(this)},disconnectSource:function(){this.source&&this.source.disconnect()},destroy:function(){this.isPaused()||this.pause(),this.unAll(),this.buffer=null,this.disconnectFilters(),this.disconnectSource(),this.gainNode.disconnect(),this.scriptNode.disconnect(),this.analyser.disconnect()},load:function(a){this.startPosition=0,this.lastPlay=this.ac.currentTime,this.buffer=a,this.createSource()},createSource:function(){this.disconnectSource(),this.source=this.ac.createBufferSource(),this.source.start=this.source.start||this.source.noteGrainOn,this.source.stop=this.source.stop||this.source.noteOff,this.source.playbackRate.value=this.playbackRate,this.source.buffer=this.buffer,this.source.connect(this.analyser)},isPaused:function(){return this.state!==this.states[this.PLAYING_STATE]},getDuration:function(){return this.buffer?this.buffer.duration:0},seekTo:function(a,b){return this.scheduledPause=null,null==a&&(a=this.getCurrentTime(),a>=this.getDuration()&&(a=0)),null==b&&(b=this.getDuration()),this.startPosition=a,this.lastPlay=this.ac.currentTime,this.state===this.states[this.FINISHED_STATE]&&this.setState(this.PAUSED_STATE),{start:a,end:b}},getPlayedTime:function(){return(this.ac.currentTime-this.lastPlay)*this.playbackRate},play:function(a,b){this.createSource();var c=this.seekTo(a,b);a=c.start,b=c.end,this.scheduledPause=b,this.source.start(0,a,b-a),this.setState(this.PLAYING_STATE)},pause:function(){this.scheduledPause=null,this.startPosition+=this.getPlayedTime(),this.source&&this.source.stop(0),this.setState(this.PAUSED_STATE)},getCurrentTime:function(){return this.state.getCurrentTime.call(this)},setPlaybackRate:function(a){a=a||1,this.isPaused()?this.playbackRate=a:(this.pause(),this.playbackRate=a,this.play())}},WaveSurfer.WebAudio.state={},WaveSurfer.WebAudio.state.playing={init:function(){this.addOnAudioProcess()},getPlayedPercents:function(){var a=this.getDuration();return this.getCurrentTime()/a||0},getCurrentTime:function(){return this.startPosition+this.getPlayedTime()}},WaveSurfer.WebAudio.state.paused={init:function(){this.removeOnAudioProcess()},getPlayedPercents:function(){var a=this.getDuration();return this.getCurrentTime()/a||0},getCurrentTime:function(){return this.startPosition}},WaveSurfer.WebAudio.state.finished={init:function(){this.removeOnAudioProcess(),this.fireEvent("finish")},getPlayedPercents:function(){return 1},getCurrentTime:function(){return this.getDuration()}},WaveSurfer.util.extend(WaveSurfer.WebAudio,WaveSurfer.Observer),WaveSurfer.MediaElement=Object.create(WaveSurfer.WebAudio),WaveSurfer.util.extend(WaveSurfer.MediaElement,{init:function(a){this.params=a,this.media={currentTime:0,duration:0,paused:!0,playbackRate:1,play:function(){},pause:function(){}},this.mediaType=a.mediaType.toLowerCase(),this.elementPosition=a.elementPosition},load:function(a,b,c){var d=this,e=document.createElement(this.mediaType);e.controls=!1,e.autoplay=!1,e.preload="auto",e.src=a,e.addEventListener("error",function(){d.fireEvent("error","Error loading media element")}),e.addEventListener("canplay",function(){d.fireEvent("canplay")}),e.addEventListener("ended",function(){d.fireEvent("finish")}),e.addEventListener("timeupdate",function(){d.fireEvent("audioprocess",d.getCurrentTime())});var f=b.querySelector(this.mediaType);f&&b.removeChild(f),b.appendChild(e),this.media=e,this.peaks=c,this.onPlayEnd=null,this.buffer=null,this.setPlaybackRate(this.playbackRate)},isPaused:function(){return this.media.paused},getDuration:function(){var a=this.media.duration;return a>=1/0&&(a=this.media.seekable.end()),a},getCurrentTime:function(){return this.media&&this.media.currentTime},getPlayedPercents:function(){return this.getCurrentTime()/this.getDuration()||0},setPlaybackRate:function(a){this.playbackRate=a||1,this.media.playbackRate=this.playbackRate},seekTo:function(a){null!=a&&(this.media.currentTime=a),this.clearPlayEnd()},play:function(a,b){this.seekTo(a),this.media.play(),b&&this.setPlayEnd(b)},pause:function(){this.media&&this.media.pause(),this.clearPlayEnd()},setPlayEnd:function(a){var b=this;this.onPlayEnd=function(c){c>=a&&(b.pause(),b.seekTo(a))},this.on("audioprocess",this.onPlayEnd)},clearPlayEnd:function(){this.onPlayEnd&&(this.un("audioprocess",this.onPlayEnd),this.onPlayEnd=null)},getPeaks:function(a){return this.buffer?WaveSurfer.WebAudio.getPeaks.call(this,a):this.peaks||[]},getVolume:function(){return this.media.volume},setVolume:function(a){this.media.volume=a},destroy:function(){this.pause(),this.unAll(),this.media&&this.media.parentNode&&this.media.parentNode.removeChild(this.media),this.media=null}}),WaveSurfer.AudioElement=WaveSurfer.MediaElement,WaveSurfer.Drawer={init:function(a,b){this.container=a,this.params=b,this.width=0,this.height=b.height*this.params.pixelRatio,this.lastPos=0,this.createWrapper(),this.createElements()},createWrapper:function(){this.wrapper=this.container.appendChild(document.createElement("wave")),this.style(this.wrapper,{display:"block",position:"relative",userSelect:"none",webkitUserSelect:"none",height:this.params.height+"px"}),(this.params.fillParent||this.params.scrollParent)&&this.style(this.wrapper,{width:"100%",overflowX:this.params.hideScrollbar?"hidden":"auto",overflowY:"hidden"}),this.setupWrapperEvents()},handleEvent:function(a){a.preventDefault();var b=this.wrapper.getBoundingClientRect();return(a.clientX-b.left+this.wrapper.scrollLeft)/this.wrapper.scrollWidth||0},setupWrapperEvents:function(){var a=this;this.wrapper.addEventListener("click",function(b){var c=a.wrapper.offsetHeight-a.wrapper.clientHeight;if(0!=c){var d=a.wrapper.getBoundingClientRect();if(b.clientY>=d.bottom-c)return}a.params.interact&&a.fireEvent("click",b,a.handleEvent(b))}),this.wrapper.addEventListener("scroll",function(b){a.fireEvent("scroll",b)})},drawPeaks:function(a,b){this.resetScroll(),this.setWidth(b),this.drawWave(a)},style:function(a,b){return Object.keys(b).forEach(function(c){a.style[c]!==b[c]&&(a.style[c]=b[c])}),a},resetScroll:function(){null!==this.wrapper&&(this.wrapper.scrollLeft=0)},recenter:function(a){var b=this.wrapper.scrollWidth*a;this.recenterOnPosition(b,!0)},recenterOnPosition:function(a,b){var c=this.wrapper.scrollLeft,d=~~(this.wrapper.clientWidth/2),e=a-d,f=e-c,g=this.wrapper.scrollWidth-this.wrapper.clientWidth;if(0!=g){if(!b&&f>=-d&&d>f){var h=5;f=Math.max(-h,Math.min(h,f)),e=c+f}e=Math.max(0,Math.min(g,e)),e!=c&&(this.wrapper.scrollLeft=e)}},getWidth:function(){return Math.round(this.container.clientWidth*this.params.pixelRatio)},setWidth:function(a){a!=this.width&&(this.width=a,this.params.fillParent||this.params.scrollParent?this.style(this.wrapper,{width:""}):this.style(this.wrapper,{width:~~(this.width/this.params.pixelRatio)+"px"}),this.updateSize())},setHeight:function(a){a!=this.height&&(this.height=a,this.style(this.wrapper,{height:~~(this.height/this.params.pixelRatio)+"px"}),this.updateSize())},progress:function(a){var b=1/this.params.pixelRatio,c=Math.round(a*this.width)*b;if(c<this.lastPos||c-this.lastPos>=b){if(this.lastPos=c,this.params.scrollParent){var d=~~(this.wrapper.scrollWidth*a);this.recenterOnPosition(d)}this.updateProgress(a)}},destroy:function(){this.unAll(),this.wrapper&&(this.container.removeChild(this.wrapper),this.wrapper=null)},createElements:function(){},updateSize:function(){},drawWave:function(){},clearWave:function(){},updateProgress:function(){}},WaveSurfer.util.extend(WaveSurfer.Drawer,WaveSurfer.Observer),WaveSurfer.Drawer.Canvas=Object.create(WaveSurfer.Drawer),WaveSurfer.util.extend(WaveSurfer.Drawer.Canvas,{createElements:function(){var a=this.wrapper.appendChild(this.style(document.createElement("canvas"),{position:"absolute",zIndex:1,left:0,top:0,bottom:0}));if(this.waveCc=a.getContext("2d"),this.progressWave=this.wrapper.appendChild(this.style(document.createElement("wave"),{position:"absolute",zIndex:2,left:0,top:0,bottom:0,overflow:"hidden",width:"0",display:"none",boxSizing:"border-box",borderRightStyle:"solid",borderRightWidth:this.params.cursorWidth+"px",borderRightColor:this.params.cursorColor})),this.params.waveColor!=this.params.progressColor){var b=this.progressWave.appendChild(document.createElement("canvas"));this.progressCc=b.getContext("2d")}},updateSize:function(){var a=Math.round(this.width/this.params.pixelRatio);this.waveCc.canvas.width=this.width,this.waveCc.canvas.height=this.height,this.style(this.waveCc.canvas,{width:a+"px"}),this.style(this.progressWave,{display:"block"}),this.progressCc&&(this.progressCc.canvas.width=this.width,this.progressCc.canvas.height=this.height,this.style(this.progressCc.canvas,{width:a+"px"})),this.clearWave()},clearWave:function(){this.waveCc.clearRect(0,0,this.width,this.height),this.progressCc&&this.progressCc.clearRect(0,0,this.width,this.height)},drawWave:function(a,b){if(a[0]instanceof Array){var c=a;if(this.params.splitChannels)return this.setHeight(c.length*this.params.height*this.params.pixelRatio),void c.forEach(this.drawWave,this);a=c[0]}var d=.5/this.params.pixelRatio,e=this.params.height*this.params.pixelRatio,f=e*b||0,g=e/2,h=~~(a.length/2),i=1;this.params.fillParent&&this.width!=h&&(i=this.width/h);var j=1;if(this.params.normalize){var k,l;l=Math.max.apply(Math,a),k=Math.min.apply(Math,a),j=l,-k>j&&(j=-k)}this.waveCc.fillStyle=this.params.waveColor,this.progressCc&&(this.progressCc.fillStyle=this.params.progressColor),[this.waveCc,this.progressCc].forEach(function(b){if(b){b.beginPath(),b.moveTo(d,g+f);for(var c=0;h>c;c++){var e=Math.round(a[2*c]/j*g);b.lineTo(c*i+d,g-e+f)}for(var c=h-1;c>=0;c--){var e=Math.round(a[2*c+1]/j*g);b.lineTo(c*i+d,g-e+f)}b.closePath(),b.fill(),b.fillRect(0,g+f-d,this.width,d)}},this)},updateProgress:function(a){var b=Math.round(this.width*a)/this.params.pixelRatio;this.style(this.progressWave,{width:b+"px"})}});
 //# sourceMappingURL=wavesurfer.min.js.map
 signalsharePlayer = {
-    tracks: []
+    tracks: [],
+    trackLengths: [],
+    project: '',
+    metronomeOn: false,
+    controls: [],
+    recorder: null,
 }
 
 $(document).ready(function() {
+    signalsharePlayer.context = new AudioContext();
+
+    signalsharePlayer.data = new Vue({
+        el: '#player',
+        data: {
+            recording: false,
+            tracks: [],
+            trackLengths: [],
+            tracksPlaying: 0,
+            metronomeOn: false,
+            time: 0,
+        },
+        computed: {
+            playing: function(){
+                return this.tracksPlaying > 0;
+            },
+            longestTrack: function(){
+                var maxIndex = signalsharePlayer.data.trackLengths.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
+                return maxIndex;
+            },
+            timeDisplay: function(){
+                var minutes = 0;
+                var seconds = Math.round(this.time);
+
+                while(seconds > 60){
+                    minutes++;
+                    seconds = seconds - 60;
+                }
+
+                if(minutes < 10){
+                    minutes = "0" + minutes;
+                }
+                if(seconds < 10){
+                    seconds = "0" + seconds;
+                }
+
+                return minutes + ":" + seconds;
+            }
+        }
+    });
+
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    signalsharePlayer.controls.record = document.getElementById('btn-record');
+    signalsharePlayer.controls.stop = document.getElementById('btn-record-stop');
+    signalsharePlayer.controls.alertRecording = document.getElementById('alert-recording');
+    signalsharePlayer.controls.playAll = document.getElementById('btn-play-all');
 
     signalsharePlayer.addTrack = function(trackElem, isNew = false) {
         var src = $(trackElem).data('src');
@@ -1788,27 +1840,63 @@ $(document).ready(function() {
             url: src,
             type: 'HEAD',
             success: function() {
+                $('#btn-play-all').removeClass('hidden');
                 var wavesurfer = Object.create(WaveSurfer);
                 var projectTrack = $(trackElem).find('.project-track').first()[0];
                 wavesurfer.init({
                     container: projectTrack,
                     waveColor: '#A6C4FF',
                     progressColor: '#89B0FF',
+                    fillParent: false,
+                    minPxPerSec: 3,
                 });
 
-                wavesurfer.on('play', function() {});
+                wavesurfer.on('play', function() {
+                    signalsharePlayer.data.tracksPlaying++;
+                });
 
                 wavesurfer.load(src);
-                $(projectTrack).addClass('loaded');
 
-                signalsharePlayer.tracks.push(wavesurfer);
+                wavesurfer.on('ready', function(){
+                    $(wavesurfer.container).addClass('loaded');
+                    $(wavesurfer.container).addClass(src);
 
-                $(trackElem).find('.btn-mute').data('track', signalsharePlayer.tracks.length - 1);
-                $(projectTrack).data('track', signalsharePlayer.tracks.length - 1);
+                    signalsharePlayer.data.tracks.push(wavesurfer);
+
+                    var trackIndex = signalsharePlayer.data.tracks.length - 1;
+                    $(trackElem).find('.btn-mute').data('track', trackIndex);
+                    $(projectTrack).data('track', trackIndex);
+                    signalsharePlayer.data.trackLengths[trackIndex] = wavesurfer.backend.buffer.duration;
+
+                    signalsharePlayer.setButtonHandlers(trackElem);
+
+                    if(trackIndex === signalsharePlayer.data.longestTrack){
+
+                    }
+                    wavesurfer.on('audioprocess', function(){
+                        if(!signalsharePlayer.data.recording){
+                            signalsharePlayer.data.time = wavesurfer.getCurrentTime();
+                        }
+                    });
+
+                    wavesurfer.on('finish', function() {
+                        if(signalsharePlayer.data.tracksPlaying > 0){
+                            signalsharePlayer.data.tracksPlaying--;
+                        }
+                    });
+
+                    wavesurfer.on('pause', function() {
+                        if(signalsharePlayer.data.tracksPlaying > 0){
+                            signalsharePlayer.data.tracksPlaying--;
+                        }
+                    });
+                });
+
+
 
                 if (isNew) {
                     $(trackElem).addClass('added');
-                    $(trackElem).prependTo('#track-list');
+                    $(trackElem).appendTo('#track-list');
                     setTimeout(function() {
                         $(trackElem).addClass('processed');
                     }, 500);
@@ -1816,8 +1904,28 @@ $(document).ready(function() {
                     $('.alert-warning').fadeOut();
                     $('.controls').removeClass('hidden');
                 }
+            }
+        });
+    };
 
-                signalsharePlayer.setButtonHandlers(trackElem);
+    // Process an AJAX response from a file upload and extract track information
+    signalsharePlayer.processUpload = function(response){
+        var project_slug = response.project.slug;
+        var track_slug = response.track.slug;
+        var file_url = response.file.filename;
+
+        // Get track content and add to track list
+        $.ajax({
+            url: '/projects/' + project_slug + '/tracks/' + track_slug,
+            type: 'GET',
+            success: function(data) {
+                var fileItem = $('<div/>').html(data).contents();
+                var trackElem = fileItem.first('.track-item');
+                $(trackElem).data('src', '/files/' + file_url);
+                signalsharePlayer.addTrack(trackElem, true);
+
+                signalsharePlayer.controls.playAll.classList.remove('hidden');
+
             }
         });
     };
@@ -1825,7 +1933,7 @@ $(document).ready(function() {
     signalsharePlayer.setButtonHandlers = function(trackElem) {
         $(trackElem).find('.btn-mute').on('click', function() {
             var trackNum = $(this).data('track');
-            var track = trackNum in signalsharePlayer.tracks && signalsharePlayer.tracks[trackNum];
+            var track = trackNum in signalsharePlayer.data.tracks && signalsharePlayer.data.tracks[trackNum];
             if (track) {
                 track.toggleMute();
 
@@ -1838,30 +1946,84 @@ $(document).ready(function() {
         });
     };
 
-    $('.btn-play-all').on('click', function() {
-        var playing = signalsharePlayer.tracks[0].isPlaying();
+    signalsharePlayer.stopAll = function(){
+        if(signalsharePlayer.data.tracks.length > 0){
 
-        signalsharePlayer.tracks[0].on('finish', function() {
-            togglePlayButton(true);
-        });
+            $(signalsharePlayer.data.tracks).each(function() {
+                if(this.isPlaying()){
+                    this.stop();
+                }
+                this.seekTo(0);
+            });
 
-        togglePlayButton(playing);
+        }
+    }
 
-        $(signalsharePlayer.tracks).each(function() {
-            if (this.backend.source) {
-                this.playPause();
-            }
-        });
+    signalsharePlayer.playAll = function() {
+        if(signalsharePlayer.data.tracks.length > 0){
+
+            $(signalsharePlayer.data.tracks).each(function() {
+                if (this.backend.source) {
+                    this.playPause();
+                }
+            });
+        }
+    };
+
+    signalsharePlayer.pauseAll = function() {
+        if(signalsharePlayer.data.tracks.length > 0){
+
+            $(signalsharePlayer.data.tracks).each(function() {
+                if (this.backend.source && this.isPlaying()) {
+                    this.playPause();
+                }
+            });
+        }
+    };
+
+    signalsharePlayer.recording = function(isRec){
+        signalsharePlayer.data.recording = isRec;
+        signalsharePlayer.data.time = 0;
+
+        if(isRec){
+            signalsharePlayer.timer = setInterval(function(){
+                signalsharePlayer.data.time++;
+            }, 1000);
+        }
+        else{
+            clearInterval(signalsharePlayer.timer);
+        }
+    };
+
+    $('#btn-play-all').on('click', function(){
+        signalsharePlayer.playAll();
     });
 
-    var togglePlayButton = function(playing) {
-        $('.btn-play-all').toggleClass('btn-info').toggleClass('btn-danger');
-        $('.btn-play-all i').toggleClass('fa-play').toggleClass('fa-pause');
+    $('#btn-pause-all').on('click', function(){
+        signalsharePlayer.pauseAll();
+    });
 
-        if (!playing) {
-            $('.btn-play-all span').text('Stop');
+    $('#btn-stop-all').on('click', function(){
+        signalsharePlayer.stopAll();
+    });
+
+    $('#btn-metronome').on('click', function(){
+        $(this).toggleClass('btn-success');
+        $('.metronome').toggleClass('hidden');
+        signalsharePlayer.metronomeOn = !signalsharePlayer.metronomeOn;
+    });
+
+    signalsharePlayer.togglePlayButton = function(isPlaying) {
+        if (!isPlaying) {
+            $('.btn-play-all').addClass('btn-success').removeClass('btn-danger');
+            $('.btn-play-all i').addClass('fa-play').removeClass('fa-pause');
+            $('.btn-play-all span').text('Play All');
+
         } else {
-            $('.btn-play-all span').text('Play');
+            $('.btn-play-all').removeClass('btn-success').addClass('btn-danger');
+            $('.btn-play-all i').removeClass('fa-play').addClass('fa-pause');
+            $('.btn-play-all span').text('Stop');
+
         }
     };
 
@@ -1884,23 +2046,205 @@ Dropzone.options.fileupload = {
     },
     success: function(event, response) {
         if (response.status && response.status == 1) {
-            var project_slug = response.project.slug;
-            var track_slug = response.track.slug;
-            var file_url = response.file.filename;
-
-            // Get track content and add to track list
-            $.ajax({
-                url: '/projects/' + project_slug + '/tracks/' + track_slug,
-                type: 'GET',
-                success: function(data) {
-                    var fileItem = $('<div/>').html(data).contents();
-                    var trackElem = fileItem.first('.track-item');
-                    $(trackElem).data('src', '/files/' + file_url);
-                    signalsharePlayer.addTrack(trackElem, true);
-                }
-            });
+            signalsharePlayer.processUpload(response);
         }
     },
 };
+
+window.onload = function() {
+
+    // fork getUserMedia for multiple browser versions, for the future
+    // when more browsers support MediaRecorder
+    navigator.getUserMedia = (navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia);
+
+    if (navigator.getUserMedia) {
+        var constraints = {
+            audio: true
+        };
+        var chunks = [];
+
+        // getUserMedia is supported, so let's set up the recorder!
+        var onSuccess = function(stream) {
+            signalsharePlayer.recorder = new MediaRecorder(stream);
+
+            signalsharePlayer.controls.record.onclick = function() {
+                signalsharePlayer.stopAll();
+
+                // Show the recording indicator and hide the Play All button
+                signalsharePlayer.recording(true);
+
+                // Play the metronome if it's turned on
+                if(signalsharePlayer.metronomeOn){
+                    metronome.play();
+                }
+
+                // Play any existing tracks while we record
+                signalsharePlayer.playAll();
+                signalsharePlayer.recorder.start();
+            }
+
+            signalsharePlayer.controls.stop.onclick = function() {
+                signalsharePlayer.recorder.stop();
+                signalsharePlayer.stopAll();
+
+
+                signalsharePlayer.recording(false);
+
+                if(signalsharePlayer.metronomeOn){
+                    metronome.play();
+                }
+            }
+
+            signalsharePlayer.recorder.onstop = function(e) {
+                signalsharePlayer.stopAll();
+
+                var trackNum = (signalsharePlayer.data.tracks) ? signalsharePlayer.data.tracks.length + 1 : 1;
+                var clipName = prompt('What do you want to name this track?', 'Track ' + trackNum);
+
+                if(clipName){
+                    var blob = new Blob(chunks, {
+                        'type': 'audio/ogg; codecs=opus'
+                    });
+                    chunks = [];
+                    var audioURL = window.URL.createObjectURL(blob);
+
+                    var oReq = new XMLHttpRequest();
+                    token = document.querySelector('meta[name="csrf-token"]').content;
+                    var project = signalsharePlayer.project;
+                    var url = '/projects/' + project + '/tracks/upload';
+
+                    oReq.open('POST', url);
+                    oReq.setRequestHeader('X-CSRF-TOKEN', token);
+                    oReq.setRequestHeader("Content-Type", blob.type);
+                    oReq.setRequestHeader("Track-Title", clipName);
+
+                    oReq.onload = function () {
+                      if (oReq.status === 200) {
+                          var rawResponse = oReq.response;
+                          var response = JSON.parse(rawResponse);
+                          signalsharePlayer.processUpload(response);
+                      }
+                    };
+
+                    oReq.send(blob);
+                }
+                else{
+                    chunks = [];
+                }
+            }
+
+            signalsharePlayer.recorder.ondataavailable = function(e) {
+                chunks.push(e.data);
+            }
+        }
+
+        var onError = function(err) {
+            console.log('The following error occured: ' + err);
+        }
+
+        navigator.getUserMedia(constraints, onSuccess, onError);
+    } else {
+        console.log('getUserMedia not supported on your browser!');
+    }
+
+
+}
+
+var metronome = {};
+
+var isPlaying = false;      // Are we currently playing?
+var startTime;              // The start time of the entire sequence.
+var current16thNote;        // What note is currently last scheduled?
+var tempo = 120.0;          // tempo (in beats per minute)
+var lookahead = 25.0;       // How frequently to call scheduling function
+                            //(in milliseconds)
+var scheduleAheadTime = 0.1;    // How far ahead to schedule audio (sec)
+                            // This is calculated from lookahead, and overlaps
+                            // with next interval (in case the timer is late)
+var nextNoteTime = 0.0;     // when the next note is due.
+var noteResolution = 0;     // 0 == 16th, 1 == 8th, 2 == quarter note
+var noteLength = 0.05;      // length of "beep" (in seconds)
+var canvas,                 // the canvas element
+    canvasContext;          // canvasContext is the canvas' context 2D
+var last16thNoteDrawn = -1; // the last "box" we drew on the screen
+var notesInQueue = [];      // the notes that have been put into the web audio,
+                            // and may or may not have played yet. {note, time}
+var timerWorker = null;     // The Web Worker used to fire timer messages
+
+
+metronome.nextNote = function() {
+    // Advance current note and time by a 16th note...
+    var secondsPerBeat = 60.0 / tempo;    // Notice this picks up the CURRENT
+                                          // tempo value to calculate beat length.
+    nextNoteTime += 0.25 * secondsPerBeat;    // Add beat length to last beat time
+
+    current16thNote++;    // Advance the beat number, wrap to zero
+    if (current16thNote == 16) {
+        current16thNote = 0;
+    }
+}
+
+metronome.scheduleNote = function( beatNumber, time ) {
+    // push the note on the queue, even if we're not playing.
+    notesInQueue.push( { note: beatNumber, time: time } );
+
+    if ( (noteResolution==1) && (beatNumber%2))
+        return; // we're not playing non-8th 16th notes
+    if ( (noteResolution==2) && (beatNumber%4))
+        return; // we're not playing non-quarter 8th notes
+
+    // create an oscillator
+    var osc = signalsharePlayer.context.createOscillator();
+    osc.connect( signalsharePlayer.context.destination );
+    if (beatNumber % 16 === 0)    // beat 0 == high pitch
+        osc.frequency.value = 880.0;
+    else if (beatNumber % 4 === 0 )    // quarter notes = medium pitch
+        osc.frequency.value = 440.0;
+    else                        // other 16th notes = low pitch
+        osc.frequency.value = 220.0;
+
+    osc.start( time );
+    osc.stop( time + noteLength );
+}
+
+metronome.scheduler = function() {
+    // while there are notes that will need to play before the next interval,
+    // schedule them and advance the pointer.
+    while (nextNoteTime < signalsharePlayer.context.currentTime + scheduleAheadTime ) {
+        metronome.scheduleNote( current16thNote, nextNoteTime );
+        metronome.nextNote();
+    }
+}
+
+metronome.play = function() {
+    isPlaying = !isPlaying;
+
+    if (isPlaying) { // start playing
+        current16thNote = 0;
+        nextNoteTime = signalsharePlayer.context.currentTime;
+        timerWorker.postMessage("start");
+        return "stop";
+    } else {
+        timerWorker.postMessage("stop");
+        return "play";
+    }
+}
+
+
+metronome.init = function(){
+    timerWorker = new Worker("/js/workers/metronomeworker.js");
+
+    timerWorker.onmessage = function(e) {
+        if (e.data == "tick") {
+            metronome.scheduler();
+        }
+    };
+    timerWorker.postMessage({"interval":lookahead});
+}
+
+window.addEventListener("load", metronome.init );
 
 //# sourceMappingURL=tracks.js.map
