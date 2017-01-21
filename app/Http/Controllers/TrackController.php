@@ -13,6 +13,10 @@ use Response;
 use Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Input;
+use FFMpeg;
+
 
 class TrackController extends Controller
 {
@@ -144,6 +148,67 @@ class TrackController extends Controller
     	$track->update($input);
 
     	return Redirect::route('projects.tracks.show', [$project->slug, $track->slug])->with('message', 'Track updated.');
+    }
+
+    public function upload(Request $request, Project $project){
+        $track_name = $request->header('Track-Title');
+        $file_data = $request->getContent(); // This will get all the request data.
+        $timestamp = time();
+        $user_id = $request->user()->id;
+
+        $hash = hash('MD5', $file_data);
+
+        $filename_short = $timestamp . '_' . $hash;
+        $filename = $filename_short . '.ogg';
+        $new_filename = $filename_short . '.mp3';
+
+        Storage::disk('public')->put($filename, $file_data);
+
+        FFMpeg::fromDisk('public')
+            ->open($filename)
+            ->export()
+            ->toDisk('public')
+            ->inFormat(new \FFMpeg\Format\Audio\Mp3)
+            ->save($new_filename);
+
+        Storage::disk('public')->delete($filename);
+
+        $track = new Track;
+        $track->name = $track_name;
+        $track->owner_id = $request->user()->id;
+
+        $slug = str_slug($track->name, '-');
+        $new_slug = $slug;
+
+        $exists = Track::where(['slug' => $slug])->count();
+        $append = 1;
+        while($exists){
+            $new_slug = $slug . '-' . $append;
+            $append++;
+            $exists = Track::where(['slug' => $new_slug])->count();
+        }
+        $track->slug = $new_slug;
+
+        $track->save();
+
+        $project->tracks()->attach($track->id,[
+            'name' => $track->name,
+            'owner_id' => $user_id,
+            'approved' => 0
+        ]);
+
+        $file_obj = new AudioFile;
+        $file_obj->filename = $new_filename;
+        $file_obj->hash = $hash;
+        $file_obj->track_id = $track->id;
+        $file_obj->save();
+
+        $response['status'] = 1;
+        $response['track'] = $track;
+        $response['file'] = $file_obj;
+        $response['project'] = $project;
+
+        return Response::json($response);
     }
 
     public function removeFromProject(Project $project, Track $track)
