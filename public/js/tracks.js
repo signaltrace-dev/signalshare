@@ -1822,13 +1822,6 @@ $(document).ready(function() {
         }
     });
 
-
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
     signalsharePlayer.controls.record = document.getElementById('btn-record');
     signalsharePlayer.controls.stop = document.getElementById('btn-record-stop');
     signalsharePlayer.controls.alertRecording = document.getElementById('alert-recording');
