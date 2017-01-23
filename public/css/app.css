@@ -7708,6 +7708,19 @@ button.close {
   background: #bf5329;
 }
 
+.autocomplete-suggestions {
+  background: #f0f8ff;
+  padding: 10px;
+  border-left: 1px solid #d3e0e9;
+  border-right: 1px solid #d3e0e9;
+  border-bottom: 1px solid #d3e0e9;
+  border-radius: 0 0 4px 4px;
+}
+
+.autocomplete-suggestions .autocomplete-suggestion:hover {
+  background: #d9edf7;
+}
+
 .title--page {
   border-bottom: 1px solid #d3e0e9;
   padding: 0 0 10px 20px;
