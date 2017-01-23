@@ -41,6 +41,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('tags', ['as' => 'tags.store', 'uses' => 'TagController@store']);
 	Route::delete('tags/{tag}', ['as' => 'tags.destroy', 'uses' => 'TagController@destroy']);
 	Route::get('tags/search/autocomplete', ['as' => 'tags.autocomplete', 'uses' => 'TagController@autocomplete']);
+	Route::post('tags/attach', ['as' => 'tags.attach', 'uses' => 'TagController@attach']);
+	Route::post('tags/detach', ['as' => 'tags.detach', 'uses' => 'TagController@detach']);
 
 });
 
