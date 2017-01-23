@@ -94,4 +94,16 @@ class ProjectController extends Controller
 
     return Redirect::route('projects.index')->with('message', 'Deleted project ' . $project->name . '!');
   }
+
+  public function getTags(Request $request, Project $project){
+      if($request->ajax){
+          $tags = $project->tags();
+          return Response::json([
+                'tags' => $tags,
+          ]);
+
+      }
+
+      return view('tags.forms.tag_list', compact('project'));
+  }
 }

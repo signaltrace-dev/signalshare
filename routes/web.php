@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('projects', 'ProjectController');
 	Route::get('projects/{project}/settings', ['as' => 'projects.settings.edit', 'uses' => 'ProjectSettingsController@edit']);
 	Route::put('projects/{project}/settings', ['as' => 'projects.settings.update', 'uses' => 'ProjectSettingsController@update']);
+	Route::get('projects/{project}/tags', ['as' => 'projects.tags', 'uses' => 'ProjectController@getTags']);
 
 
 	// Tracks
