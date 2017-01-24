@@ -6,6 +6,8 @@
 @endsection
 
 @section('content')
+    @include('tags.partials.tag_list', ['project' => $project])
+    
     <script type="text/javascript" src="{{ URL::asset('js/tracks.js') }}"></script>
     <script type="text/javascript">
         signalsharePlayer.project = "{{ $project->slug }}";
