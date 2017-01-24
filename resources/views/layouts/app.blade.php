@@ -21,7 +21,7 @@
         </script>
     </head>
     <body class="{{$classes}}">
-        <div class="container-fluid" id="app">
+        <div class="container-fluid">
             <div class="row">
                 @include('layouts/sidebar')
 
