@@ -1,11 +1,6 @@
-@foreach( $project->tags as $tag )
-    <div class="btn btn-info">{{ $tag->name }}
-    <form class="form-inline" action='{{ route("tags.detach") }}' method="POST">
-        {{ csrf_field() }}
-        <input type="hidden" name="tagId" value="{{ $tag->id }}">
-        <input type="hidden" name="targetId" value="{{ $project->id }}">
-        <input type="hidden" name="targetType" value="project">
-
-        <button type="submit" class="link-delete"><i class="fa fa-times"></i></button></div>
-    </form>
-@endforeach
+<template v-for="tag in tags">
+    <div class="btn btn-info">
+        <span v-text="tag.name"></span>
+        <button v-on:click="detach('project', '{{ $project->id }}', tag.id)" class="link-delete"><i class="fa fa-times"></i></button>
+    </div>
+</template>

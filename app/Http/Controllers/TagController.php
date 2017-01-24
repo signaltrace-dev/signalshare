@@ -47,19 +47,35 @@ class TagController extends Controller
     }
 
     public function attach(Request $request){
-        $tagId = $request->input('tagId');
-        $targetId = $request->input('targetId');
-        $targetType = $request->input('targetType');
+        $tagId = $request->input('tagid');
+        $tagName = $request->input('tagname');
+        $targetId = $request->input('targetid');
+        $targetType = $request->input('targettype');
         $project = '';
+
+        $tag = !empty($tagId) ? Tag::find($tagId) : Tag::where('name', $tagName)->first();
+        if(empty($tag)){
+            $tag = new Tag();
+            $tag->name = $tagName;
+            $tag->user_id = $request->user()->id;
+            $tag->save();
+        }
 
         //TODO: Validate request, make sure user has appropriate access
         if($targetType == 'project'){
             $project = Project::find($targetId);
-            $project->tags()->attach($tagId, [
+            $project->tags()->attach($tag->id, [
                 'user_id' => $request->user()->id,
             ]);
+
+            $response['status'] = 1;
+            $response['tags'] = $project->tags()->get();
+        }
+        if($request->ajax()){
+            return Response::json($response);
         }
 
+        return Redirect::back()->with('message', 'Added tag ' . $tag->name . '.');
     }
 
     public function detach(Request $request){
@@ -80,11 +96,11 @@ class TagController extends Controller
             $project->tags()->detach($tagId);
 
             $response['status'] = 1;
-            $response['tags'] = $project->tags();
+            $response['tags'] = $project->tags()->get();
         }
 
 
-        if($request->ajax){
+        if($request->ajax()){
             return Response::json($response);
         }
 
@@ -96,16 +112,14 @@ class TagController extends Controller
     {
         $term = $request->input('query');
 
-        $results = array(
-            'suggestions' => array()
-        );
+        $results = array();
 
         $queries = DB::table('tags')
             ->where('name', 'LIKE', '%'.$term.'%')
             ->limit(5)->get();
 
         foreach ($queries as $query) {
-            $results['suggestions'][] = [ 'data' => $query->id, 'value' => $query->name ];
+            $results[] = [ 'value' => $query->id, 'name' => $query->name ];
         }
         return Response::json($results);
     }

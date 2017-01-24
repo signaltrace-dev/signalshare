@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Project;
 use Redirect;
+use Response;
 use App\Http\helpers;
 
 class ProjectController extends Controller
@@ -96,11 +97,9 @@ class ProjectController extends Controller
   }
 
   public function getTags(Request $request, Project $project){
-      if($request->ajax){
-          $tags = $project->tags();
-          return Response::json([
-                'tags' => $tags,
-          ]);
+      if($request->ajax()){
+          $tags = $project->tags()->get();
+          return Response::json($tags);
 
       }
 

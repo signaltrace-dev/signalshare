@@ -17,7 +17,7 @@ elixir((mix) => {
     mix.sass('app.scss')
        .webpack('app.js')
        .scripts([
-           'vendor/jquery.autocomplete.min.js',
+           'vendor/awesomplete.min.js',
            'tags/tags.js',
        ], 'public/js/signalshare.js')
        .scripts([
