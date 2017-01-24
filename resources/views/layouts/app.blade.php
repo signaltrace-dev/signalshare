@@ -20,8 +20,8 @@
             });
         </script>
     </head>
-    <body class="{{$classes}}" id="app">
-        <div class="container-fluid">
+    <body class="{{$classes}}">
+        <div class="container-fluid" id="app">
             <div class="row">
                 @include('layouts/sidebar')
 
