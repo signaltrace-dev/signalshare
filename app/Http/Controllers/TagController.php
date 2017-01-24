@@ -62,7 +62,7 @@ class TagController extends Controller
         }
 
         //TODO: Validate request, make sure user has appropriate access
-        if($targetType == 'project'){
+        if($targetType == 'projects'){
             $project = Project::find($targetId);
             $project->tags()->attach($tag->id, [
                 'user_id' => $request->user()->id,
@@ -91,7 +91,7 @@ class TagController extends Controller
         $project = '';
 
         //TODO: Validate request, make sure user has appropriate access
-        if($targetType == 'project'){
+        if($targetType == 'projects'){
             $project = Project::find($targetId);
             $project->tags()->detach($tagId);
 
