@@ -64,9 +64,13 @@ class TagController extends Controller
         //TODO: Validate request, make sure user has appropriate access
         if($targetType == 'projects'){
             $project = Project::find($targetId);
-            $project->tags()->attach($tag->id, [
-                'user_id' => $request->user()->id,
-            ]);
+
+            // Only attach a tag if it's not already attached to the project
+            if($project->tags()->where('tags.id', $tag->id)->count() == 0){
+                $project->tags()->attach($tag->id, [
+                    'user_id' => $request->user()->id,
+                ]);
+            }
 
             $response['status'] = 1;
             $response['tags'] = $project->tags()->get();
