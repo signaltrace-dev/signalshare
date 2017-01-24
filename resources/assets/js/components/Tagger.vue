@@ -1,14 +1,19 @@
 <template>
-    <div>
-        <div v-for="tag in tags">
-            <div class="btn btn-info">
-                <span v-text="tag.name"></span>
-                <button v-on:click="detach(tag.id)" class="link-delete"><i class="fa fa-times"></i></button>
-            </div>
+    <div class="panel panel-brand">
+        <div class="panel-heading">
+            <h3 class="panel-title">Tags</h3>
         </div>
+        <div class="panel-body">
+            <div class="tag-list">
+                <span class="label label-primary tag" v-for="tag in tags">
+                    {{ tag.name }}
+                    <button v-on:click="detach(tag.id)" class="link-delete"><i class="fa fa-times"></i></button>
+                </span>
+            </div>
 
-        <input ref="searchBox" type="text" name="tagname" v-model="searchText" v-on:keyup.enter="attach" v-on:keyup="search" id="txt-tag-search">
-        <button class="btn btn-success" id="btn-attach-tag" v-on:click="attach" name="button">Assign Tag</button>
+            <input ref="searchBox" type="text" name="tagname" v-model="searchText" v-on:keyup.enter="attach" v-on:keyup="search" id="txt-tag-search">
+            <button class="btn btn-success" id="btn-attach-tag" v-on:click="attach" name="button">Assign Tag</button>
+        </div>
     </div>
 </template>
 
