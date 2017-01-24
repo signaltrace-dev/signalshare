@@ -17,6 +17,10 @@ elixir((mix) => {
     mix.sass('app.scss')
        .webpack('app.js')
        .scripts([
+           'vendor/awesomplete.min.js',
+           'tags/tags.js',
+       ], 'public/js/signalshare.js')
+       .scripts([
            'vendor/dropzone.js',
            'vendor/wavesurfer.min.js',
            'tracks/player.js',
@@ -27,5 +31,4 @@ elixir((mix) => {
        .scripts([
            'tracks/metronomeworker.js',
        ], 'public/js/workers/metronomeworker.js');
-
 });

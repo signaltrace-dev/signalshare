@@ -19,3 +19,16 @@
 .badge-danger{
     background: $brand-danger;
 }
+
+.autocomplete-suggestions {
+    background: $bg-light;
+    padding: 10px;
+    border-left: 1px solid $laravel-border-color;
+    border-right: 1px solid $laravel-border-color;
+    border-bottom: 1px solid $laravel-border-color;
+    border-radius: 0 0 4px 4px;
+
+    .autocomplete-suggestion:hover{
+        background: $bg-info;
+    }
+}

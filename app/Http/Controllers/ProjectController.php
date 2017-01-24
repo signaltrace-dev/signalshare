@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Project;
 use Redirect;
+use Response;
 use App\Http\helpers;
 
 class ProjectController extends Controller
@@ -93,5 +94,15 @@ class ProjectController extends Controller
     $project->delete();
 
     return Redirect::route('projects.index')->with('message', 'Deleted project ' . $project->name . '!');
+  }
+
+  public function getTags(Request $request, Project $project){
+      if($request->ajax()){
+          $tags = $project->tags()->get();
+          return Response::json($tags);
+
+      }
+
+      return view('tags.forms.tag_list', compact('project'));
   }
 }

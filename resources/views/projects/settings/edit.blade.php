@@ -27,7 +27,7 @@ $(document).ready(function(){
         <input type="text" name="name"  placeholder="Name" value="{{ $project->name }}" />
         <button type="submit" name="button" class="btn btn-success">Save Settings</button>
     </form>
-
+@include('tags.forms.tag_picker', ['project' => $project])
     <button type="button" name="btn-modal" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-project">Delete This Project</button>
     <div class="modal fade" id='modal-delete-project'>
       <div class="modal-dialog">
