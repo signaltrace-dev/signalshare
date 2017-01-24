@@ -7,8 +7,8 @@
             </div>
         </div>
 
-        <input ref="searchBox" type="text" name="tagname" v-model="searchText" v-on:keyup="search" id="txt-tag-search">
-        <button class="btn btn-success" id="btn-attach-tag" type="submit" name="button">Assign Tag</button>
+        <input ref="searchBox" type="text" name="tagname" v-model="searchText" v-on:keyup.enter="attach" v-on:keyup="search" id="txt-tag-search">
+        <button class="btn btn-success" id="btn-attach-tag" v-on:click="attach" name="button">Assign Tag</button>
     </div>
 </template>
 
@@ -29,24 +29,27 @@ export default {
         }
     },
     methods: {
-        attach: function(tagname){
+        attach: function(){
             var tagger = this;
 
-            var url = '/tags/attach';
-            var data = {
-                tagname: tagname,
-                targetid: this.targetid,
-                targettype: this.targettype,
-            };
+            if(this.searchText){
+                var url = '/tags/attach';
+                var data = {
+                    tagname: this.searchText,
+                    targetid: this.targetid,
+                    targettype: this.targettype,
+                };
 
-            $.ajax({
-                type: "POST",
-                data: data,
-                url: url,
-                success: function(data) {
-                    tagger.tags = data.tags;
-                }
-            })
+                $.ajax({
+                    type: "POST",
+                    data: data,
+                    url: url,
+                    success: function(data) {
+                        tagger.tags = data.tags;
+                        tagger.searchText = '';
+                    }
+                })
+            }
         },
         detach: function(tagId){
             var tagger = this;
@@ -76,7 +79,13 @@ export default {
             }).done(function(data){
                 var list = [];
                 $.each(data, function(key, value) {
-                  list.push(value.name);
+                    // Only show tags that aren't already assigned
+                    var found = tagger.tags.filter(function(obj){
+                        return obj.name === value.name;
+                    });
+                    if(found.length == 0){
+                        list.push(value.name);
+                    }
                 });
                 tagger.awesomplete.list = list;
             });
@@ -97,7 +106,6 @@ export default {
     },
     mounted(){
         var tagger = this;
-        this.searchButton = document.getElementById('txt-tag-search');
         this.getTags();
         var searchBox = this.$refs.searchBox;
 
@@ -107,7 +115,8 @@ export default {
         });
 
         $(searchBox).on('awesomplete-selectcomplete', function(e, data){
-            tagger.attach(this.value);
+            tagger.searchText = this.value;
+            tagger.attach();
         });
     }
 }
