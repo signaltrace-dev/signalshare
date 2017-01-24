@@ -7901,6 +7901,16 @@ input[type=text], textarea {
   font-weight: 800;
 }
 
+.tag {
+  padding: 8px;
+  margin: 0 5px 5px 0;
+  display: inline-block;
+}
+
+.tag .link-delete {
+  color: inherit;
+}
+
 .track-item {
   -webkit-transition: all 1.5s ease;
   transition: all 1.5s ease;
