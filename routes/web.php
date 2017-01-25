@@ -14,7 +14,7 @@
 Route::model('projects', 'Project');
 Route::model('tracks', 'Track');
 Route::model('tags', 'Tag');
-Route::model('project_needs', 'Need');
+Route::model('needs', 'Need');
 
 Route::group(['middleware' => 'auth'], function(){
 	// Dashboards
@@ -46,7 +46,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('tags/detach', ['as' => 'tags.detach', 'uses' => 'TagController@detach']);
 
 	// Project Needs
-	Route::resource('project_needs', 'NeedController');
+	Route::resource('needs', 'NeedController');
 
 });
 
