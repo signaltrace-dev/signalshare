@@ -14,6 +14,7 @@
 Route::model('projects', 'Project');
 Route::model('tracks', 'Track');
 Route::model('tags', 'Tag');
+Route::model('project_needs', 'Need');
 
 Route::group(['middleware' => 'auth'], function(){
 	// Dashboards
@@ -43,6 +44,9 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('tags/search/autocomplete', ['as' => 'tags.autocomplete', 'uses' => 'TagController@autocomplete']);
 	Route::post('tags/attach', ['as' => 'tags.attach', 'uses' => 'TagController@attach']);
 	Route::post('tags/detach', ['as' => 'tags.detach', 'uses' => 'TagController@detach']);
+
+	// Project Needs
+	Route::resource('project_needs', 'NeedController');
 
 });
 
