@@ -24,7 +24,7 @@ class AddTaxonomiesToTags extends Migration
 
         // Add taxonomy_id to tags table
         Schema::table('tags', function (Blueprint $table) {
-            $table->integer('taxonomy_id')->unsigned()->default(0);
+            $table->integer('taxonomy_id')->unsigned();
             $table->foreign('taxonomy_id')->references('id')->on('tag_taxonomy');
         });
     }
