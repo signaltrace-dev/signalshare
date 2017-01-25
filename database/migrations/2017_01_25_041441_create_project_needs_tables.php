@@ -40,8 +40,7 @@ class CreateProjectNeedsTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_needs');
         Schema::dropIfExists('project_project_needs');
-
+        Schema::dropIfExists('project_needs');
     }
 }
