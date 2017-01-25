@@ -13,7 +13,7 @@ class AddTaxonomiesToTags extends Migration
      */
     public function up()
     {
-        Schema::create('tag_taxonomy', function (Blueprint $table) {
+        Schema::create('taxonomy', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('slug');
@@ -25,7 +25,7 @@ class AddTaxonomiesToTags extends Migration
         // Add taxonomy_id to tags table
         Schema::table('tags', function (Blueprint $table) {
             $table->integer('taxonomy_id')->unsigned();
-            $table->foreign('taxonomy_id')->references('id')->on('tag_taxonomy');
+            $table->foreign('taxonomy_id')->references('id')->on('taxonomy');
         });
     }
 
@@ -36,10 +36,11 @@ class AddTaxonomiesToTags extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tag_taxonomy');
-
         Schema::table('tags', function (Blueprint $table) {
+            $table->dropForeign(['taxonomy_id']);
             $table->dropColumn('taxonomy_id');
         });
+        Schema::dropIfExists('tag_taxonomy');
+
     }
 }
