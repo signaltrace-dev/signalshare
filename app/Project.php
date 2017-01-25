@@ -11,6 +11,10 @@ class Project extends Model
         parent::boot();
 
         static::deleting(function($project){
+            foreach($project->tags as $tag){
+                $project->tags()->detach($tag->id);
+            }
+
             foreach($project->tracks as $track){
                 $project->tracks()->detach($track->id);
 
