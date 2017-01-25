@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Need;
+use Redirect;
 
 class NeedController extends Controller
 {
@@ -13,7 +15,8 @@ class NeedController extends Controller
      */
     public function index()
     {
-        //
+        $needs = Need::all();
+        return view('needs.index', compact('needs'));
     }
 
     /**
@@ -23,7 +26,7 @@ class NeedController extends Controller
      */
     public function create()
     {
-        //
+        return view('needs.create');
     }
 
     /**
@@ -34,7 +37,16 @@ class NeedController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:tags|max:255',
+        ]);
+
+        $need = new Need;
+        $need->name = $request->input('name');
+        $need->user_id = $request->user()->id;
+        $need->save();
+
+        return Redirect::route('needs.index')->with('message', 'Created new need: ' . $need->name . '!');
     }
 
     /**
@@ -77,8 +89,13 @@ class NeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Need $need)
     {
-        //
+        // TODO: Role-based access
+        if ($request->user()->id == 1) {
+            $need->delete();
+
+            return Redirect::route('needs.index')->with('message', 'Deleted need: ' . $need->name . '.');
+        }
     }
 }
