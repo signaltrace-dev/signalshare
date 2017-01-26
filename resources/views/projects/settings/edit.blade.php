@@ -5,21 +5,22 @@
 @endsection
 
 @section('content')
-<script type="text/javascript">
-$(document).ready(function(){
-    $( "#modal-delete-project" ).on('shown.bs.modal', function(){
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $( "#modal-delete-project" ).on('shown.bs.modal', function(){
 
-        var v = new Vue({
-            el: '#modal-delete-project',
-            data:{
-                projectname: '',
-            }
+            var v = new Vue({
+                el: '#modal-delete-project',
+                data:{
+                    projectname: '',
+                }
+            });
         });
     });
-});
 
 
-</script>
+    </script>
+    <script type="text/javascript" src="{{ URL::asset('js/tags.js') }}"></script>
 
     <form action='{{ route("projects.settings.update", $project->slug, $settings->id) }}' method="POST">
         {{ method_field('PATCH') }}
@@ -27,7 +28,10 @@ $(document).ready(function(){
         <input type="text" name="name"  placeholder="Name" value="{{ $project->name }}" />
         <button type="submit" name="button" class="btn btn-success">Save Settings</button>
     </form>
-@include('tags.forms.tag_picker', ['project' => $project])
+    <div id="tagger">
+        @include('taxonomies.tags.forms.tag_picker', ['project' => $project])
+        @include('needs.forms.need_tagger', ['project' => $project])
+    </div>
     <button type="button" name="btn-modal" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-project">Delete This Project</button>
     <div class="modal fade" id='modal-delete-project'>
       <div class="modal-dialog">
