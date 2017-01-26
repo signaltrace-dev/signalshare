@@ -25,7 +25,6 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('projects', 'ProjectController');
 	Route::get('projects/{project}/settings', ['as' => 'projects.settings.edit', 'uses' => 'ProjectSettingsController@edit']);
 	Route::put('projects/{project}/settings', ['as' => 'projects.settings.update', 'uses' => 'ProjectSettingsController@update']);
-	Route::get('projects/{project}/tags', ['as' => 'projects.tags', 'uses' => 'ProjectController@getTags']);
 
 
 	// Tracks
@@ -45,10 +44,11 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('tags/search/autocomplete', ['as' => 'tags.autocomplete', 'uses' => 'TagController@autocomplete']);
 	Route::post('tags/attach', ['as' => 'tags.attach', 'uses' => 'TagController@attach']);
 	Route::post('tags/detach', ['as' => 'tags.detach', 'uses' => 'TagController@detach']);
+	Route::get('projects/{project}/tags', ['as' => 'projects.tags', 'uses' => 'ProjectController@getTags']);
 
+	// Taxonomies
 	Route::get('taxonomies', ['as' => 'taxonomies.index', 'uses' => 'TaxonomyController@index']);
 	Route::get('taxonomies/{taxonomy}', ['as' => 'taxonomies.show', 'uses' => 'TaxonomyController@show']);
-
 	Route::get('taxonomies/add', ['as' => 'taxonomies.create', 'uses' => 'TaxonomyController@create']);
 	Route::post('taxonomies', ['as' => 'taxonomies.store', 'uses' => 'TaxonomyController@store']);
 	Route::get('taxonomies/{taxonomy}/tags', ['as' => 'taxonomies.tags.index', 'uses' => 'TagController@index']);
@@ -56,6 +56,11 @@ Route::group(['middleware' => 'auth'], function(){
 
 	// Project Needs
 	Route::resource('needs', 'NeedController');
+	Route::get('needs/search/autocomplete', ['as' => 'needs.autocomplete', 'uses' => 'NeedController@autocomplete']);
+	Route::post('needs/attach', ['as' => 'needs.attach', 'uses' => 'NeedController@attach']);
+	Route::post('needs/detach', ['as' => 'needs.detach', 'uses' => 'NeedController@detach']);
+	Route::get('projects/{project}/needs', ['as' => 'projects.needs', 'uses' => 'NeedController@get']);
+
 
 });
 
