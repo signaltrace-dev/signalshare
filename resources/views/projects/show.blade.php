@@ -5,9 +5,9 @@
     <a class="btn btn-default" href='{{ route("projects.settings.edit", $project->slug) }}'><i class='fa fa-gear'></i>&nbsp;Settings</a>
 @endsection
 
-@section('content')
-    @include('tags.partials.tag_list', ['project' => $project])
-    
+@section('content')    
+    @include('taxonomies.tags.partials.tag_list', ['project' => $project])
+
     <script type="text/javascript" src="{{ URL::asset('js/tracks.js') }}"></script>
     <script type="text/javascript">
         signalsharePlayer.project = "{{ $project->slug }}";
