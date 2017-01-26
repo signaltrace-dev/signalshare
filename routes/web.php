@@ -14,12 +14,8 @@
 Route::model('projects', 'Project');
 Route::model('tracks', 'Track');
 Route::model('tags', 'Tag');
-<<<<<<< HEAD
 Route::model('taxonomies', 'Taxonomy');
-
-=======
 Route::model('needs', 'Need');
->>>>>>> project-needs
 
 Route::group(['middleware' => 'auth'], function(){
 	// Dashboards
