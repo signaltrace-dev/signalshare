@@ -9,6 +9,7 @@ use Redirect;
 use DB;
 use Response;
 use App\Project;
+use App\TaggerFactory;
 
 class TagController extends Controller
 {
@@ -52,33 +53,33 @@ class TagController extends Controller
     }
 
     public function attach(Request $request){
-        $tagId = $request->input('tagid');
-        $tagName = $request->input('tagname');
-        $targetId = $request->input('targetid');
-        $targetType = $request->input('targettype');
+        $tag_id = $request->input('id');
+        $tag_name = $request->input('name');
+        $target_id = $request->input('targetid');
+        $target_type = $request->input('targettype');
         $project = '';
 
-        $tag = !empty($tagId) ? Tag::find($tagId) : Tag::where('name', $tagName)->first();
+        $tag = !empty($tag_id) ? Tag::find($tag_id) : Tag::where('name', $tag_name)->first();
         if(empty($tag)){
             $tag = new Tag();
-            $tag->name = $tagName;
+            $tag->name = $tag_name;
             $tag->user_id = $request->user()->id;
             $tag->save();
         }
 
         //TODO: Validate request, make sure user has appropriate access
-        if($targetType == 'projects'){
-            $project = Project::find($targetId);
+        $target_obj = TaggerFactory::find($target_type, $target_id);
 
+        if($target_obj != NULL && method_exists($target_obj, 'tags')){
             // Only attach a tag if it's not already attached to the project
-            if($project->tags()->where('tags.id', $tag->id)->count() == 0){
-                $project->tags()->attach($tag->id, [
+            if($target_obj->tags()->where('tags.id', $tag->id)->count() == 0){
+                $target_obj->tags()->attach($tag->id, [
                     'user_id' => $request->user()->id,
                 ]);
             }
 
             $response['status'] = 1;
-            $response['tags'] = $project->tags()->get();
+            $response['attached'] = $target_obj->tags()->get();
         }
         if($request->ajax()){
             return Response::json($response);
@@ -92,20 +93,19 @@ class TagController extends Controller
             'status' => 0,
         );
 
-        $tagId = $request->input('tagId');
-        $tag = Tag::find($tagId);
+        $tag_id = $request->input('id');
+        $tag = Tag::find($tag_id);
 
-        $targetId = $request->input('targetId');
-        $targetType = $request->input('targetType');
-        $project = '';
+        $target_id = $request->input('targetid');
+        $target_type = $request->input('targettype');
 
-        //TODO: Validate request, make sure user has appropriate access
-        if($targetType == 'projects'){
-            $project = Project::find($targetId);
-            $project->tags()->detach($tagId);
+        $target_obj = TaggerFactory::find($target_type, $target_id);
+
+        if($target_obj != NULL && method_exists($target_obj, 'tags')){
+            $target_obj->tags()->detach($tag_id);
 
             $response['status'] = 1;
-            $response['tags'] = $project->tags()->get();
+            $response['attached'] = $target_obj->tags()->get();
         }
 
 
