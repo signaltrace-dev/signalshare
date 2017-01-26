@@ -26,5 +26,5 @@
           @endif
       </div>
     </div>
-    @include('tags.forms.add_tag')
+    @include('taxonomies.tags.forms.add_tag', ['taxonomy' => $taxonomy])
 @endsection

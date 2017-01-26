@@ -14,6 +14,8 @@
 Route::model('projects', 'Project');
 Route::model('tracks', 'Track');
 Route::model('tags', 'Tag');
+Route::model('taxonomies', 'Taxonomy');
+
 
 Route::group(['middleware' => 'auth'], function(){
 	// Dashboards
@@ -36,13 +38,21 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::delete('projects/{project}/tracks/{track}', ['as' => 'projects.tracks.destroy', 'uses' => 'TrackController@removeFromProject']);
 
 	// Tags
-	Route::get('tags', ['as' => 'tags.index', 'uses' => 'TagController@index']);
+	//Route::get('tags', ['as' => 'tags.index', 'uses' => 'TagController@index']);
 	Route::get('tags/new', ['as' => 'tags.create', 'uses' => 'TagController@create']);
 	Route::post('tags', ['as' => 'tags.store', 'uses' => 'TagController@store']);
 	Route::delete('tags/{tag}', ['as' => 'tags.destroy', 'uses' => 'TagController@destroy']);
 	Route::get('tags/search/autocomplete', ['as' => 'tags.autocomplete', 'uses' => 'TagController@autocomplete']);
 	Route::post('tags/attach', ['as' => 'tags.attach', 'uses' => 'TagController@attach']);
 	Route::post('tags/detach', ['as' => 'tags.detach', 'uses' => 'TagController@detach']);
+
+	Route::get('taxonomies', ['as' => 'taxonomies.index', 'uses' => 'TaxonomyController@index']);
+	Route::get('taxonomies/{taxonomy}', ['as' => 'taxonomies.show', 'uses' => 'TaxonomyController@show']);
+
+	Route::get('taxonomies/add', ['as' => 'taxonomies.create', 'uses' => 'TaxonomyController@create']);
+	Route::post('taxonomies', ['as' => 'taxonomies.store', 'uses' => 'TaxonomyController@store']);
+	Route::get('taxonomies/{taxonomy}/tags', ['as' => 'taxonomies.tags.index', 'uses' => 'TagController@index']);
+	Route::post('taxonomies/{taxonomy}/tags', ['as' => 'taxonomies.tags.store', 'uses' => 'TagController@store']);
 
 });
 

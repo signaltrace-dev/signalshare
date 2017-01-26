@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Tag;
+use App\Taxonomy;
 use Redirect;
 use DB;
 use Response;
@@ -11,18 +12,20 @@ use App\Project;
 
 class TagController extends Controller
 {
-    public function index()
+    public function index(Taxonomy $taxonomy)
     {
-        $tags = Tag::all();
-        return view('tags.index', compact('tags'));
+        $tags = $taxonomy->tags()->get();
+
+        return view('taxonomies.tags.index', compact('tags', 'taxonomy'));
     }
 
     public function create()
     {
-        return view('tags.create');
+        $taxonomies = Taxonomy::all();
+        return view('tags.create', compact('taxonomies'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Taxonomy $taxonomy)
     {
         $this->validate($request, [
             'name' => 'required|unique:tags|max:255',
@@ -31,18 +34,20 @@ class TagController extends Controller
         $tag = new Tag;
         $tag->name = $request->input('name');
         $tag->user_id = $request->user()->id;
+        $tag->taxonomy_id = $taxonomy->id;
         $tag->save();
 
-        return Redirect::route('tags.index')->with('message', 'Created new tag ' . $tag->name . '!');
+        return Redirect::route('taxonomies.tags.index', ['taxonomy' => $taxonomy])->with('message', 'Created new tag ' . $tag->name . '!');
     }
 
     public function destroy(Request $request, Tag $tag)
     {
         // TODO: Role-based access
         if ($request->user()->id == 1) {
+            $taxonomy = Tag::where('id', $tag->taxonomy_id)->get();
             $tag->delete();
 
-            return Redirect::route('tags.index')->with('message', 'Deleted tag ' . $tag->name . '.');
+            return Redirect::route('taxonomies.tags.index', ['taxonomy' => $taxonomy])->with('message', 'Deleted tag ' . $tag->name . '.');
         }
     }
 
