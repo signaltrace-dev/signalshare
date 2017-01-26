@@ -45,7 +45,15 @@ class TagController extends Controller
     {
         // TODO: Role-based access
         if ($request->user()->id == 1) {
-            $taxonomy = Tag::where('id', $tag->taxonomy_id)->get();
+            $taxonomy = Taxonomy::where('id', $tag->taxonomy_id)->first();
+
+            // Remove tag from any associated projects
+            $projects = $tag->projects()->get();
+            foreach($projects as $project)
+            {
+                $project->tags()->detach($tag->id);
+            }
+
             $tag->delete();
 
             return Redirect::route('taxonomies.tags.index', ['taxonomy' => $taxonomy])->with('message', 'Deleted tag ' . $tag->name . '.');
