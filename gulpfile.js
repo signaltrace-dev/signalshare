@@ -18,6 +18,7 @@ elixir((mix) => {
        .webpack('app.js')
        .webpack('tags/tags.js')
        .scripts([
+           'vendor/pluralize.js',
            'vendor/awesomplete.min.js',
        ], 'public/js/signalshare.js')
        .scripts([
