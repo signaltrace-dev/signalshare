@@ -14,8 +14,12 @@
 Route::model('projects', 'Project');
 Route::model('tracks', 'Track');
 Route::model('tags', 'Tag');
+<<<<<<< HEAD
 Route::model('taxonomies', 'Taxonomy');
 
+=======
+Route::model('needs', 'Need');
+>>>>>>> project-needs
 
 Route::group(['middleware' => 'auth'], function(){
 	// Dashboards
@@ -53,6 +57,9 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('taxonomies', ['as' => 'taxonomies.store', 'uses' => 'TaxonomyController@store']);
 	Route::get('taxonomies/{taxonomy}/tags', ['as' => 'taxonomies.tags.index', 'uses' => 'TagController@index']);
 	Route::post('taxonomies/{taxonomy}/tags', ['as' => 'taxonomies.tags.store', 'uses' => 'TagController@store']);
+
+	// Project Needs
+	Route::resource('needs', 'NeedController');
 
 });
 
