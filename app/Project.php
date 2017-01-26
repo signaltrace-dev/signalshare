@@ -79,4 +79,10 @@ class Project extends Model
           ->withPivot('user_id')
           ->withTimestamps();
     }
+
+    public function needs(){
+        return $this->belongsToMany('App\Need')
+          ->withPivot('user_id')
+          ->withTimestamps();
+    }
 }

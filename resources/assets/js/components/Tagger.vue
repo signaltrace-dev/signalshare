@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-brand">
         <div class="panel-heading">
-            <h3 class="panel-title">Tags</h3>
+            <h3 class="panel-title">{{ this.title }}</h3>
         </div>
         <div class="panel-body">
             <div class="tag-list">
@@ -12,7 +12,7 @@
             </div>
 
             <input ref="searchBox" type="text" name="tagname" v-model="searchText" v-on:keyup.enter="attach" v-on:keyup="search" id="txt-tag-search">
-            <button class="btn btn-success" id="btn-attach-tag" v-on:click="attach" name="button">Assign Tag</button>
+            <button class="btn btn-success" id="btn-attach-tag" v-on:click="attach" name="button">Assign {{ this.titleSingular }}</button>
         </div>
     </div>
 </template>
@@ -21,9 +21,18 @@
 export default {
     name: 'tagger',
     props:{
-        targetname: '',
-        targetid: '',
-        targettype: '',
+        targetobj: {
+            type: String,
+            required: true,
+        },
+        targettype: {
+            type: String,
+            default: 'projects',
+        },
+        tagtype: {
+            type: String,
+            default: 'tags',
+        },
     },
     data: function(){
         return{
@@ -33,16 +42,33 @@ export default {
             awesomplete: {},
         }
     },
+    computed: {
+            target: function(){
+                return JSON.parse(this.targetobj);
+            },
+            title: function(){
+                var title = this.tagtype;
+                title = title.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                    return letter.toUpperCase();
+                });
+                return title;
+            },
+            titleSingular: function(){
+                var title = this.title;
+                return pluralize.singular(title);
+            }
+    },
     methods: {
         attach: function(){
             var tagger = this;
 
             if(this.searchText){
-                var url = '/tags/attach';
+                var url = '/' + this.tagtype + '/attach';
                 var data = {
-                    tagname: this.searchText,
-                    targetid: this.targetid,
+                    name: this.searchText,
+                    targetid: this.target.id,
                     targettype: this.targettype,
+                    tagtype: this.tagtype,
                 };
 
                 $.ajax({
@@ -50,7 +76,7 @@ export default {
                     data: data,
                     url: url,
                     success: function(data) {
-                        tagger.tags = data.tags;
+                        tagger.tags = data.attached;
                         tagger.searchText = '';
                     }
                 })
@@ -58,11 +84,11 @@ export default {
         },
         detach: function(tagId){
             var tagger = this;
-            var url = '/tags/detach';
+            var url = '/' + this.tagtype + '/detach';
             var data = {
-                tagId: tagId,
-                targetId: this.targetid,
-                targetType: this.targettype,
+                id: tagId,
+                targetid: this.target.id,
+                targettype: this.targettype,
             };
 
             $.ajax({
@@ -70,7 +96,7 @@ export default {
                 data: data,
                 url: url,
                 success: function(data) {
-                    tagger.tags = data.tags;
+                    tagger.tags = data.attached;
                 }
             })
         },
@@ -78,7 +104,7 @@ export default {
             var tagger = this;
 
             $.ajax({
-                url: '/tags/search/autocomplete?query=' + tagger.searchText,
+                url: '/' + this.tagtype + '/search/autocomplete?query=' + tagger.searchText,
                 type: 'GET',
                 dataType: 'json',
             }).done(function(data){
@@ -97,7 +123,7 @@ export default {
         },
         getTags: function(){
             var tagger = this;
-            var url = '/' + this.targettype + '/' + this.targetname + '/tags';
+            var url = '/' + this.targettype + '/' + this.target.slug + '/' + this.tagtype;
             $.ajax({
                 url: url,
                 type: 'GET',

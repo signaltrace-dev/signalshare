@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('title')
-    Add a Tag
+    Add a Need
 @endsection
 
 @section('content')
-    @include('tags.forms.add_tag')
+    @include('needs.forms.add_need')
 @endsection
