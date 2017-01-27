@@ -20,6 +20,7 @@ elixir((mix) => {
        .scripts([
            'vendor/pluralize.js',
            'vendor/awesomplete.min.js',
+           'ui/menu.js',
        ], 'public/js/signalshare.js')
        .scripts([
            'vendor/dropzone.js',
