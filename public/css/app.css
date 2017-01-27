@@ -7721,6 +7721,10 @@ button.close {
   background: #d9edf7;
 }
 
+.main-content {
+  margin-top: 50px;
+}
+
 .title--page {
   border-bottom: 1px solid #d3e0e9;
   padding: 0 0 10px 20px;
@@ -7733,6 +7737,11 @@ button.close {
 
 .title--page .btn {
   margin-left: 20px;
+}
+
+.navbar-middle {
+  position: absolute;
+  left: 50%;
 }
 
 .panel-brand {
@@ -7799,10 +7808,8 @@ h1, h2, h3, h4, h5, .btn, a, body, p, span, div {
 }
 
 .controls {
-  background: #385A6B;
-  padding: 10px;
+  padding: 8px;
   border-radius: 8px;
-  width: 50%;
   margin: 0 auto;
 }
 
@@ -7871,13 +7878,30 @@ input[type=text], textarea {
 }
 
 .sidebar {
-  height: 100vh;
+  height: 100%;
   background: #385A6B;
   color: #fff;
+  position: absolute;
+  z-index: 9999;
+  width: 0;
+  left: 0;
+  overflow: hidden;
+  top: 0;
+  -webkit-transition: width .15s ease-in-out;
+  transition: width .15s ease-in-out;
+}
+
+.sidebar.expanded {
+  width: 250px;
+}
+
+.sidebar .wrapper-button {
+  height: 50px;
 }
 
 .sidebar .pnl-badge {
   max-width: 100px;
+  width: 100px;
   margin: 20px auto;
 }
 
