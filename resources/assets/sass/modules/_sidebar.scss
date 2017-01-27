@@ -1,10 +1,26 @@
 .sidebar{
-    height:100vh;
+    height:100%;
     background: $bg-dark;
     color: #fff;
+    position: absolute;
+    z-index: 9999;
+    width: 0;
+    left: 0;
+    overflow: hidden;
+    top: 0;
+    transition: width .15s ease-in-out;
+
+    &.expanded{
+        width: 250px;
+    }
+
+    .wrapper-button{
+        height: 50px;
+    }
 
     .pnl-badge{
         max-width: 100px;
+        width: 100px;
         margin: 20px auto;
     }
 
