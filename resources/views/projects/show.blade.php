@@ -2,10 +2,15 @@
 
 @section('title')
     {{ $project->name }}
-    <a class="btn btn-default" href='{{ route("projects.settings.edit", $project->slug) }}'><i class='fa fa-gear'></i>&nbsp;Settings</a>
 @endsection
 
-@section('content')    
+@section('navbar-middle')
+    @include('projects.player')
+@endsection
+
+@section('content')
+    <a class="btn btn-default" href='{{ route("projects.settings.edit", $project->slug) }}'><i class='fa fa-gear'></i>&nbsp;Settings</a>
+
     @include('taxonomies.tags.partials.tag_list', ['project' => $project])
 
     <script type="text/javascript" src="{{ URL::asset('js/tracks.js') }}"></script>
@@ -24,6 +29,5 @@
             @endforeach
         </div>
 
-        @include('projects.player')
     </div>
 @endsection
