@@ -7723,6 +7723,17 @@ button.close {
 
 .main-content {
   margin-top: 50px;
+  padding-top: 50px;
+  max-width: 1200px;
+}
+
+.main-content .row-content {
+  padding: 20px;
+  background: white;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  min-height: 250px;
 }
 
 .title--page {
@@ -7739,9 +7750,36 @@ button.close {
   margin-left: 20px;
 }
 
+.nav-secondary {
+  font-size: 12px;
+}
+
+.nav-secondary > li.active > a {
+  background: white;
+}
+
+.nav-secondary > li.active > a:hover {
+  background: white;
+}
+
+.navbar-nav .page-title {
+  color: #777;
+  padding: 14px 15px;
+  line-height: 22px;
+  position: relative;
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .navbar-middle {
   position: absolute;
   left: 50%;
+}
+
+.navbar-middle .navbar-nav i {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .panel-brand {
@@ -7754,11 +7792,44 @@ button.close {
   color: #fff;
 }
 
-.player .metronome {
-  background: aliceblue;
-  padding: 20px;
-  border-radius: 0 0 4px 4px;
+.player {
   display: inline-block;
+  margin-left: 50px;
+}
+
+.player .btn-metronome.on {
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+  border-radius: 4px 4px 0 0;
+}
+
+.player .metronome {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  position: absolute;
+  height: 0;
+  overflow-y: hidden;
+  overflow: hidden;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: .25s;
+  transition-duration: .25s;
+  -webkit-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.player .metronome.visible {
+  height: 120px;
+}
+
+.player .metronome.visible .metronome-controls {
+  padding: 20px;
+  display: block;
+}
+
+.player .metronome .metronome-controls {
+  display: none;
 }
 
 .player .pnl-time {

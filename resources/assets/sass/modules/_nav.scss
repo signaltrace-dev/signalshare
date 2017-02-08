@@ -1,4 +1,37 @@
 .nav-secondary{
-    margin: 20px 0;
+    //margin: 20px 0;
     font-size: 12px;
+
+    > li.active{
+        > a{
+            background: white;
+            &:hover{
+                background: white;
+            }
+        }
+    }
+}
+
+.navbar-nav{
+    .page-title{
+        color: #777;
+        padding: 14px 15px;
+        line-height: 22px;
+        position: relative;
+        display: block;
+        font-size: 18px;
+        font-weight: bold;
+    }
+}
+
+.navbar-middle{
+    position: absolute;
+    left: 50%;
+
+    .navbar-nav{
+        i{
+            font-size: 18px;
+            font-weight: bold;
+        }
+    }
 }

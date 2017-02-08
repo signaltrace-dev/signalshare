@@ -1,9 +1,39 @@
 .player{
+    display: inline-block;
+    margin-left: 50px;
+
+    .btn-metronome{
+        &.on{
+            border: 1px solid #ddd;
+            border-bottom-color: transparent;
+            border-radius: 4px 4px 0 0;
+        }
+    }
+
     .metronome{
-        background: aliceblue;
-        padding: 20px;
-        border-radius: 0 0 4px 4px;
-        display: inline-block;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        position: absolute;
+        height: 0;
+        overflow-y: hidden;
+        overflow: hidden;
+        transition-property: all;
+        transition-duration: .25s;
+        transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+
+        &.visible{
+            height: 120px;
+            .metronome-controls{
+                padding: 20px;
+
+                display: block;
+            }
+        }
+
+        .metronome-controls{
+            display: none;
+        }
     }
 
     .pnl-time {
