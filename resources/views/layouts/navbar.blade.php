@@ -10,10 +10,13 @@
       </button>
       <a class="navbar-brand btn-nav-toggle" href="#" title="Toggle Navigation"><i class="fa fa-bars"></i></a>
       <ul class="nav navbar-nav">
-          <li class="page-title"><a href="#">@yield('title')</a></li>
+          <li class="page-title">@yield('title')</li>
       </ul>
     </div>
     <div class="navbar-middle">
+        <ul class="nav navbar-nav">
+            <li><a href="/"><i class="fa fa-home"></i></a></li>
+        </ul>
         @yield('navbar-middle')
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
