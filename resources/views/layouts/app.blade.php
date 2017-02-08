@@ -29,9 +29,6 @@
             <div class="row">
 
                 <div class="col-md-12">
-                    <div class="title--page">
-
-                    </div>
                     @if (Session::has('message'))
                         <div class="flash alert alert-success">
                           <p>{{ Session::get('message') }}</p>
