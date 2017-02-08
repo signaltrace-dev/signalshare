@@ -21,6 +21,20 @@ $(document).ready(function() {
             time: 0,
         },
         computed: {
+            playIconClass: function(){
+                var iconClass = 'fa fa-play';
+                if(this.playing || this.recording){
+                    iconClass = 'fa fa-stop';
+                }
+                return iconClass;
+            },
+            recordIconClass: function(){
+                var iconClass = 'fa fa-circle';
+                if(this.playing || this.recording){
+                    iconClass = 'fa fa-stop';
+                }
+                return iconClass;
+            },
             playing: function(){
                 return this.tracksPlaying > 0;
             },
