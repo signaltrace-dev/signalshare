@@ -10,7 +10,7 @@
       </button>
       <a class="navbar-brand btn-nav-toggle" href="#" title="Toggle Navigation"><i class="fa fa-bars"></i></a>
       <ul class="nav navbar-nav">
-          <li><a href="#">@yield('title')</a></li>
+          <li class="page-title"><a href="#">@yield('title')</a></li>
       </ul>
     </div>
     <div class="navbar-middle">
@@ -23,7 +23,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $user->name }} <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
+                <li><a href="#">My Profile</a></li>
                 <li role="separator" class="divider"></li>
                 <li>@include('partials/_logout')</li>
               </ul>
