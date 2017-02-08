@@ -243,7 +243,9 @@ $(document).ready(function() {
 
     $('#btn-metronome').on('click', function(){
         $(this).toggleClass('btn-success');
-        $('.metronome').toggleClass('hidden');
+        $(this).toggleClass('on');
+
+        $('.metronome').toggleClass('visible');
         signalsharePlayer.metronomeOn = !signalsharePlayer.metronomeOn;
     });
 
