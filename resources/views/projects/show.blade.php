@@ -9,9 +9,7 @@
 @endsection
 
 @section('content')
-    <a class="btn btn-default" href='{{ route("projects.settings.edit", $project->slug) }}'><i class='fa fa-gear'></i>&nbsp;Settings</a>
-
-    @include('taxonomies.tags.partials.tag_list', ['project' => $project])
+    @include('projects.partials.nav', ['project' => $project])
 
     <script type="text/javascript" src="{{ URL::asset('js/tracks.js') }}"></script>
     <script type="text/javascript">

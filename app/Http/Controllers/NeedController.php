@@ -191,7 +191,14 @@ class NeedController extends Controller
 
         if($target_obj != NULL && method_exists($target_obj, 'needs')){
             $needs = $target_obj->needs()->get();
-            return Response::json($needs);
+            if($request->ajax()){
+                return Response::json($needs);
+            }
+
+            if($controller == 'projects'){
+                $project = $target_obj;
+                return view('projects.needs', compact('project'));
+            }
         }
     }
 }

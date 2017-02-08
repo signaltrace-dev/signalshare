@@ -5,6 +5,8 @@
 @endsection
 
 @section('content')
+    @include('projects.partials.nav', ['project' => $project])
+    
     <script type="text/javascript">
     $(document).ready(function(){
         $( "#modal-delete-project" ).on('shown.bs.modal', function(){
@@ -20,7 +22,6 @@
 
 
     </script>
-    <script type="text/javascript" src="{{ URL::asset('js/tags.js') }}"></script>
 
     <form action='{{ route("projects.settings.update", $project->slug, $settings->id) }}' method="POST">
         {{ method_field('PATCH') }}
@@ -28,10 +29,7 @@
         <input type="text" name="name"  placeholder="Name" value="{{ $project->name }}" />
         <button type="submit" name="button" class="btn btn-success">Save Settings</button>
     </form>
-    <div id="tagger">
-        @include('taxonomies.tags.forms.tag_picker', ['project' => $project])
-        @include('needs.forms.need_tagger', ['project' => $project])
-    </div>
+
     <button type="button" name="btn-modal" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-project">Delete This Project</button>
     <div class="modal fade" id='modal-delete-project'>
       <div class="modal-dialog">
