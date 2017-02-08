@@ -12,7 +12,7 @@
             </div>
 
             <input ref="searchBox" type="text" name="tagname" v-model="searchText" v-on:keyup.enter="attach" v-on:keyup="search" id="txt-tag-search">
-            <button class="btn btn-success" id="btn-attach-tag" v-on:click="attach" name="button">Assign {{ this.titleSingular }}</button>
+            <button class="btn btn-success" id="btn-attach-tag" v-on:click="attach" name="button">Add</button>
         </div>
     </div>
 </template>
