@@ -9,8 +9,10 @@
 
     @include('projects.partials.nav', ['project' => $project])
 
-    <div id="tagger">
-        @include('needs.forms.need_tagger', ['project' => $project])
+    <div class="row row-content">
+        <div id="tagger">
+            @include('needs.forms.need_tagger', ['project' => $project])
+        </div>
     </div>
 
 @endsection

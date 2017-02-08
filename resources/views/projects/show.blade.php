@@ -16,16 +16,17 @@
         signalsharePlayer.project = "{{ $project->slug }}";
     </script>
 
-    <div id="pnl-project-tracks">
-        @if ( count($project->tracks) == 0 )
-            <div class='alert alert-warning'>Hey, it looks like this project doesn't have any tracks yet. Get cracking!</div>
-        @endif
-        @include('tracks/forms/add_tracks', ['submit_text' => 'Create Track', 'project' => $project, 'action' => route("projects.tracks.store", $project->slug)])
-        <div class='track-list' id="track-list">
-            @foreach( $project->tracks as $track)
-                  @include('tracks/show', ['track' => $track, 'project' => $project])
-            @endforeach
+    <div class="row row-content">
+        <div id="pnl-project-tracks">
+            @if ( count($project->tracks) == 0 )
+                <div class='alert alert-warning'>Hey, it looks like this project doesn't have any tracks yet. Get cracking!</div>
+            @endif
+            @include('tracks/forms/add_tracks', ['submit_text' => 'Create Track', 'project' => $project, 'action' => route("projects.tracks.store", $project->slug)])
+            <div class='track-list' id="track-list">
+                @foreach( $project->tracks as $track)
+                      @include('tracks/show', ['track' => $track, 'project' => $project])
+                @endforeach
+            </div>
         </div>
-
     </div>
 @endsection
