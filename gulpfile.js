@@ -1,5 +1,9 @@
 const elixir = require('laravel-elixir');
 
+var rename = require('gulp-rename');
+var path = require('path');
+var glob = require('glob');
+var sass = require('gulp-sass');
 require('laravel-elixir-vue-2');
 
 /*
@@ -33,4 +37,15 @@ elixir((mix) => {
        .scripts([
            'tracks/metronomeworker.js',
        ], 'public/js/workers/metronomeworker.js');
+});
+
+// Build individual stylesheets for themes
+var themes = glob.sync('resources/assets/sass/themes/*').map(function(themeDir) {
+    return path.basename(themeDir);
+});
+
+themes.forEach(function(name) {
+    elixir((mix) => {
+        mix.sass('themes/' + name + '/theme.scss', 'public/css/themes/' + name + '.css');
+    });
 });

@@ -1,0 +1,25 @@
+body {
+  background: #565656;
+  color: #fff;
+}
+
+.navbar-default {
+  background: #2b2b2b;
+  border-color: #000;
+}
+
+.track-item wave {
+  background: #000;
+}
+
+.project-track.loaded {
+  background: #000;
+}
+
+.navbar-default .navbar-brand,
+.navbar-nav .page-title,
+.navbar-default .navbar-nav > li > a {
+  color: #fff;
+}
+
+/*# sourceMappingURL=draven.css.map */
