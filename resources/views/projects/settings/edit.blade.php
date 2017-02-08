@@ -1,12 +1,12 @@
 @extends('layouts/app')
 
 @section('title')
-    Project Settings for <em>{{ $project->name }}</em>
+    {{ $project->name }} - Settings
 @endsection
 
 @section('content')
     @include('projects.partials.nav', ['project' => $project])
-    
+
     <script type="text/javascript">
     $(document).ready(function(){
         $( "#modal-delete-project" ).on('shown.bs.modal', function(){
