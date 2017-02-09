@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Request;
 use App\User;
+use App\Profile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -76,6 +77,9 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'last_login' => date("Y-m-d H:i:s", $now)
         ]);
+
+        $profile = new Profile();
+        $user->profile()->save($profile);
 
         return $user;
     }
