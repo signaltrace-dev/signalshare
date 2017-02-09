@@ -30,7 +30,25 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        $request->session()->flash('message', 'Hey ' . $user->name . ', good to see you!');
+        // Show a message depending on when the user last logged in
+        $now = time();
+        $message = trans('auth.welcome', ['name' => $user->name]);
+
+        if(!empty($user->last_login))
+        {
+            $six_months_ago = strtotime('-6 months');
+            $last_login = strtotime($user->last_login);
+            if($last_login <= $six_months_ago)
+            {
+                $message = trans('auth.welcomelong', ['name' => $user->name]);
+            }
+        }
+
+        // Set last_login timestamp
+        $user->last_login = date("Y-m-d H:i:s", $now);
+        $user->save();
+
+        $request->session()->flash('message', $message);
     }
 
     /**
