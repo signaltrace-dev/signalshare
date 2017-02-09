@@ -7721,6 +7721,21 @@ button.close {
   background: #d9edf7;
 }
 
+.main-content {
+  margin-top: 50px;
+  padding-top: 50px;
+  max-width: 1200px;
+}
+
+.main-content .row-content {
+  padding: 20px;
+  background: white;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  min-height: 250px;
+}
+
 .title--page {
   border-bottom: 1px solid #d3e0e9;
   padding: 0 0 10px 20px;
@@ -7735,6 +7750,38 @@ button.close {
   margin-left: 20px;
 }
 
+.nav-secondary {
+  font-size: 12px;
+}
+
+.nav-secondary > li.active > a {
+  background: white;
+}
+
+.nav-secondary > li.active > a:hover {
+  background: white;
+}
+
+.navbar-nav .page-title {
+  color: #777;
+  padding: 14px 15px;
+  line-height: 22px;
+  position: relative;
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.navbar-middle {
+  position: absolute;
+  left: 50%;
+}
+
+.navbar-middle .navbar-nav i {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .panel-brand {
   border-color: #d3e0e9;
 }
@@ -7745,11 +7792,44 @@ button.close {
   color: #fff;
 }
 
-.player .metronome {
-  background: aliceblue;
-  padding: 20px;
-  border-radius: 0 0 4px 4px;
+.player {
   display: inline-block;
+  margin-left: 50px;
+}
+
+.player .btn-metronome.on {
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+  border-radius: 4px 4px 0 0;
+}
+
+.player .metronome {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  position: absolute;
+  height: 0;
+  overflow-y: hidden;
+  overflow: hidden;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: .25s;
+  transition-duration: .25s;
+  -webkit-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.player .metronome.visible {
+  height: 120px;
+}
+
+.player .metronome.visible .metronome-controls {
+  padding: 20px;
+  display: block;
+}
+
+.player .metronome .metronome-controls {
+  display: none;
 }
 
 .player .pnl-time {
@@ -7799,10 +7879,8 @@ h1, h2, h3, h4, h5, .btn, a, body, p, span, div {
 }
 
 .controls {
-  background: #385A6B;
-  padding: 10px;
+  padding: 8px;
   border-radius: 8px;
-  width: 50%;
   margin: 0 auto;
 }
 
@@ -7871,13 +7949,30 @@ input[type=text], textarea {
 }
 
 .sidebar {
-  height: 100vh;
+  height: 100%;
   background: #385A6B;
   color: #fff;
+  position: absolute;
+  z-index: 9999;
+  width: 0;
+  left: 0;
+  overflow: hidden;
+  top: 0;
+  -webkit-transition: width .15s ease-in-out;
+  transition: width .15s ease-in-out;
+}
+
+.sidebar.expanded {
+  width: 250px;
+}
+
+.sidebar .wrapper-button {
+  height: 50px;
 }
 
 .sidebar .pnl-badge {
   max-width: 100px;
+  width: 100px;
   margin: 20px auto;
 }
 

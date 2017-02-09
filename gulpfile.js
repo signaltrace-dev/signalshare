@@ -1,5 +1,7 @@
 const elixir = require('laravel-elixir');
 
+var path = require('path');
+var glob = require('glob');
 require('laravel-elixir-vue-2');
 
 /*
@@ -13,6 +15,11 @@ require('laravel-elixir-vue-2');
  |
  */
 
+// Get any additional themes
+ var themes = glob.sync('resources/assets/sass/themes/*').map(function(themeDir) {
+     return path.basename(themeDir);
+ });
+
 elixir((mix) => {
     mix.sass('app.scss')
        .webpack('app.js')
@@ -20,6 +27,7 @@ elixir((mix) => {
        .scripts([
            'vendor/pluralize.js',
            'vendor/awesomplete.min.js',
+           'ui/menu.js',
        ], 'public/js/signalshare.js')
        .scripts([
            'vendor/dropzone.js',
@@ -32,4 +40,9 @@ elixir((mix) => {
        .scripts([
            'tracks/metronomeworker.js',
        ], 'public/js/workers/metronomeworker.js');
+
+       // Build individual stylesheets for themes
+       themes.forEach(function(name) {
+           mix.sass('themes/' + name + '/theme.scss', 'public/css/themes/' + name + '.css');
+       });
 });

@@ -103,6 +103,6 @@ class ProjectController extends Controller
 
       }
 
-      return view('tags.forms.tag_list', compact('project'));
+      return view('projects.tags', compact('project'));
   }
 }

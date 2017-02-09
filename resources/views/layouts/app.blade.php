@@ -21,16 +21,14 @@
         </script>
     </head>
     <body class="{{$classes}}">
-        <div class="container-fluid">
-            <div class="row">
-                @include('layouts/sidebar')
+        @include('layouts.navbar')
+        @include('layouts.sidebar')
 
-                <div class="col-md-10">
-                    <div class="title--page">
-                        <h1>
-                            @yield('title')
-                        </h1>
-                    </div>
+        <div class="main-content container-fluid">
+
+            <div class="row">
+
+                <div class="col-md-12">
                     @if (Session::has('message'))
                         <div class="flash alert alert-success">
                           <p>{{ Session::get('message') }}</p>
