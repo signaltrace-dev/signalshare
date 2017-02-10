@@ -50,7 +50,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'username' => 'required|max:255',
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -64,7 +66,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $message = trans('auth.welcomefirst', ['name' => $data['name']]);
+        $message = trans('auth.welcomefirst', ['name' => $data['first_name']]);
 
         $request = Request::instance();
         $request->session()->flash('message', $message);
@@ -72,13 +74,15 @@ class RegisterController extends Controller
         $now = time();
 
         $user = User::create([
-            'name' => $data['name'],
+            'name' => $data['username'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'last_login' => date("Y-m-d H:i:s", $now)
         ]);
 
         $profile = new Profile();
+        $profile->first_name = $data['first_name'];
+        $profile->last_name = $data['last_name'];
         $user->profile()->save($profile);
 
         return $user;
