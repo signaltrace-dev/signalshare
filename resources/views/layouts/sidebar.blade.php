@@ -6,7 +6,7 @@
         @yield('sidebar', 'Sidebar')
     @else
         <div class="btn-group-vertical sidenav" role="group" aria-label="Main navigation">
-            <a href="{{ route('projects.index') }}" class="btn btn-default {{ strpos(Route::currentRouteName(), 'projects') === 0 ? 'active' : '' }}">Projects</a>
+            <a href="{{ route('projects.my') }}" class="btn btn-default {{ strpos(Route::currentRouteName(), 'projects') === 0 ? 'active' : '' }}">Projects</a>
             <a href="{{ route('tracks.index') }}" class="btn btn-default {{ strpos(Route::currentRouteName(), 'tracks') === 0 ? 'active' : '' }}">Tracks</a>
             <a href="{{ route('taxonomies.index') }}" class="btn btn-default {{ strpos(Route::currentRouteName(), 'taxonomies') === 0 ? 'active' : '' }}">Taxonomies</a>
         </div>
