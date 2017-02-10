@@ -27,6 +27,8 @@
               <a href="#" class="dropdown-toggle user-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   @if (!empty($user->profile->image_url))
                       <img class="user-badge" src="{{ $user->profile->image_url }}"/>
+                  @else
+                      <i class="fa fa-user-circle user-badge"></i>
                   @endif
                   {{ $user->name }}
                   <span class="caret"></span>
