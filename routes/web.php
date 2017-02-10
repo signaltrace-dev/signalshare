@@ -60,6 +60,11 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('needs/detach', ['as' => 'needs.detach', 'uses' => 'NeedController@detach']);
 	Route::get('projects/{project}/needs', ['as' => 'projects.needs', 'uses' => 'NeedController@get']);
 
+	// Profiles
+	Route::get('profile/edit', ['as' => 'profile.edit.my', 'uses' => 'ProfileController@editOwn']);
+	Route::patch('profile/edit', ['as' => 'profile.update.my', 'uses' => 'ProfileController@update']);
+	Route::get('profile/{profile}/edit', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
+	Route::patch('profile/{profile}/edit', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 
 });
 
