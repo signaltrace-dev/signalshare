@@ -5,7 +5,7 @@
 @endsection
 
 @section('pagenav')
-    @include('projects.partials.nav', ['project' => $project])
+    @include('projects.navs.singleproject', ['project' => $project])
 @endsection
 
 @section('content')
