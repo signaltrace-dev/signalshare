@@ -24,9 +24,15 @@
       <ul class="nav navbar-nav navbar-right">
           @if (Auth::check())
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $user->name }} <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle user-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  @if (!empty($user->profile->image_url))
+                      <img class="user-badge" src="{{ $user->profile->image_url }}"/>
+                  @endif
+                  {{ $user->name }}
+                  <span class="caret"></span>
+              </a>
               <ul class="dropdown-menu">
-                <li><a href="#">My Profile</a></li>
+                <li><a href="/profile/edit"><i class="fa fa-user-circle"></i>&nbsp;My Profile</a></li>
                 <li role="separator" class="divider"></li>
                 <li>@include('partials/_logout')</li>
               </ul>
