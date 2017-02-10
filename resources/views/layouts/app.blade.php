@@ -40,7 +40,11 @@
                         @endforeach
                     </div>
                     @hasSection('pagenav')
-                        @yield('pagenav')
+                        <div class="row">
+                            <ul class="nav nav-tabs nav-secondary">
+                                @yield('pagenav')
+                            </ul>
+                        </div>
                         <div class="row row-content has-nav">
                     @else
                         <div class="row row-content">
