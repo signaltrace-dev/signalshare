@@ -13,8 +13,12 @@ class Profile extends Model
 
     public function getImageUrlAttribute($value)
     {
-        $base_path = config('settings.profile_image_base');
-        return $base_path . $value;
+        if(!empty($value))
+        {
+            $base_path = config('settings.profile_image_base');
+            return $base_path . $value;
+        }
+        return $value;
     }
 
     public function title(){
