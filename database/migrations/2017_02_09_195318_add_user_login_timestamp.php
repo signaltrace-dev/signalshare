@@ -26,7 +26,7 @@ class AddUserLoginTimestamp extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('last_login');
+            $table->dropColumn('last_login');
         });
     }
 }
