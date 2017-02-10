@@ -22,6 +22,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/', 'DashboardController@index');
 
 	// Projects
+	Route::get('projects/my', ['as' => 'projects.my', 'uses' => 'ProjectController@indexOwned']);
+	
 	Route::resource('projects', 'ProjectController');
 	Route::get('projects/{project}/settings', ['as' => 'projects.settings.edit', 'uses' => 'ProjectSettingsController@edit']);
 	Route::patch('projects/{project}/settings', ['as' => 'projects.settings.update', 'uses' => 'ProjectSettingsController@update']);
