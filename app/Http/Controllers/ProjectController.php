@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Project;
 use Redirect;
 use Response;
@@ -14,6 +15,13 @@ class ProjectController extends Controller
   {
     $projects = Project::all();
     return view('projects.index', compact('projects'));
+  }
+
+  public function indexOwned()
+  {
+      $user = Auth::user();
+      $projects = Project::where('owner_id', $user->id)->get();
+      return view('projects.owned', compact('projects', 'user'));
   }
 
   /**
@@ -73,7 +81,7 @@ class ProjectController extends Controller
     $project->owner_id = $request->user()->id;
     $project->save();
 
-    return Redirect::route('projects.index')->with('message', 'Created new project ' . $project->name . '!');
+    return redirect()->back()->with('message', 'Created new project ' . $project->name . '!');
   }
 
   public function update(Request $request, Project $project)

@@ -12,7 +12,7 @@ class CreateBaseTables extends Migration
      */
     public function up()
     {
-        Schema::create('user_profiles', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->integer('user_id')->unsigned()->default(0);
@@ -78,7 +78,7 @@ class CreateBaseTables extends Migration
         Schema::drop('tracks');
         Schema::drop('projects');
         Schema::drop('project_track');
-        Schema::drop('user_profiles');
+        Schema::drop('profiles');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 

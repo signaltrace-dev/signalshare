@@ -39,7 +39,18 @@
                             <p>{{ $error }}</p>
                         @endforeach
                     </div>
-                    @yield('content')
+                    @hasSection('pagenav')
+                        <div class="row">
+                            <ul class="nav nav-tabs nav-secondary">
+                                @yield('pagenav')
+                            </ul>
+                        </div>
+                        <div class="row row-content has-nav">
+                    @else
+                        <div class="row row-content">
+                    @endif
+                        @yield('content')
+                    </div>
                 </div>
             </div>
         </div>

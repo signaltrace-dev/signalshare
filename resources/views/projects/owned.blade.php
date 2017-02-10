@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    All Projects
+    My Projects
 @endsection
 
 @section('pagenav')
@@ -11,7 +11,7 @@
 @section('content')
     @if ( !$projects->count() )
       <div class='alert alert-warning'>
-        There aren't any projects...yet.
+        Hey {{$user->profile->first_name}}, it looks like you don't have any projects yet. Hop to it!
       </div>
     @else
       <div class="list-group project-list">

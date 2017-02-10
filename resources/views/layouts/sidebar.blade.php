@@ -5,10 +5,10 @@
     @hasSection('sidebar')
         @yield('sidebar', 'Sidebar')
     @else
-        <ul class="list-group">
-            <li class="list-group-item"><a href="{{ route('projects.index') }}" class="{{ strpos(Route::currentRouteName(), 'projects') === 0 ? 'active' : '' }}">Projects</a></li>
-            <li class="list-group-item"><a href="{{ route('tracks.index') }}" class="{{ strpos(Route::currentRouteName(), 'tracks') === 0 ? 'active' : '' }}">Tracks</a></li>
-            <li class="list-group-item"><a href="{{ route('taxonomies.index') }}" class="{{ strpos(Route::currentRouteName(), 'taxonomies') === 0 ? 'active' : '' }}">Taxonomies</a></li>
-        </ul>
+        <div class="btn-group-vertical sidenav" role="group" aria-label="Main navigation">
+            <a href="{{ route('projects.my') }}" class="btn btn-default {{ strpos(Route::currentRouteName(), 'projects') === 0 ? 'active' : '' }}">Projects</a>
+            <a href="{{ route('tracks.index') }}" class="btn btn-default {{ strpos(Route::currentRouteName(), 'tracks') === 0 ? 'active' : '' }}">Tracks</a>
+            <a href="{{ route('taxonomies.index') }}" class="btn btn-default {{ strpos(Route::currentRouteName(), 'taxonomies') === 0 ? 'active' : '' }}">Taxonomies</a>
+        </div>
     @endif
 </div>

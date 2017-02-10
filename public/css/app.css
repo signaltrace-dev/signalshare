@@ -7730,10 +7730,15 @@ button.close {
 .main-content .row-content {
   padding: 20px;
   background: white;
+  border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   min-height: 250px;
+}
+
+.main-content .row-content.has-nav {
+  border-top: none;
 }
 
 .title--page {
@@ -7770,6 +7775,18 @@ button.close {
   display: block;
   font-size: 18px;
   font-weight: bold;
+}
+
+.navbar-nav .user-badge {
+  border-radius: 50%;
+  height: 40px;
+  font-size: 40px;
+  margin-right: 5px;
+}
+
+.navbar-nav .user-dropdown {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .navbar-middle {
@@ -7964,6 +7981,11 @@ input[type=text], textarea {
 
 .sidebar.expanded {
   width: 250px;
+  border-right: 2px solid #354b56;
+}
+
+.sidebar .navbar-brand {
+  color: #fff;
 }
 
 .sidebar .wrapper-button {
@@ -7994,6 +8016,11 @@ input[type=text], textarea {
 .sidebar .list-group a.active {
   background: #f0f8ff;
   font-weight: 800;
+}
+
+.sidebar .sidenav {
+  padding: 10px 20px;
+  width: 100%;
 }
 
 .tag {
