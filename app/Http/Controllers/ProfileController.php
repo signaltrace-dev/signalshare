@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
@@ -79,6 +80,12 @@ class ProfileController extends Controller
      */
     public function update(Request $request, Profile $profile)
     {
+        $user = $profile->user;
+        $this->validate($request, [
+            'email' => 'required|max:255',
+            Rule::unique('users')->ignore($user->id),
+        ]);
+
         $profile->first_name = $request->input('first_name', $profile->first_name);
         $profile->last_name = $request->input('last_name', $profile->last_name);
         $profile->city = $request->input('city', $profile->city);
