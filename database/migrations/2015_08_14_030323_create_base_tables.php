@@ -78,7 +78,7 @@ class CreateBaseTables extends Migration
         Schema::drop('tracks');
         Schema::drop('projects');
         Schema::drop('project_track');
-        Schema::drop('user_profiles');
+        Schema::drop('profiles');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
