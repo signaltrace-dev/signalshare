@@ -7,6 +7,7 @@ use App\Need;
 use Redirect;
 use Response;
 use App\TaggerFactory;
+use App\User;
 use DB;
 
 class NeedController extends Controller
@@ -181,7 +182,7 @@ class NeedController extends Controller
         return Response::json($results);
     }
 
-    public function get(Request $request, $target_id)
+    public function get(Request $request, User $user, $target_id)
     {
         $path = $request->path();
         $path_arr = explode('/', $path);

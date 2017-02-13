@@ -22,11 +22,16 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/', 'DashboardController@index');
 
 	// Projects
-	Route::get('projects/my', ['as' => 'projects.my', 'uses' => 'ProjectController@indexOwned']);
-	
-	Route::resource('projects', 'ProjectController');
-	Route::get('projects/{project}/settings', ['as' => 'projects.settings.edit', 'uses' => 'ProjectSettingsController@edit']);
-	Route::patch('projects/{project}/settings', ['as' => 'projects.settings.update', 'uses' => 'ProjectSettingsController@update']);
+	Route::get('projects/my', ['as' => 'projects.my', 'uses' => 'ProjectController@my']);
+	Route::get('projects/{user}', ['as' => 'projects.user', 'uses' => 'ProjectController@indexOwned']);
+	Route::get('projects', ['as' => 'projects.index', 'uses' => 'ProjectController@index']);
+	Route::post('projects', ['as' => 'projects.store', 'uses' => 'ProjectController@store']);
+	Route::get('projects/{user}/{slug}', ['as' => 'projects.show', 'uses' => 'ProjectController@show']);
+	Route::get('projects/{user}/{slug}/tags', ['as' => 'projects.tags', 'uses' => 'ProjectController@getTags']);
+	Route::delete('projects/{user}/{slug}', ['as' => 'projects.destroy', 'uses' => 'ProjectController@destroy']);
+	//Route::resource('projects', 'ProjectController');
+	Route::get('projects/{user}/{slug}/settings', ['as' => 'projects.settings.edit', 'uses' => 'ProjectSettingsController@edit']);
+	Route::patch('projects/{user}/{slug}/settings', ['as' => 'projects.settings.update', 'uses' => 'ProjectSettingsController@update']);
 
 	// Tracks
 	Route::resource('projects.tracks', 'TrackController');
@@ -45,7 +50,6 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('tags/search/autocomplete', ['as' => 'tags.autocomplete', 'uses' => 'TagController@autocomplete']);
 	Route::post('tags/attach', ['as' => 'tags.attach', 'uses' => 'TagController@attach']);
 	Route::post('tags/detach', ['as' => 'tags.detach', 'uses' => 'TagController@detach']);
-	Route::get('projects/{project}/tags', ['as' => 'projects.tags', 'uses' => 'ProjectController@getTags']);
 
 	// Taxonomies
 	Route::get('taxonomies', ['as' => 'taxonomies.index', 'uses' => 'TaxonomyController@index']);
@@ -60,7 +64,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('needs/search/autocomplete', ['as' => 'needs.autocomplete', 'uses' => 'NeedController@autocomplete']);
 	Route::post('needs/attach', ['as' => 'needs.attach', 'uses' => 'NeedController@attach']);
 	Route::post('needs/detach', ['as' => 'needs.detach', 'uses' => 'NeedController@detach']);
-	Route::get('projects/{project}/needs', ['as' => 'projects.needs', 'uses' => 'NeedController@get']);
+	Route::get('projects/{user}/{project}/needs', ['as' => 'projects.needs', 'uses' => 'NeedController@get']);
 
 	// Profiles
 	Route::get('profile/edit', ['as' => 'profile.edit.my', 'uses' => 'ProfileController@editOwn']);

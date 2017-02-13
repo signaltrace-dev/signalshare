@@ -25,7 +25,7 @@
 
     </script>
 
-    <form action='{{ route("projects.settings.update", $project->slug, $settings->id) }}' method="POST" class="form-inline">
+    <form action='{{ route("projects.settings.update", ['user' => $user, 'project' => $project->slug]) }}' method="POST" class="form-inline">
         {{ method_field('PATCH') }}
         {{ csrf_field() }}
         <div class="form-group">
@@ -46,7 +46,7 @@
             <h4 class="modal-title">Delete This Project?</h4>
           </div>
           <div class="modal-body">
-              <form action='{{ route("projects.destroy", $project->slug) }}' method="POST">
+              <form action='{{ route("projects.destroy", ['project' => $project, 'user' => $user]) }}' method="POST">
                   {{ method_field('DELETE') }}
                   {{ csrf_field() }}
                   <p>

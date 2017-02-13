@@ -16,7 +16,7 @@
     @else
       <div class="list-group project-list">
           @foreach( $projects as $project )
-              <a class="list-group-item" href="{{ route('projects.show', $project->slug) }}">
+              <a class="list-group-item" href="{{ route('projects.show', ['slug' => $project->slug, 'username' => $project->owner->name]) }}">
                   {{ $project->name }}
                   @if ($project->totalTracks() > 0)
                       <span class="badge badge-success">{{ $project->totalTracks() }} {{ $project->totalTracks() > 1 ? 'tracks' : 'track' }} </span>

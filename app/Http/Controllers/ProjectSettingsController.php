@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Project;
 use App\ProjectSettings;
+use App\User;
 
 class ProjectSettingsController extends Controller
 {
-    public function edit(Project $project, ProjectSettings $settings){
+    public function edit(User $user, $slug, ProjectSettings $settings){
+        $project = Project::where(['owner_id' => $user->id, 'slug' => $slug])->get()->first();
+        
         return view('projects.settings.edit', compact('project', 'settings'));
     }
 

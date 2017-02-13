@@ -123,7 +123,7 @@ export default {
         },
         getTags: function(){
             var tagger = this;
-            var url = '/' + this.targettype + '/' + this.target.slug + '/' + this.tagtype;
+            var url = '/' + this.targettype + '/' + this.target.owner.name + '/' + this.target.slug + '/' + this.tagtype;
             $.ajax({
                 url: url,
                 type: 'GET',
