@@ -32,7 +32,7 @@ class LoginController extends Controller
     {
         // Show a message depending on when the user last logged in
         $now = time();
-        $message = trans('auth.welcome', ['name' => $user->name]);
+        $message = trans('auth.welcome', ['name' => $user->profile->first_name]);
 
         if(!empty($user->last_login))
         {
@@ -40,7 +40,7 @@ class LoginController extends Controller
             $last_login = strtotime($user->last_login);
             if($last_login <= $six_months_ago)
             {
-                $message = trans('auth.welcomelong', ['name' => $user->name]);
+                $message = trans('auth.welcomelong', ['name' => $user->profile->first_name]);
             }
         }
 

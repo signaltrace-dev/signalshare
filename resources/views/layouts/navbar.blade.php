@@ -30,7 +30,7 @@
                   @else
                       <i class="fa fa-user-circle user-badge"></i>
                   @endif
-                  {{ $user->name }}
+                  {{ $user->profile->title() }}
                   <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
