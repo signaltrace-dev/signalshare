@@ -7755,6 +7755,10 @@ button.close {
   border-top: none;
 }
 
+.lower {
+  text-transform: lowercase;
+}
+
 .title--page {
   border-bottom: 1px solid #d3e0e9;
   padding: 0 0 10px 20px;
