@@ -89,4 +89,8 @@ class Project extends Model
           ->withPivot('user_id')
           ->withTimestamps();
     }
+
+    public function owner(){
+        return $this->belongsTo('App\User', 'owner_id');
+    }
 }
