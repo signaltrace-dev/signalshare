@@ -25,7 +25,7 @@ class ViewComposerServiceProvider extends ServiceProvider
             $view->with('classes', trim($classes));
         });
 
-        view()->composer('layouts.navbar', function($view){
+        view()->composer('*', function($view){
             $view->with('user', \Auth::user());
         });
     }
