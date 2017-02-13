@@ -7721,6 +7721,20 @@ button.close {
   background: #d9edf7;
 }
 
+.btn-brand {
+  background: #51B180;
+  color: #fff;
+}
+
+.btn-brand:hover {
+  background: #48a173;
+  color: #fafafa;
+}
+
+.btn-brand.active {
+  background: #408f67;
+}
+
 .main-content {
   margin-top: 50px;
   padding-top: 50px;
@@ -7850,9 +7864,9 @@ button.close {
 }
 
 .player .pnl-time {
-  background: black;
-  padding: 5px;
-  color: #6df96d;
+  background: #40618a;
+  padding: 9px 15px;
+  color: #fff;
   text-align: center;
   font-family: 'Aldrich', sans-serif;
 }

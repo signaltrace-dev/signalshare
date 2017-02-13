@@ -32,3 +32,17 @@
         background: $bg-info;
     }
 }
+
+.btn-brand{
+    background: $bg-brand;
+    color: #fff;
+
+    &:hover{
+        background: darken($bg-brand, 5%);
+        color: #fafafa;
+    }
+    &.active{
+        background: darken($bg-brand, 10%);
+
+    }
+}
