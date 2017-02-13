@@ -36,4 +36,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Profile');
     }
+
+    public function roles(){
+        return $this->belongsToMany('App\Role')
+          ->withPivot('user_id');
+    }
 }

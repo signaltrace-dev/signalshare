@@ -34,7 +34,7 @@
                   <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="/profile/edit"><i class="fa fa-user-circle"></i>&nbsp;My Profile</a></li>
+                <li><a href="{{ route('people.me') }}"><i class="fa fa-user-circle"></i>&nbsp;My Profile</a></li>
                 <li role="separator" class="divider"></li>
                 <li>@include('partials/_logout')</li>
               </ul>

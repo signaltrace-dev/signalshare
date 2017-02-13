@@ -16,14 +16,20 @@
     @else
       <div class="list-group project-list">
           @foreach( $projects as $project )
-              <a class="list-group-item" href="{{ route('projects.show', ['slug' => $project->slug, 'username' => $project->owner->name]) }}">
+              <div class="list-group-item">
+              <a href="{{ route('projects.show', ['slug' => $project->slug, 'username' => $project->owner->name]) }}">
                   {{ $project->name }}
+              </a>
+
+                  <span class="lbl-owner">
+                      (by <a href="{{ route('projects.user', ['user' => $project->owner]) }}">{{ $project->owner->name }}</a>)
+                  </span>
                   @if ($project->totalTracks() > 0)
                       <span class="badge badge-success">{{ $project->totalTracks() }} {{ $project->totalTracks() > 1 ? 'tracks' : 'track' }} </span>
                   @else
                       <span class="badge badge-danger">0 tracks</span>
                   @endif
-              </a>
+              </div>
           @endforeach
       </div>
     @endif

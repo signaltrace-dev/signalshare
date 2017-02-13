@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-    My Projects
+    @if ($owned_by_current_user)
+        My Projects
+    @else
+        {{ $project_user->name }}'s Projects
+    @endif
 @endsection
 
 @section('pagenav')
@@ -11,7 +15,11 @@
 @section('content')
     @if ( !$projects->count() )
       <div class='alert alert-warning'>
-        Hey {{$user->profile->first_name}}, it looks like you don't have any projects yet. Hop to it!
+          @if ($owned_by_current_user)
+              Hey {{$user->profile->first_name}}, it looks like you don't have any projects yet. Hop to it!
+          @else
+              It looks like {{ $project_user->name }} hasn't created any projects yet. Lame.
+          @endif
       </div>
     @else
       <div class="list-group project-list">
@@ -28,5 +36,7 @@
       </div>
     @endif
 
-    @include('projects/forms/create_edit', ['submit_text' => 'Create Project', 'project' => '', 'form_action' => route("projects.store"), 'form_method' => 'POST'])
+    @if($owned_by_current_user)
+        @include('projects/forms/create_edit', ['submit_text' => 'Create Project', 'project' => '', 'form_action' => route("projects.store"), 'form_method' => 'POST'])
+    @endif
 @endsection

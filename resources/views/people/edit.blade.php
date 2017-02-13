@@ -4,8 +4,12 @@
     {{ $profile->title() }}
 @endsection
 
+@section('pagenav')
+    @include('people.navs.single', ['profile' => $profile])
+@endsection
+
 @section('content')
-    <form action='{{ route("profile.update", $profile->id) }}' method="POST" enctype="multipart/form-data" class="form-horizontal">
+    <form action='{{ route("people.update", $profile->user->name) }}' method="POST" enctype="multipart/form-data" class="form-horizontal">
         {{ method_field('PATCH') }}
         {{ csrf_field() }}
         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
