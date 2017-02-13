@@ -6,6 +6,7 @@ use App\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Validator;
 
 class ProfileController extends Controller
 {
@@ -81,16 +82,43 @@ class ProfileController extends Controller
     public function update(Request $request, Profile $profile)
     {
         $user = $profile->user;
-        $this->validate($request, [
-            'email' => 'required|max:255',
-            Rule::unique('users')->ignore($user->id),
-        ]);
+
+        $user = $request->user();
+
+        $rules = [
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email' => [
+                'email',
+                'required',
+                'max:255',
+                Rule::unique('users')->where(function ($query) use ($user){
+                    $query->where('id', '!=', $user->id);
+                }),
+            ],
+            'username' => [
+                'required',
+                'max:50',
+                Rule::unique('users', 'name')->where(function ($query) use ($user){
+                    $query->where('id', '!=', $user->id);
+                }),
+            ]
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
 
         $profile->first_name = $request->input('first_name', $profile->first_name);
         $profile->last_name = $request->input('last_name', $profile->last_name);
         $profile->city = $request->input('city', $profile->city);
         $profile->country = $request->input('country', $profile->country);
         $profile->bio = $request->input('bio', $profile->bio);
+        $user->name = $request->input('username', $user->name);
+        $user->email = $request->input('email', $user->email);
 
         if($request->hasFile('profile_image')){
             $file_path = base_path() . '/storage/app/public/profiles';
@@ -114,6 +142,7 @@ class ProfileController extends Controller
         }
 
         $profile->save();
+        $user->save();
 
         return redirect()->back()->with('message', 'Profile saved!');
     }

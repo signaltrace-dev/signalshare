@@ -18,7 +18,7 @@
                             <label for="first_name" class="col-md-4 control-label">First Name</label>
 
                             <div class="col-md-6">
-                                <input id="first_name" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                                <input id="first_name" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" placeholder="Robert" required autofocus>
 
                                 @if ($errors->has('first_name'))
                                     <span class="help-block">
@@ -32,7 +32,7 @@
                             <label for="last_name" class="col-md-4 control-label">Last Name</label>
 
                             <div class="col-md-6">
-                                <input id="last_name" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                                <input id="last_name" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" placeholder="Fripp" required autofocus>
 
                                 @if ($errors->has('last_name'))
                                     <span class="help-block">
@@ -46,7 +46,7 @@
                             <label for="username" class="col-md-4 control-label">User Name</label>
 
                             <div class="col-md-6">
-                                <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="johndoe" required autofocus>
+                                <input id="username" type="text" class="form-control lower" name="username" value="{{ old('username') }}" placeholder="kingcrimson" required autofocus pattern="[a-zA-Z0-9-]{4,25}">
 
                                 @if ($errors->has('username'))
                                     <span class="help-block">
@@ -60,7 +60,7 @@
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required placeholder="somebody@signaltrace.net">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
