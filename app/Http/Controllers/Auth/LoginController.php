@@ -32,7 +32,7 @@ class LoginController extends Controller
     {
         // Show a message depending on when the user last logged in
         $now = time();
-        $message = trans('auth.welcome', ['name' => $user->profile->first_name]);
+        $message = trans('auth.welcome', ['name' => !empty($user->profile) ? $user->profile->first_name : $user->name]);
 
         if(!empty($user->last_login))
         {
