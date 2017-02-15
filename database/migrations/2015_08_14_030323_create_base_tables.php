@@ -28,8 +28,8 @@ class CreateBaseTables extends Migration
             $table->timestamps();
             $table->string('name')->default('');
             $table->string('slug')->default('');
-            $table->integer('owner_id')->unsigned()->default(0);
-            $table->foreign('owner_id')->references('id')->on('users');
+            $table->integer('user_id')->unsigned()->default(0);
+            $table->foreign('user_id')->references('id')->on('users');
             $table->boolean('published')->default(false);
         });
 
@@ -38,8 +38,8 @@ class CreateBaseTables extends Migration
             $table->timestamps();
             $table->string('name')->default('');
             $table->string('slug')->default('');
-            $table->integer('owner_id')->unsigned()->default(0);
-            $table->foreign('owner_id')->references('id')->on('users');
+            $table->integer('user_id')->unsigned()->default(0);
+            $table->foreign('user_id')->references('id')->on('users');
         });
 
         Schema::create('audio_files', function (Blueprint $table) {
@@ -59,8 +59,8 @@ class CreateBaseTables extends Migration
             $table->integer('track_id')->unsigned()->default(0);
             $table->foreign('track_id')->references('id')->on('tracks');
             $table->string('name')->default('');
-            $table->integer('owner_id')->unsigned()->default(0);
-            $table->foreign('owner_id')->references('id')->on('users');
+            $table->integer('user_id')->unsigned()->default(0);
+            $table->foreign('user_id')->references('id')->on('users');
             $table->boolean('approved')->default(false);
         });
     }

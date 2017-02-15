@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             $track = Track::create([
               'name' => $faker->catchPhrase,
               'slug' => $faker->slug,
-              'owner_id' => factory(App\User::class)->create()->id,
+              'user_id' => factory(App\User::class)->create()->id,
               'project_id' => $faker->randomElement($projects),
             ]);
 
