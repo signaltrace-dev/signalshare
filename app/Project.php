@@ -94,5 +94,17 @@ class Project extends Model
         return $this->belongsTo('App\User', 'user_id');
     }
 
+    public function collaborators(){
+        // Users other than the project owner who own any tracks that are used in this project
+        //->unique('user_id')->toArray();//->unique('user_id')->toArray();//->except($this->user_id)->toArray();
+        $user_ids = [];
+        foreach($this->tracks as $key => $track){
+            if(!in_array($track->user_id, $user_ids) && $track->user_id != $this->user_id){
+                $user_ids[] = $track->user_id;
+            }
+        }
+        $users = \App\User::find($user_ids);
+
+        return $users;
     }
 }
