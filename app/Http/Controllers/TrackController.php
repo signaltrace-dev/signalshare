@@ -221,7 +221,7 @@ class TrackController extends Controller
             $track->delete();
         }
 
-    	return Redirect::route('projects.show', $project->slug)->with('message', 'Removed "' . $track->name . '" from project.');
+    	return redirect()->back()->with('message', 'Removed "' . $track->name . '" from project.');
     }
 
     public function destroy(Track $track)
