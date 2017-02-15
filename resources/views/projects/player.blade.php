@@ -1,11 +1,11 @@
 <div class="player" id="player">
     <div class="controls" v-cloak>
-        <span class="btn btn-success btn-play-all {{ count($project->tracks) == 0 ? 'hidden' : '' }}" v-bind:class="{ hidden: this.tracksPlaying > 0 || this.recording }" id="btn-play-all"><span>Play</span>&nbsp;<i :class="this.playIconClass"></i></span>
-        <span class="btn btn-danger btn-pause-all" v-bind:class="{ hidden: !this.playing || this.recording }" id="btn-pause-all"><span>Pause</span>&nbsp;<i class="fa fa-pause"></i></span>
+        <span class="button is-success btn-play-all {{ count($project->tracks) == 0 ? 'hidden' : '' }}" v-bind:class="{ hidden: this.tracksPlaying > 0 || this.recording }" id="btn-play-all"><span>Play</span>&nbsp;<i :class="this.playIconClass"></i></span>
+        <span class="button is-danger btn-pause-all" v-bind:class="{ hidden: !this.playing || this.recording }" id="btn-pause-all"><span>Pause</span>&nbsp;<i class="fa fa-pause"></i></span>
 
-        <span class="btn btn-danger btn-record" v-bind:class="{ hidden: (this.recording || this.playing) }" id="btn-record"><span>Record</span>&nbsp;<i :class="this.recordIconClass"></i></span>
-        <span class="btn btn-danger btn-record-stop" v-bind:class="{ hidden: !this.recording }" id="btn-record-stop"><span>Stop</span>&nbsp;<i :class="this.recordIconClass"></i></span>
-        <span class="btn btn-default btn-metronome" id="btn-metronome"><span>Metronome</span>&nbsp;<i class="fa fa-record"></i></span>
+        <span class="button is-danger btn-record" v-bind:class="{ hidden: (this.recording || this.playing) }" id="btn-record"><span>Record</span>&nbsp;<i :class="this.recordIconClass"></i></span>
+        <span class="button is-danger btn-record-stop" v-bind:class="{ hidden: !this.recording }" id="btn-record-stop"><span>Stop</span>&nbsp;<i :class="this.recordIconClass"></i></span>
+        <span class="button btn-default btn-metronome" id="btn-metronome"><span>Metronome</span>&nbsp;<i class="fa fa-record"></i></span>
 
         <div id="metronome" class="metronome">
             <div class="metronome-controls">
@@ -15,7 +15,7 @@
         </div>
         <span class="pnl-time" v-text="this.timeDisplay">
         </span>
-        <span v-cloak class="alert alert-danger recording" v-bind:class="{ hidden: !this.recording }" id="alert-recording">
+        <span v-cloak class="notification is-danger recording" v-bind:class="{ hidden: !this.recording }" id="alert-recording">
             Recording<img src="/img/recording.gif" alt="" />
         </span>
     </div>
