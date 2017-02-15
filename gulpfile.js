@@ -25,9 +25,10 @@ elixir((mix) => {
        .webpack('app.js')
        .webpack('tags/tags.js')
        .scripts([
+           'vendor/chosen.jquery.min.js',
            'vendor/pluralize.js',
            'vendor/awesomplete.min.js',
-           'ui/menu.js',
+           'ui/**/*.js',
        ], 'public/js/signalshare.js')
        .scripts([
            'vendor/dropzone.js',
