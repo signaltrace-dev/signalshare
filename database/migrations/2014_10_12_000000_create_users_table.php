@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Carbon\Carbon;
 
 class CreateUsersTable extends Migration
 {
@@ -21,6 +22,15 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::table('users')->insert(
+            [
+                'name' => 'jglenn',
+                'email' => 'jeff@signaltrace.net',
+                'password' => bcrypt('changeme'),
+                'created_at' => Carbon::now(),
+            ]
+        );
     }
 
     /**
