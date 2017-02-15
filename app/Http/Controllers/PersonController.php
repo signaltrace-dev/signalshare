@@ -14,7 +14,16 @@ class PersonController extends Controller
 {
     public function show(User $user)
     {
+        $current_user =  Auth::user();
         $profile = $user->profile()->get()->first();
+
+        // If the logged in user is the same as the user being viewed or is admin, create a new
+        // profile if one does not already exist.
+        if(empty($profile) && ($current_user->id == $user->id || $current_user->roles->contains(1))){
+            $profile = new Profile();
+            $profile->user_id = $user->id;
+            $profile->save();
+        }
         return view('people.show', compact('profile'));
     }
 

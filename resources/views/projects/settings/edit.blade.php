@@ -9,33 +9,36 @@
 @endsection
 
 @section('content')
-    <script type="text/javascript">
-    $(document).ready(function(){
-        $( "#modal-delete-project" ).on('shown.bs.modal', function(){
+    <div class="columns">
+        <div class="column is-half is-offset-one-quarter">
+            <script type="text/javascript">
+            $(document).ready(function(){
+                $( "#modal-delete-project" ).on('shown.bs.modal', function(){
 
-            var v = new Vue({
-                el: '#modal-delete-project',
-                data:{
-                    projectname: '',
-                }
+                    var v = new Vue({
+                        el: '#modal-delete-project',
+                        data:{
+                            projectname: '',
+                        }
+                    });
+                });
             });
-        });
-    });
 
 
-    </script>
+            </script>
 
-    <form action='{{ route("projects.settings.update", ['user' => $user, 'project' => $project->slug]) }}' method="POST" class="form-inline">
-        {{ method_field('PATCH') }}
-        {{ csrf_field() }}
-        <div class="form-group">
-            <label for="name">Project Name:</label>
-            <input class="form-control" type="text" name="name"  placeholder="Name" value="{{ $project->name }}" />
-            <button type="submit" name="button" class="btn btn-success">Save Settings</button>
+            <form action='{{ route("projects.settings.update", ['user' => $user, 'project' => $project->slug]) }}' method="POST" class="form-inline">
+                {{ method_field('PATCH') }}
+                {{ csrf_field() }}
+                <p class="control has-addons">
+                    <input class="input" type="text" name="name"  placeholder="Name" value="{{ $project->name }}" />
+                    <button type="submit" name="button" class="button is-success">Rename</button>
+                </p>
+            </form>
+            <div class="box">
+                <button type="button" name="btn-modal" class="button is-danger" data-toggle="modal" data-target="#modal-delete-project">Delete This Project</button>
+            </div>
         </div>
-    </form>
-    <div class="form-group well">
-        <button type="button" name="btn-modal" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-project">Delete This Project</button>
     </div>
 
     <div class="modal fade" id='modal-delete-project'>

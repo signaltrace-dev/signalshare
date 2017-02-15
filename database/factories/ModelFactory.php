@@ -27,7 +27,7 @@ $factory->define(App\Project::class, function(Faker\Generator $faker){
   return[
     'name' => $faker->company,
     'slug' => $faker->slug,
-    'owner_id' => factory(App\User::class)->create()->id,
+    'user_id' => factory(App\User::class)->create()->id,
   ];
 });
 
@@ -35,7 +35,7 @@ $factory->define(App\Track::class, function(Faker\Generator $faker){
   return[
     'name' => $faker->realText($maxNbChars = 50, $indexSize = 2),
     'slug' => $faker->slug,
-    'owner_id' => factory(App\User::class)->create()->id,
+    'user_id' => factory(App\User::class)->create()->id,
     'project_id' => factory(App\Project::class)->create()->id,
   ];
 });

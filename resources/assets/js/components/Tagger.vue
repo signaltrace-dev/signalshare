@@ -1,19 +1,17 @@
 <template>
-    <div class="panel panel-brand">
-        <div class="panel-heading">
-            <h3 class="panel-title">{{ this.title }}</h3>
-        </div>
-        <div class="panel-body">
+    <div>
+        <div class="box">
             <div class="tag-list">
-                <span class="label label-primary tag" v-for="tag in tags">
+                <span class="tag is-success" v-for="tag in tags">
                     {{ tag.name }}
-                    <button v-on:click="detach(tag.id)" class="link-delete"><i class="fa fa-times"></i></button>
+                    <button v-on:click="detach(tag.id)" class="delete"></button>
                 </span>
             </div>
-
-            <input ref="searchBox" type="text" name="tagname" v-model="searchText" v-on:keyup.enter="attach" v-on:keyup="search" id="txt-tag-search">
-            <button class="btn btn-success" id="btn-attach-tag" v-on:click="attach" name="button">Add</button>
         </div>
+        <p class="control has-addons">
+            <input class="input" ref="searchBox" type="text" name="tagname" v-model="searchText" v-on:keyup.enter="attach" v-on:keyup="search" id="txt-tag-search">
+            <button class="button is-success" id="btn-attach-tag" v-on:click="attach" name="button">Add</button>
+        </p>
     </div>
 </template>
 

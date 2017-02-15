@@ -21,7 +21,7 @@
 
     <div id="pnl-project-tracks">
         @if ( count($project->tracks) == 0 )
-            <div class='alert alert-warning'>Hey, it looks like this project doesn't have any tracks yet. Get cracking!</div>
+            <div class='notification is-warning'>Hey, it looks like this project doesn't have any tracks yet. Get cracking!</div>
         @endif
         @include('tracks/forms/add_tracks', ['submit_text' => 'Create Track', 'project' => $project, 'action' => route("projects.tracks.store", $project->slug)])
         <div class='track-list' id="track-list">
