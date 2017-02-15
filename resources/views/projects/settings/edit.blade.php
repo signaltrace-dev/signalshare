@@ -30,10 +30,36 @@
             <form action='{{ route("projects.settings.update", ['user' => $user, 'project' => $project->slug]) }}' method="POST" class="form-inline">
                 {{ method_field('PATCH') }}
                 {{ csrf_field() }}
-                <p class="control has-addons">
-                    <input class="input" type="text" name="name"  placeholder="Name" value="{{ $project->name }}" />
-                    <button type="submit" name="button" class="button is-success">Rename</button>
-                </p>
+                <div class="control">
+                    <label for="name" class="label">Project Name:</label>
+                    <p class="control">
+                        <input class="input" type="text" name="name"  placeholder="Name" value="{{ $project->name }}" />
+                        @if ($errors->has('name'))
+                            <span class="help is-danger">
+                                {{ $errors->first('name') }}
+                            </span>
+                        @endif
+                    </p>
+                </div>
+
+                <div class="control">
+                    <label for="description" class="label">Description:</label>
+                    <p class="control">
+                        <textarea id="description" class="textarea is-fullwidth" name="description" placeholder="This is the story all about how my life got flipped, turned upside down">{{ old('description', $project->description) }}</textarea>
+                        @if ($errors->has('description'))
+                            <span class="help is-danger">
+                                {{ $errors->first('description') }}
+                            </span>
+                        @endif
+                    </p>
+                </div>
+
+                <div class="control is-grouped">
+                    <p class="control">
+                        <button type="submit" class="button is-primary">Save</button>
+                    </p>
+                </div>
+
             </form>
             <div class="box">
                 <button type="button" name="btn-modal" class="button is-danger" data-toggle="modal" data-target="#modal-delete-project">Delete This Project</button>

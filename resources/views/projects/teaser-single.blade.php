@@ -3,10 +3,11 @@
         <div class="content">
             <p>
                 <a href="{{ route('projects.show', ['slug' => $project->slug, 'username' => $project->owner->name]) }}">
-                    <strong>{{ $project->name }}</strong>
+                    <strong class="subtitle">{{ $project->name }}</strong>
                 <a/>
                 <small><a href="{{ route('people.show', ['user' => $project->owner]) }}">{{ '@' . $project->owner->name }}</a></small>
                 <br>
+                {{ $project->description }}
             </p>
         </div>
         <nav class="level">
