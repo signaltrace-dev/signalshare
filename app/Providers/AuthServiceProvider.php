@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('update-project', function ($user, $project) {
-            return $user->id == $project->owner_id || $user->roles->contains(1);
+            return $user->id == $project->user_id || $user->roles->contains(1);
         });
 
         Gate::define('update-profile', function ($user, $profile) {

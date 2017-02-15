@@ -100,7 +100,7 @@ class TrackController extends Controller
 
             $track = new Track;
             $track->name = $file_name_short;
-            $track->owner_id = $request->user()->id;
+            $track->user_id = $request->user()->id;
 
             $slug = str_slug($track->name, '-');
             $new_slug = $slug;
@@ -125,7 +125,7 @@ class TrackController extends Controller
 
             $project->tracks()->attach($track->id,[
                 'name' => $file_name_short,
-                'owner_id' => $request->user()->id,
+                'user_id' => $request->user()->id,
                 'approved' => 0
             ]);
 
@@ -175,7 +175,7 @@ class TrackController extends Controller
 
         $track = new Track;
         $track->name = $track_name;
-        $track->owner_id = $request->user()->id;
+        $track->user_id = $request->user()->id;
 
         $slug = str_slug($track->name, '-');
         $new_slug = $slug;
@@ -193,7 +193,7 @@ class TrackController extends Controller
 
         $project->tracks()->attach($track->id,[
             'name' => $track->name,
-            'owner_id' => $user_id,
+            'user_id' => $user_id,
             'approved' => 0
         ]);
 

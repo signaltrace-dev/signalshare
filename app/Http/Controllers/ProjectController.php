@@ -30,7 +30,7 @@ class ProjectController extends Controller
 
   public function indexOwned(User $user)
   {
-      $projects = Project::where('owner_id', $user->id)->get();
+      $projects = Project::where('user_id', $user->id)->get();
       return view('projects.owned', compact('projects', 'user'));
   }
 
@@ -52,7 +52,7 @@ class ProjectController extends Controller
    * @return Response
    */
   public function show(User $user, $slug){
-      $project = Project::where(['owner_id' => $user->id, 'slug' => $slug])->get()->first();
+      $project = Project::where(['user_id' => $user->id, 'slug' => $slug])->get()->first();
       if(!empty($project))
       {
           return view('projects.show', compact('project'));
@@ -69,7 +69,7 @@ class ProjectController extends Controller
    */
   public function edit(User $user, $slug)
   {
-      $project = Project::where(['owner_id' => $user->id, 'slug' => $slug])->get()->first();
+      $project = Project::where(['user_id' => $user->id, 'slug' => $slug])->get()->first();
 
       if(!empty($project)){
           return view('projects.edit', compact('project'));
@@ -88,7 +88,7 @@ class ProjectController extends Controller
               'required',
               'max:255',
               Rule::unique('projects')->where(function ($query) use ($user) {
-                  $query->where('owner_id', $user->id);
+                  $query->where('user_id', $user->id);
               })
           ]
       ];
@@ -109,16 +109,16 @@ class ProjectController extends Controller
     $slug = str_slug($project->name, '-');
     $new_slug = $slug;
 
-    $exists = Project::where(['slug' => $slug, 'owner_id' => $user->id])->count();
+    $exists = Project::where(['slug' => $slug, 'user_id' => $user->id])->count();
     $append = 1;
     while($exists){
         $new_slug = $slug . '-' . $append;
         $append++;
-        $exists = Project::where(['slug' => $new_slug, 'owner_id' => $user->id])->count();
+        $exists = Project::where(['slug' => $new_slug, 'user_id' => $user->id])->count();
     }
 
     $project->slug = $new_slug;
-    $project->owner_id = $user->id;
+    $project->user_id = $user->id;
     $project->save();
 
     return redirect()->back()->with('message', 'Created new project ' . $project->name . '!');
@@ -126,7 +126,7 @@ class ProjectController extends Controller
 
   public function destroy(Request $request, User $user, $slug)
   {
-      $project = Project::where(['owner_id' => $user->id, 'slug' => $slug])->get()->first();
+      $project = Project::where(['user_id' => $user->id, 'slug' => $slug])->get()->first();
 
       if(!empty($project)){
           $this->validate($request, [
@@ -142,7 +142,7 @@ class ProjectController extends Controller
   }
 
   public function getTags(Request $request, User $user, $slug){
-      $project = Project::where(['owner_id' => $user->id, 'slug' => $slug])->get()->first();
+      $project = Project::where(['user_id' => $user->id, 'slug' => $slug])->get()->first();
 
       if(!empty($project)){
           if($request->ajax()){

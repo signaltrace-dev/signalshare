@@ -42,14 +42,14 @@ class Project extends Model
     public function tracks()
     {
       return $this->belongsToMany('App\Track')
-        ->withPivot('name', 'owner_id', 'approved')
+        ->withPivot('name', 'user_id', 'approved')
         ->withTimestamps();
     }
 
     public function tracksApproved()
     {
         return $this->belongsToMany('App\Track')
-        ->withPivot('name', 'owner_id', 'approved')
+        ->withPivot('name', 'user_id', 'approved')
         ->withTimestamps()
         ->where('approved', '=', '1');
     }
@@ -57,7 +57,7 @@ class Project extends Model
     public function tracksNotApproved()
     {
         return $this->belongsToMany('App\Track')
-        ->withPivot('name', 'owner_id', 'approved')
+        ->withPivot('name', 'user_id', 'approved')
         ->withTimestamps()
         ->where('approved', '=', '0');
     }
@@ -74,7 +74,7 @@ class Project extends Model
     }
 
     public function fullPath(){
-        $user = User::where('id', $this->owner_id)->first();
+        $user = User::where('id', $this->user_id)->first();
         return $user->name .'/'.$this->slug;
     }
 
@@ -91,6 +91,8 @@ class Project extends Model
     }
 
     public function owner(){
-        return $this->belongsTo('App\User', 'owner_id');
+        return $this->belongsTo('App\User', 'user_id');
+    }
+
     }
 }

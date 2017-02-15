@@ -26,7 +26,7 @@ class Track extends Model
 
     public function projects(){
         return $this->belongsToMany('App\Project')
-            ->withPivot('name', 'owner_id', 'approved')
+            ->withPivot('name', 'user_id', 'approved')
             ->withTimestamps();
     }
 
