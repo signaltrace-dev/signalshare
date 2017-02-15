@@ -26,6 +26,19 @@ class Profile extends Model
 
         $full_name = !empty($this->first_name) ? $this->first_name : '';
         $full_name = !empty($this->last_name) ? $full_name . ' ' . $this->last_name : $full_name;
+        $full_name = !empty($full_name) ? $full_name : $this->user->name;
+
         return $full_name;
+    }
+
+    public function location(){
+        $location = !empty($this->city) ? $this->city : '';
+        if(!empty($this->country)){
+            $countries = CountryCodes();
+            $country = !empty($countries[$this->country]) ? $countries[$this->country] : $this->country;
+            $location = !empty($location) ? $location . ', ' . $country : $country;
+        }
+
+        return $location;
     }
 }
