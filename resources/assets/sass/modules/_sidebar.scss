@@ -15,44 +15,45 @@
         border-right: 2px solid #354b56;
     }
 
-    .navbar-brand{
+    .btn-nav-toggle-wrapper{
+        -webkit-box-align: stretch;
+        align-items: stretch;
+        display: -webkit-box;
+        display: flex;
+        min-height: 3.5rem;
+        position: relative;
+        text-align: center;
+        z-index: 2;
+        .btn-nav-toggle{
+            -webkit-box-align: center;
+            align-items: center;
+            display: -webkit-box;
+            display: flex;
+            -webkit-box-flex: 0;
+            flex-grow: 0;
+            flex-shrink: 0;
+            font-size: 1rem;
+            -webkit-box-pack: center;
+            justify-content: center;
+            padding: 0.5rem 0.75rem;
+
+            &:hover{
+                color: inherit;
+            }
+        }
+    }
+
+    .menu{
+        padding: 1em;
+    }
+
+    .menu-list a,
+    .menu-label{
         color: #fff;
     }
 
-    .wrapper-button{
-        height: 50px;
+    .menu-list a:hover{
+        background: darken($brand-primary, 10%);
     }
 
-    .pnl-badge{
-        max-width: 100px;
-        width: 100px;
-        margin: 20px auto;
-    }
-
-    .list-group{
-        .list-group-item{
-            padding: 0;
-        }
-
-        a{
-            width: 100%;
-            display: block;
-            padding: 10px 15px;
-
-            &:hover{
-                background: #dedede;
-                text-decoration: none;
-            }
-
-            &.active{
-                background: $bg-light;
-                font-weight: 800;
-            }
-        }
-    }
-
-    .sidenav{
-        padding: 10px 20px;
-        width: 100%;
-    }
 }
