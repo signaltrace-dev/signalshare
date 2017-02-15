@@ -9,9 +9,13 @@
 @endsection
 
 @section('content')
-    <script type="text/javascript" src="{{ URL::asset('js/tags.js') }}"></script>
+    <div class="columns">
+        <div class="column is-half is-offset-one-quarter">
+            <script type="text/javascript" src="{{ URL::asset('js/tags.js') }}"></script>
 
-    <div id="tagger">
-        @include('needs.forms.need_tagger', ['project' => $project])
+            <div id="tagger">
+                @include('needs.forms.need_tagger', ['project' => $project])
+            </div>
+        </div>
     </div>
 @endsection

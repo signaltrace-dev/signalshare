@@ -24,34 +24,32 @@
         @include('layouts.navbar')
         @include('layouts.sidebar')
 
-        <div class="main-content container-fluid">
-
-            <div class="row">
-
-                <div class="col-md-12">
-                    @if (Session::has('message'))
-                        <div class="flash alert alert-success">
-                          <p>{{ Session::get('message') }}</p>
-                        </div>
-                    @endif
-                    <div class='flash alert alert-danger {{ $errors->any() ? '' : 'hidden' }}'>
-                        @foreach ( $errors->all() as $error )
-                            <p>{{ $error }}</p>
-                        @endforeach
-                    </div>
-                    @hasSection('pagenav')
-                        <div class="row">
-                            <ul class="nav nav-tabs nav-secondary">
+        <div class="main-content container">
+            @if (Session::has('message'))
+                <div class="flash notification is-primary">
+                  <p>{{ Session::get('message') }}</p>
+                </div>
+            @endif
+            <div class='flash notification is-danger {{ $errors->any() ? '' : 'hidden' }}'>
+                @foreach ( $errors->all() as $error )
+                    <p>{{ $error }}</p>
+                @endforeach
+            </div>
+            @hasSection('pagenav')
+                <div class="columns">
+                    <div class="column">
+                        <div class="tabs is-boxed is-centered">
+                            <ul class="nav-secondary">
                                 @yield('pagenav')
                             </ul>
                         </div>
-                        <div class="row row-content has-nav">
-                    @else
-                        <div class="row row-content">
-                    @endif
-                        @yield('content')
                     </div>
                 </div>
+                <div class="has-nav">
+            @else
+                <div class="">
+            @endif
+                @yield('content')
             </div>
         </div>
     </body>
