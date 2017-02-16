@@ -3,7 +3,7 @@
         @if (Auth::check())
             <a class="nav-item btn-nav-toggle" href="#" title="Toggle Navigation"><i class="fa fa-bars"></i></a>
         @endif
-        <span class="nav-item title">@yield('title')</span>
+        <span class="nav-item"><span class="title is-4">@yield('title')</span></span>
     </div>
     <div class="nav-center">
         <a class="nav-item" href="/"><span class="icon"><i class="fa fa-home"></i></span></a>
