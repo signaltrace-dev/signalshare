@@ -7,7 +7,7 @@
                         <img class="is-rounded" src="{{ $track->owner->profile->image_url }}" alt="" />
                     </figure>
                 @else
-                    <span class="icon user-badge">
+                    <span class="icon is-medium user-badge">
                         <i class="fa fa-user-circle"></i>
                     </span>
                 @endif
