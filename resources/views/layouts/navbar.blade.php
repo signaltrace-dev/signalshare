@@ -14,7 +14,7 @@
               @if (!empty($user->profile))
                   <a href="{{ route('people.me') }}" class="nav-item">
                       @if (!empty($user->profile->image_url))
-                          <img class="user-badge" src="{{ $user->profile->image_url }}"/>
+                          <img class="user-badge is-rounded" src="{{ $user->profile->image_url }}"/>
                       @else
                           <span class="icon user-badge">
                               <i class="fa fa-user-circle"></i>
