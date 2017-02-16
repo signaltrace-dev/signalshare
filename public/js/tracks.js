@@ -1802,7 +1802,7 @@ $(document).ready(function() {
                 return iconClass;
             },
             recordIconClass: function(){
-                var iconClass = 'fa fa-circle';
+                var iconClass = 'fa fa-microphone';
                 if(this.playing || this.recording){
                     iconClass = 'fa fa-stop';
                 }
@@ -1946,7 +1946,7 @@ $(document).ready(function() {
 
                 $(this).toggleClass('muted');
                 var muted = $(this).hasClass('muted');
-                $(this).html(muted ? 'Unmute <i class="fa fa-volume-up"></i>' : 'Mute <i class="fa fa-volume-off"></i>');
+                $(this).html(muted ? 'Unmute&nbsp;<i class="fa fa-volume-up"></i>' : 'Mute&nbsp;<i class="fa fa-volume-off"></i>');
 
                 $(trackElem).find('.project-track').toggleClass('muted');
             }
