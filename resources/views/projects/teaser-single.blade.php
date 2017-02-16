@@ -7,16 +7,19 @@
                 <a/>
                 <small><a href="{{ route('people.show', ['user' => $project->owner]) }}">{{ '@' . $project->owner->name }}</a></small>
                 <br>
+                @if ($project->tags->count() > 0)
+                    @foreach ($project->tags as $tag)
+                        <span class="tag is-primary">{{ $tag->name }}</span>
+                    @endforeach
+                    <br>
+                @endif
                 {{ $project->description }}
             </p>
         </div>
         <nav class="level">
           <div class="level-left">
             <a class="level-item">
-              <span class="icon is-small"><i class="fa fa-reply"></i></span>
-            </a>
-            <a class="level-item">
-              <span class="icon is-small"><i class="fa fa-retweet"></i></span>
+              <span class="icon is-small"><i class="fa fa-share"></i></span>
             </a>
             <a class="level-item">
               <span class="icon is-small"><i class="fa fa-heart"></i></span>
