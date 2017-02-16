@@ -27,7 +27,7 @@
 
             </script>
 
-            <form action='{{ route("projects.settings.update", ['user' => $user, 'project' => $project->slug]) }}' method="POST" class="form-inline">
+            <form action='{{ route("projects.settings.update", ['user' => $project->owner, 'project' => $project->slug]) }}' method="POST" class="form-inline">
                 {{ method_field('PATCH') }}
                 {{ csrf_field() }}
                 <div class="control">
