@@ -33,4 +33,8 @@ class Track extends Model
     protected function file(){
       return $this->hasOne('App\AudioFile');
     }
+
+    public function owner(){
+        return $this->belongsTo('App\User', 'user_id');
+    }
 }
