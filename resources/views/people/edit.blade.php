@@ -33,7 +33,7 @@
                         <div class="control">
                             <label for="first_name" class="label">First Name</label>
                             <p class="control">
-                                <input id="first_name" type="text" class="input is-fullwidth" name="first_name" value="{{ old('first_name', $profile->first_name) }}" placeholder="Robert" required autofocus>
+                                <input id="first_name" type="text" class="input is-fullwidth" name="first_name" value="{{ old('first_name', $profile->first_name) }}" placeholder="Robert" required>
                                 @if ($errors->has('first_name'))
                                     <span class="help is-danger">
                                         {{ $errors->first('first_name') }}
