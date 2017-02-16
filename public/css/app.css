@@ -6458,6 +6458,10 @@ label.panel-block:hover {
   text-transform: lowercase;
 }
 
+.is-rounded {
+  border-radius: 50%;
+}
+
 .title--page {
   border-bottom: 1px solid #d3e0e9;
   padding: 0 0 10px 20px;
@@ -6619,7 +6623,6 @@ h1, h2, h3, h4, h5, .btn, a, body, p, span, div {
 
 .track-item {
   border-bottom: 1px solid #dadada;
-  margin: 20px 0;
   overflow: hidden;
   padding: 10px 0;
 }
@@ -6763,8 +6766,7 @@ input[type=text], textarea {
 .track-item {
   -webkit-transition: all 1.5s ease;
   transition: all 1.5s ease;
-  padding: 10px;
-  overflow: auto;
+  padding: 20px 0;
 }
 
 .track-item.added {
@@ -6792,7 +6794,11 @@ input[type=text], textarea {
 }
 
 .project-track.muted {
-  background: #dedede;
+  background: #dedede !important;
+}
+
+.project-track.muted wave {
+  background: #000;
 }
 
 .project-track.loaded {

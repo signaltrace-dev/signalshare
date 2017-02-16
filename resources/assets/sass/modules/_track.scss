@@ -1,7 +1,6 @@
 .track-item{
     transition: all 1.5s ease;
-    padding: 10px;
-    overflow: auto;
+    padding: 20px 0;
     &.added{
         background-color: $bg-success;
 
@@ -34,7 +33,10 @@
 
 .project-track{
     &.muted{
-        background: #dedede;
+        background: #dedede !important;
+        wave{
+            background: #000;
+        }
     }
 
     &.loaded {
