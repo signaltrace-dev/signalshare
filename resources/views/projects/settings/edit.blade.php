@@ -31,7 +31,7 @@
                 <div class="control">
                     <label for="name" class="label">Project Name:</label>
                     <p class="control">
-                        <input class="input" type="text" name="name"  placeholder="Name" value="{{ $project->name }}" />
+                        <input class="input" type="text" name="name" title="The name of the project" maxlength="100" placeholder="Name" value="{{ $project->name }}" required />
                         @if ($errors->has('name'))
                             <span class="help is-danger">
                                 {{ $errors->first('name') }}
@@ -43,7 +43,7 @@
                 <div class="control">
                     <label for="description" class="label">Description:</label>
                     <p class="control">
-                        <textarea id="description" class="textarea is-fullwidth" name="description" placeholder="This is the story all about how my life got flipped, turned upside down">{{ old('description', $project->description) }}</textarea>
+                        <textarea id="description" class="textarea is-fullwidth" title="An optional short description for this project" name="description" rows="5" maxlength="200" placeholder="This is the story all about how my life got flipped, turned upside down">{{ old('description', $project->description) }}</textarea>
                         @if ($errors->has('description'))
                             <span class="help is-danger">
                                 {{ $errors->first('description') }}
