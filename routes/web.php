@@ -69,8 +69,12 @@ Route::group(['middleware' => 'auth'], function(){
 	// People
 	Route::get('people/me', ['as' => 'people.me', 'uses' => 'PersonController@showSelf']);
 	Route::get('people/{user}', ['as' => 'people.show', 'uses' => 'PersonController@show']);
+
 	Route::get('people/{user}/edit', ['as' => 'people.edit', 'uses' => 'PersonController@edit']);
 	Route::patch('people/{user}/edit', ['as' => 'people.update', 'uses' => 'PersonController@update']);
 });
+
+Route::get('people/{user}/exists', ['as' => 'people.exists', 'uses' => 'PersonController@exists']);
+
 
 Auth::routes();

@@ -9,6 +9,7 @@ use Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Validator;
+use Response;
 
 class PersonController extends Controller
 {
@@ -64,6 +65,7 @@ class PersonController extends Controller
             ],
             'username' => [
                 'required',
+                'min:4',
                 'max:50',
                 Rule::unique('users', 'name')->where(function ($query) use ($user){
                     $query->where('id', '!=', $user->id);
@@ -110,5 +112,16 @@ class PersonController extends Controller
         $user->save();
 
         return redirect()->back()->with('message', 'Profile saved!');
+    }
+
+    public function exists($username)
+    {
+        $user = \App\User::Where('name', $username)->first();
+
+        $response = [];
+        if(!empty($user)){
+            $response = $user;
+        }
+        return Response::json($response);
     }
 }
