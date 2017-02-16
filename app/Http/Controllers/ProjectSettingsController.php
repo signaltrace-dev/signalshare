@@ -16,6 +16,11 @@ class ProjectSettingsController extends Controller
     }
 
     public function update(Request $request, User $user, $slug){
+        $this->validate($request, [
+            'name' => 'required|max:100',
+            'description' => 'max:200',
+        ]);
+
         $project = Project::where(['user_id' => $user->id, 'slug' => $slug])->get()->first();
 
         $project->name = !empty($request->input('name')) ? $request->input('name') : $project->name;
