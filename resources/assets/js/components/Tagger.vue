@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="box">
+        <div class="box" v-show="tags.length > 0">
             <div class="tag-list">
                 <span class="tag is-success" v-for="tag in tags">
                     {{ tag.name }}
@@ -8,7 +8,7 @@
                 </span>
             </div>
         </div>
-        <p class="control has-addons">
+        <p class="control has-addons has-addons-centered">
             <input class="input" ref="searchBox" type="text" name="tagname" v-model="searchText" v-on:keyup.enter="attach" v-on:keyup="search" id="txt-tag-search">
             <button class="button is-success" id="btn-attach-tag" v-on:click="attach" name="button">Add</button>
         </p>
