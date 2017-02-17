@@ -61,22 +61,29 @@
             </form>
             <div id="pnl-delete-project" v-cloak>
                 <button type="button" name="btn-modal" v-show="!showConfirm" class="button is-danger" @click="showConfirm = true;">Delete This Project</button>
-                <div class="box" v-show="showConfirm">
-                    <form action='{{ route("projects.destroy", ['project' => $project, 'user' => $user]) }}' method="POST">
-                        {{ method_field('DELETE') }}
-                        {{ csrf_field() }}
-                        <p>
-                            Woah, are you absolutely sure you want to delete this project?
-                            This is <em>permanent</em>, and any tracks that aren't being used on other projects will also be deleted!
-                            If you're absolutely sure, type the full project name <em>{{ $project->fullPath() }}</em> in the box and click
-                            the 'Yes, Delete This Project' button.
-                        </p>
-                        <p class="control is-grouped">
-                            <input type="text" class="input" name="project-name-confirm" value="" v-model="projectname" id="project-name-confirm">
-                            <button type="submit" id="btn-project-name-confirm" name="button" class="button is-danger" :disabled=" this.projectname != '{{ $project->fullPath() }}' ">Yes, Delete This Project</button>
-                            <a class="button is-primary" @click="showConfirm = false;">No, I Changed My Mind</a>
-                        </p>
-                    </form>
+                <div class="message is-danger" v-show="showConfirm">
+                    <div class="message-header">
+                        <p><strong>Hang on, are you sure about this</strong>?</p>
+                        <button class="delete" @click="showConfirm = false;"></button>
+                    </div>
+                    <div class="message-body">
+                        <form action='{{ route("projects.destroy", ['project' => $project, 'user' => $user]) }}' method="POST">
+                            {{ method_field('DELETE') }}
+                            {{ csrf_field() }}
+                            <p>
+                                Woah, are you absolutely sure you want to delete this project?
+                                This is <em>permanent</em>, and any tracks that aren't being used on other projects will also be deleted!
+                                If you're absolutely sure, type the full project name <em>{{ $project->fullPath() }}</em> in the box and click
+                                the 'Yes, Delete This Project' button.
+                            </p>
+                            <br>
+                            <p class="control is-grouped">
+                                <input type="text" class="input" name="project-name-confirm" value="" v-model="projectname" id="project-name-confirm">
+                                <button type="submit" id="btn-project-name-confirm" name="button" class="button is-danger" :disabled=" this.projectname != '{{ $project->fullPath() }}' ">Yes, Delete This Project</button>
+                                <a class="button is-primary" @click="showConfirm = false;">No, I Changed My Mind</a>
+                            </p>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
