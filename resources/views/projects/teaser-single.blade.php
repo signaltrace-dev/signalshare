@@ -8,11 +8,13 @@
                 <small><a href="{{ route('people.show', ['user' => $project->owner]) }}">{{ '@' . $project->owner->name }}</a></small>
                 <br>
                 @if ($project->tags->count() > 0)
+                    <br>
                     @foreach ($project->tags as $tag)
                         <span class="tag is-primary">{{ $tag->name }}</span>
                     @endforeach
                     <br>
                 @endif
+                <br>
                 {{ $project->description }}
             </p>
         </div>
